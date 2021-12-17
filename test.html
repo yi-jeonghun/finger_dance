@@ -1,0 +1,223 @@
+<html>
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-178244396-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-178244396-1');
+	</script>
+	
+	<title>Beat Master | <!--%= game_data.artist %> - <%= game_data.title %--></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<meta name="description" content="Rhythm Game for <%= game_data.artist %> - <%= game_data.title %>">
+	<meta name="keywords" content="<%= game_data.artist %>, <%= game_data.title %>, Rhythm Game, Beat Game, Youtube, Music, Popsong, Popular song">
+	<meta property="og:title" content="Beat Master | <%= game_data.artist %> - <%= game_data.title %>" />
+	<meta property="og:description" content="Rhythm Game for <%= game_data.artist %> - <%= game_data.title %>">
+	<meta property="og:image" content="https://img.youtube.com/vi/<%= game_data.video_id %>/0.jpg">
+	<meta property="og:image:width" content="800"/>
+	<meta property="og:image:height" content="400"/> 
+	<meta property="og:url" content="https://beatmaster.me"/> 
+	<meta property="og:site_name" content="Beat Master"/> 
+	<meta property="og:type" content="website"/>
+
+
+	<script>
+		window._game_data = "";//<%- JSON.stringify(game_data) %>;
+	</script>
+
+	<link rel="stylesheet" type="text/css" href="lib/bootstrap-4.5.0-dist/css/bootstrap.min.css">
+
+	<link rel="stylesheet" type="text/css" href="lib/fontawesome-free-5.10.1-web/css/fontawesome.min.css">
+	<link rel="stylesheet" type="text/css" href="lib/fontawesome-free-5.10.1-web/css/brands.min.css">
+	<link rel="stylesheet" type="text/css" href="lib/fontawesome-free-5.10.1-web/css/solid.min.css">
+
+	<script type="text/javascript" src="lib/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="lib/bootstrap-4.5.0-dist/js/bootstrap.min.js"></script>
+
+	<!-- <script src="lib/three/three.min.js"></script> -->
+	<!--%- include('include/google_auth_js.ejs') %-->
+	<!-- Google Auth -->
+	<script>
+		function OnSignIn(googleUser) {
+			window._auth_control.OnGoogleSignIn(googleUser, function(res){
+				if(res){
+					//window.location.href = './cms_main.vu';
+				}else{
+					alert('로그인 실패');
+				}
+			});
+		}
+	</script>
+	<meta name="google-signin-scope" content="profile email">
+	<meta name="google-signin-client_id" content="921896988128-ec5qct7fagn1869fuors1i201fgtpgb0.apps.googleusercontent.com">
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script type="text/javascript" src="js/auth_control.js"></script>
+	<!-- Google Auth -->
+
+	<!-- <script src="lib/webaudiofont/WebAudioFontPlayer.js"></script> -->
+
+	<link rel="stylesheet" type="text/css" href="css/play_game_style.css">
+
+	<script src="lib/mobile-detect.min.js"></script>
+	<script src="db/sF2quESVb9Y.json"></script>
+
+	<!-- <% if(dev_mode){ %> -->
+		<!-- <script src="js/Drums.js"></script>
+		<script src="js/drum_player.js"></script> -->
+		<script src="js/atlas.js"></script>
+		<script src="js/const.js"></script>
+		<script src="js/common.js"></script>
+		<script src="js/timer.js"></script>
+		<script src="js/youtube_iframe_player.js"></script>
+		<script src="js/renderer.js"></script>
+		<script src="js/particle.js"></script>
+		<script src="js/game_data.js"></script>
+		<script src="js/game_control.js"></script>
+		<script src="js/ball.js"></script>
+		<script src="js/play_game_control.js"></script>
+	<!-- <% } else { %> -->
+		<!-- <script src="js/play_game_min.js"></script> -->
+	<!-- <% } %> -->
+
+</head>
+
+<body>
+
+<div id="lo_play">
+	<div id="ddr_player">
+		<div id="ddr_player_bg_layer"></div>
+		<canvas id="ddr_player_layer1" style="border:1px solid #aaa"></canvas>
+
+		<div id="info_layer">
+			<div class="container-fluid" style="padding-top: 5px;">
+				<div class="row">
+					<div class="col-4">
+						<button id="id_btn_back" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 0px solid #eee; cursor: pointer">
+							<i style="color: #eee;" class="fas fa-chevron-left"></i>
+						</button>
+						<button id="id_btn_home" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 0px solid #eee; cursor: pointer">
+							<i style="color: #eee;" class="fas fa-home"></i>
+						</button>
+					</div>
+					<div class="col-4 text-center"></div>
+					<div class="col-4 text-right">
+						<button id="id_btn_rank" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 0px solid #eee; cursor: pointer">
+							<i style="color: #eee;" class="fas fa-trophy"></i>
+						</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 text-center" style="font-size: 1.5em;"><!--<%= game_data.title %>-->TITLE</div>
+					<div class="col-12 text-center" style="font-size: 1.5em;"><!--<%= game_data.artist %>-->Artist</div>
+				</div>
+				<div class="row" style="margin-top: 30px;">
+					<div class="col-6">
+						<div>Played <!--<%= game_data.play_count %>--> times</div>
+						<div>Level <span id="id_text_level"></span></div>
+					</div>
+					<div class="col-6 text-right">
+						<!--<%- include('include/google_auth_html.ejs') %>-->
+					</div>
+				</div>
+				<div class="row" style="margin-top: 5px;">
+					<div class="col-6">
+						<div>
+							My Score : <span id="id_text_my_score"></span>
+						</div>
+						<div>
+							My Rank &nbsp;: <span id="id_text_my_rank"></span>
+						</div>
+					</div>
+					<div class="col-6 text-right">
+						<button type="button" class="btn btn-sm btn-secondary" id="id_btn_like">
+							<i class="fas fa-thumbs-up"></i>
+							Like
+						</button>
+						<span id="id_text_like_count"></span>	
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-7">
+						Vibration : <span id="id_txt_vibration">OFF</span>
+						<img id="id_img_vibration" src="img/vibration_off.png" style="width:50px; height:50px; cursor:pointer;">
+					</div>
+					<div class="col-5 text-right">
+						Full Screen
+						<button id="id_btn_fullscreen" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 0px solid #eee; cursor: pointer">
+							<i id="id_icon_fullscreen" style="color: #eee" class="fas fa-expand"></i>
+						</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12" id="id_txt_debug"></div>
+				</div>
+				<div class="row" style="margin-top: 50px;">
+					<div class="col-12 text-center" id="id_loading">
+						<div class="spinner-border" role="status">
+							<span class="sr-only">Loading...</span>
+						</div>
+					</div>
+					<div class="col-12 text-center">
+						<button id="id_btn_play" style="display:none ; width: 150px; height: 50px; font-size: 1.5em;" class="btn btn-light" type="button" id="id_btn_start">PLAY</button>
+						<button id="id_btn_stop" style="display:none ; width: 150px; height: 50px; font-size: 1.5em;" class="btn btn-light" type="button" id="id_btn_start">STOP</button>
+					</div>
+					<div class="col-12 text-center" id="id_txt_check_level">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="play_layer">
+			<div class="container-fluid" style="padding-top: 5px;">
+				<div class="row">
+					<div class="col-2 text-right">
+						<button id="id_btn_stop_small" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 1px solid #000000; cursor: pointer">
+							<i style="color: #000000;" class="fas fa-stop"></i>
+						</button>
+					</div>
+				</div>
+				<div id="id_retry_area" class="row" style="display:none; margin-top: 350px;">
+					<div class="col-12 text-center">
+						<button id="id_btn_retry" type="button" class="btn btn-light" style="width: 150px; height: 50px; font-size: 1.5em;">RETRY</button>
+					</div>
+				</div>
+		</div>
+		</div>
+
+		<div id="rank_layer">
+			<div id="rank_inner_div">
+				<div class="container-fluid">
+					<div class="row" style="border-bottom: 1px solid #eee;">
+						<div class="col-3"></div>
+						<div class="col-6 text-center" style="font-size: 1.2em;">RANKING</div>
+						<div class="col-3 text-right">
+							<button id="id_btn_rank_hide" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 1px solid #aaa; cursor: pointer">
+								<i style="color: white" class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<table class="table" style="color: white; overflow-y: auto;">
+								<tbody id="id_table_ranking">
+								</tbody>
+							</table>			
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div id="player"></div>
+
+</div>
+
+<img src="img/atlas.png" width="0" height="0" id="id_img_atlas">
+
+</body>
+</html>

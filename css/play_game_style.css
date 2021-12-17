@@ -1,0 +1,189 @@
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	body{
+		width: 100%;
+		height: 100%;
+		background-color: black;
+	}
+	#lo_play{
+		width: 100%;
+		height: 100%;
+	}
+	/* youtube player 나오는 부분 */
+	#player{
+		width:100%; 
+		/* height:150px; */
+		border: 1px solid #aaa;
+	}
+	/* ---------------------------------------- */
+	#ddr_player {
+		position: relative;
+		z-index: 0;
+		width: 100%;
+		/* height: calc(100% - 200px); */
+	}
+	#ddr_player_bg_layer{
+		position: absolute;
+		z-index: 1;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+		background-image: url("/img/bg_dance.png");
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: 50% 50%
+	}
+	#ddr_player_layer1{
+		position: absolute;
+		z-index: 2;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+	}
+	#info_layer{
+		position: absolute;
+		z-index: 2;
+		left: 0px;
+		top: 0px;
+		color: #eee;
+		width: 100%;
+		height: 100%;
+		visibility: visible;
+		background-color: black;
+		opacity: 0.9;
+	}
+	#play_layer{
+		position: absolute;
+		z-index: 2;
+		left: 0px;
+		top: 0px;
+		color: white;
+		width: 100%;
+		visibility: hidden;
+	}
+	#rank_layer{
+		position: absolute;
+		z-index: 3;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		visibility: hidden;
+		padding: 10px;
+	}
+	#record_layer{
+		position: absolute;
+		z-index: 3;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		visibility: hidden;
+		padding: 10px;
+	}
+	#rank_inner_div{
+		width: 100%;
+		height: 100%;
+		color: white; 
+		opacity: 0.8;
+		background-color: black;
+		border: 1px solid #eee;
+		padding: 5px;
+	}
+}
+
+/*=============================================*/
+
+@media only screen and (min-width: 600px) {
+	div{
+		/* border: 1px solid black; */
+	}
+	
+	body{
+		width: 100%;
+		height: 100%;
+		background-color: black;
+	}
+	#lo_play{
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+	#ddr_player{
+		position: fixed;
+		left: 0px;
+		top: 0px;
+	}
+	#ddr_player_bg_layer{
+		position: fixed;
+		z-index: 1;
+		left: 0px;
+		top: 0px;
+		/* width: 100%;
+		height: 100%; */
+		background-image: url("/img/bg_dance.png");
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: 50% 50%
+	}
+	#ddr_player_layer1{
+		position: fixed;
+		z-index: 2;
+		left: 0px;
+		top: 0px;
+		/* width: 100%;
+		height: 100%; */
+	}
+	#player{
+		position: fixed;
+		left: 0px;
+		top: 0px;
+	}
+	#info_layer{
+		position: fixed;
+		z-index: 2;
+		/* left: 0px; */
+		top: 0px;
+		color: #eee;
+		/* width: 100%;
+		height: 100%; */
+		visibility: visible;
+		background-color: black;
+	}
+	#play_layer{
+		position: absolute;
+		z-index: 2;
+		left: 0px;
+		top: 0px;
+		color: white;
+		width: 100%;
+		visibility: hidden;
+	}
+	#rank_layer{
+		position: fixed;
+		z-index: 3;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		visibility: visible;
+		padding: 10px;
+	}
+	#rank_inner_div{
+		width: 100%;
+		height: 100%;
+		color: white; 
+		/* opacity: 0.8; */
+		background-color: black;
+		/* border: 1px solid #eee; */
+		/* padding: 5px; */
+	}
+	#id_btn_rank{
+		visibility: hidden;
+	}
+	#id_btn_fullscreen{
+		visibility: hidden;
+	}
+	#id_btn_rank_hide{
+		visibility: hidden;
+	}
+}
