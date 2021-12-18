@@ -45,6 +45,8 @@ function PlayGameControl(){
 		self._game_id = GetURLParam('id');
 		self._is_embedded = GetURLParam('e') != null ? true : false;
 
+		console.log('_game_id ' + self._game_id);
+
 		if(self._game_id != null){
 			var path = `db/${self._game_id}.json`;
 			$.getJSON(path, function(json) {
@@ -54,9 +56,9 @@ function PlayGameControl(){
 				self.DisplayGameData(window._game_data);
 			});
 	
-			self.DisplayGameData(window._game_data);
-			self.GetLike();
-			self.GetRanking();
+			// self.DisplayGameData(window._game_data);
+			// self.GetLike();
+			// self.GetRanking();
 		}
 
 		window.addEventListener('resize', function(){
