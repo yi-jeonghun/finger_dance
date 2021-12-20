@@ -29,7 +29,7 @@
 		top: 0px;
 		width: 100%;
 		height: 100%;
-		background-image: url("/img/bg_dance.png");
+		background-image: url("./img/bg_dance.png");
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: 50% 50%
@@ -121,7 +121,7 @@
 		top: 0px;
 		/* width: 100%;
 		height: 100%; */
-		background-image: url("/img/bg_dance.png");
+		background-image: url("./img/bg_dance.png");
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: 50% 50%
