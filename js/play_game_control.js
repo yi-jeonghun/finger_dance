@@ -134,7 +134,8 @@ function PlayGameControl(){
 		// $('#id_btn_back').on('click', function(){ window.history.back(); });
 		$('#id_btn_back').on('click', function(){ 
 			console.log('button back ');
-			window.close(); 
+			// window.close(); 
+			window.location = 'close_iab';
 		});
 		$('#id_btn_home').on('click', function(){ document.location.href = 'https://beatmaster.me'; });
 		$('#id_btn_rank').on('click', self.OnRankBtnClick);
