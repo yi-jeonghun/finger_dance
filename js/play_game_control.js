@@ -29,7 +29,7 @@ function PlayGameControl(){
 		var md = new MobileDetect(window.navigator.userAgent);
 		if(md.mobile()) {
 			self._is_mobile_device = true;
-		}else{
+		}else{ 
 			self._is_mobile_device = false;
 		}
 		console.log('self._is_mobile_device ' + self._is_mobile_device);
@@ -54,6 +54,20 @@ function PlayGameControl(){
 				window._game_data = json;
 				// console.log(json); // this will show the info it in firebug console
 				self.DisplayGameData(window._game_data);
+
+				{
+					console.log('SEND Message to CORDOVA ');
+					const message = 'message';
+					const messageObj = {message: message};
+					const stringifiedMessageObj = JSON.stringify(messageObj);
+					// console.log('window.webkit ' + window.webkit);
+					// console.log('window.webkit.messageHandlers ' + window.webkit.messageHandlers);
+					// if (window.webkit && window.webkit.messageHandlers) {
+					// 	console.log('postmessage call on webkit');
+					// 	window.webkit.messageHandlers.cordova_iab.postMessage(stringifiedMessageObj);
+					// }
+					webkit.messageHandlers.cordova_iab.postMessage(stringifiedMessageObj);
+				}
 			});
 	
 			// self.DisplayGameData(window._game_data);
@@ -288,6 +302,7 @@ function PlayGameControl(){
 		console.log('OnGameFinished ' + is_complete);
 
 		if(_game_control._is_playing){
+			self.SaveGameResult(is_complete);
 			if(is_complete == true){
 				if(_auth_control._user_info == null){
 					// self.ShowHideLogin(true);
@@ -302,6 +317,14 @@ function PlayGameControl(){
 				window._game_control.StopGame();
 			}
 		}
+	};
+
+	this.SaveGameResult = function(is_complete){
+		var str = JSON.stringify({
+			game_id: self._game_id,
+			is_complete: is_complete
+		});
+		localStorage.setItem('game_result', str);
 	};
 
 	this.InitGameModules = function(){
