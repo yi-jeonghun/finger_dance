@@ -131,7 +131,11 @@ function PlayGameControl(){
 		$('#id_btn_play').on('click', self.PlayGame);
 
 		$('#id_btn_like').on('click', self.Like);
-		$('#id_btn_back').on('click', function(){ window.history.back(); });
+		// $('#id_btn_back').on('click', function(){ window.history.back(); });
+		$('#id_btn_back').on('click', function(){ 
+			console.log('button back ');
+			window.close(); 
+		});
 		$('#id_btn_home').on('click', function(){ document.location.href = 'https://beatmaster.me'; });
 		$('#id_btn_rank').on('click', self.OnRankBtnClick);
 		$('#id_btn_rank_hide').on('click', self.OnRankHideClick);
