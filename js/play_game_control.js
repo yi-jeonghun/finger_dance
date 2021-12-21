@@ -54,20 +54,6 @@ function PlayGameControl(){
 				window._game_data = json;
 				// console.log(json); // this will show the info it in firebug console
 				self.DisplayGameData(window._game_data);
-
-				{
-					console.log('SEND Message to CORDOVA ');
-					const message = 'message';
-					const messageObj = {message: message};
-					const stringifiedMessageObj = JSON.stringify(messageObj);
-					// console.log('window.webkit ' + window.webkit);
-					// console.log('window.webkit.messageHandlers ' + window.webkit.messageHandlers);
-					// if (window.webkit && window.webkit.messageHandlers) {
-					// 	console.log('postmessage call on webkit');
-					// 	window.webkit.messageHandlers.cordova_iab.postMessage(stringifiedMessageObj);
-					// }
-					webkit.messageHandlers.cordova_iab.postMessage(stringifiedMessageObj);
-				}
 			});
 	
 			// self.DisplayGameData(window._game_data);
@@ -133,9 +119,7 @@ function PlayGameControl(){
 		$('#id_btn_like').on('click', self.Like);
 		// $('#id_btn_back').on('click', function(){ window.history.back(); });
 		$('#id_btn_back').on('click', function(){ 
-			console.log('button back ');
-			// window.close();
-			localStorage.setItem('close_iab', '1');
+			localStorage.setItem('game_result', JSON.stringify({cmd:'close'}));
 		});
 		$('#id_btn_home').on('click', function(){ document.location.href = 'https://beatmaster.me'; });
 		$('#id_btn_rank').on('click', self.OnRankBtnClick);
