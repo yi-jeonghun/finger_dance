@@ -310,7 +310,7 @@ function PlayGameControl(){
 		}
 	};
 
-	this.SaveGameResult = function(is_complete){
+	this.SaveGameResult = function(is_complete, progress_percent){
 		var str = JSON.stringify({
 			game_id: self._game_id,
 			is_complete: is_complete,
