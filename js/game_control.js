@@ -27,6 +27,7 @@ function GameControl(width, height){
 	this._total_hit_count = 0;
 	this._game_type = null;
 	this._cur_wave_idx = 0;
+	this._progress_percent = 0;
 
 	this.Init = function(){
 		console.log('GameControl Init');
@@ -389,7 +390,7 @@ function GameControl(width, height){
 							//실패의 원인을 표시하기 위해
 							//passed가 아닌 것으로 한다.
 							if(self._cb_on_game_finished){
-								self._cb_on_game_finished(self._is_complete);
+								self._cb_on_game_finished(self._is_complete, self._progress_percent);
 							}
 							break;
 						}
@@ -412,7 +413,7 @@ function GameControl(width, height){
 						self._failed_gameobj_list = [];
 						self._failed_gameobj_list = self._game_data._game_objs;
 						if(self._cb_on_game_finished){
-							self._cb_on_game_finished(self._is_complete);
+							self._cb_on_game_finished(self._is_complete, self._progress_percent);
 						}
 						console.log('FAILED GAME ' );
 					}
@@ -427,8 +428,8 @@ function GameControl(width, height){
 			}
 
 			{
-				var progress_percent = self._total_hit_count / self._game_data._game_objs.length;
-				_renderer.UpdateProgress(progress_percent);
+				self._progress_percent = self._total_hit_count / self._game_data._game_objs.length;
+				_renderer.UpdateProgress(self._progress_percent);
 			}
 
 			_renderer.UpdateScore(self._score);
@@ -439,7 +440,7 @@ function GameControl(width, height){
 					self._finish_notified = true;
 					self._is_complete = true;
 					if(self._cb_on_game_finished){
-						self._cb_on_game_finished(self._is_complete);
+						self._cb_on_game_finished(self._is_complete, self._progress_percent);
 					}
 				}
 			}

@@ -119,7 +119,8 @@ function PlayGameControl(){
 		$('#id_btn_like').on('click', self.Like);
 		// $('#id_btn_back').on('click', function(){ window.history.back(); });
 		$('#id_btn_back').on('click', function(){ 
-			localStorage.setItem('game_result', JSON.stringify({cmd:'close'}));
+			console.log('back button clicked ');
+			localStorage.setItem('iab_control', JSON.stringify({cmd:'close'}));
 		});
 		$('#id_btn_home').on('click', function(){ document.location.href = 'https://beatmaster.me'; });
 		$('#id_btn_rank').on('click', self.OnRankBtnClick);
@@ -287,11 +288,12 @@ function PlayGameControl(){
 		$('#id_retry_area').css('display', '');
 	};
 
-	this.OnGameFinished = function(is_complete){
+	this.OnGameFinished = function(is_complete, progress_percent){
 		console.log('OnGameFinished ' + is_complete);
+		console.log('progress_percent ' + progress_percent);
 
 		if(_game_control._is_playing){
-			self.SaveGameResult(is_complete);
+			self.SaveGameResult(is_complete, progress_percent);
 			if(is_complete == true){
 				if(_auth_control._user_info == null){
 					// self.ShowHideLogin(true);
@@ -311,7 +313,8 @@ function PlayGameControl(){
 	this.SaveGameResult = function(is_complete){
 		var str = JSON.stringify({
 			game_id: self._game_id,
-			is_complete: is_complete
+			is_complete: is_complete,
+			progress_percent: progress_percent
 		});
 		localStorage.setItem('game_result', str);
 	};
