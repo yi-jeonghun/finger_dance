@@ -120,7 +120,10 @@ function PlayGameControl(){
 		// $('#id_btn_back').on('click', function(){ window.history.back(); });
 		$('#id_btn_back').on('click', function(){ 
 			console.log('back button clicked ');
-			localStorage.setItem('iab_control', JSON.stringify({cmd:'close'}));
+			var message = {
+				command: "close_iab"
+			};
+			webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
 		});
 		$('#id_btn_home').on('click', function(){ document.location.href = 'https://beatmaster.me'; });
 		$('#id_btn_rank').on('click', self.OnRankBtnClick);
@@ -311,12 +314,16 @@ function PlayGameControl(){
 	};
 
 	this.SaveGameResult = function(is_complete, progress_percent){
-		var str = JSON.stringify({
-			game_id: self._game_id,
-			is_complete: is_complete,
-			progress_percent: progress_percent
-		});
-		localStorage.setItem('game_result', str);
+		var message = {
+			command: "game_result",
+			game_result: {
+				game_id: self._game_id,
+				is_complete: is_complete,
+				progress_percent: progress_percent
+			}
+		}
+
+		webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
 	};
 
 	this.InitGameModules = function(){
