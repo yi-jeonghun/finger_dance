@@ -33,7 +33,6 @@ function PlayGameControl(){
 			self._is_mobile_device = false;
 		}
 		console.log('self._is_mobile_device ' + self._is_mobile_device);
-		$('#id_txt_debug').html('md ' + self._is_mobile_device);
 
 		_auth_control._cb_on_login = self.OnLogin;
 		_auth_control._cb_on_logout = self.OnLogOut;
@@ -349,6 +348,9 @@ function PlayGameControl(){
 		console.log('self._video_id ' + self._video_id);
 		self._sound_key_list = JSON.parse(game_data.sound_key_list);
 		// self.LoadInitDrums();
+
+		$('#id_label_title').html(game_data.title);
+		$('#id_label_artist').html(game_data.artist);
 
 		// console.log('self._video_id ' + self._video_id);
 		_game_control.SetGameType(game_data.game_type);

@@ -94,66 +94,34 @@
 
 		<div id="info_layer">
 			<div class="container-fluid" style="padding-top: 5px;">
-				<div class="row">
-					<div class="col-4">
+				<div class="row" style="margin-top: 5px;">
+					<div class="col-12">
 						<button id="id_btn_back" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 0px solid #eee; cursor: pointer">
 							<i style="color: #eee;" class="fas fa-chevron-left"></i>
 						</button>
-						<button id="id_btn_home" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 0px solid #eee; cursor: pointer">
-							<i style="color: #eee;" class="fas fa-home"></i>
-						</button>
-					</div>
-					<div class="col-4 text-center"></div>
-					<div class="col-4 text-right">
-						<button id="id_btn_rank" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 0px solid #eee; cursor: pointer">
-							<i style="color: #eee;" class="fas fa-trophy"></i>
-						</button>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-12 text-center" style="font-size: 1.5em;"><!--<%= game_data.title %>-->TITLE</div>
-					<div class="col-12 text-center" style="font-size: 1.5em;"><!--<%= game_data.artist %>-->Artist</div>
+				<div class="row" style="margin-top: 50px;">
+					<div class="col-12 text-center" style="font-size: 1.5em;" id="id_label_title"></div>
+				</div>
+				<div class="row" style="margin-top: 10px;">
+					<div class="col-12 text-center" style="font-size: 1.5em;" id="id_label_artist"></div>
 				</div>
 				<div class="row" style="margin-top: 30px;">
-					<div class="col-6">
-						<div>Played <!--<%= game_data.play_count %>--> times</div>
+					<div class="col-12">
 						<div>Level <span id="id_text_level"></span></div>
-					</div>
-					<div class="col-6 text-right">
-						<!--<%- include('include/google_auth_html.ejs') %>-->
 					</div>
 				</div>
 				<div class="row" style="margin-top: 5px;">
-					<div class="col-6">
-						<div>
-							My Score : <span id="id_text_my_score"></span>
-						</div>
-						<div>
-							My Rank &nbsp;: <span id="id_text_my_rank"></span>
-						</div>
-					</div>
-					<div class="col-6 text-right">
-						<button type="button" class="btn btn-sm btn-secondary" id="id_btn_like">
-							<i class="fas fa-thumbs-up"></i>
-							Like
-						</button>
-						<span id="id_text_like_count"></span>	
+					<div class="col-12">
+						Score : <span id="id_text_my_score"></span>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-7">
+					<div class="col-12">
 						Vibration : <span id="id_txt_vibration">OFF</span>
 						<img id="id_img_vibration" src="./img/vibration_off.png" style="width:50px; height:50px; cursor:pointer;">
 					</div>
-					<div class="col-5 text-right">
-						Full Screen
-						<button id="id_btn_fullscreen" class="text-center" style="background-color: Transparent; width: 40; height: 30; border: 0px solid #eee; cursor: pointer">
-							<i id="id_icon_fullscreen" style="color: #eee" class="fas fa-expand"></i>
-						</button>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12" id="id_txt_debug"></div>
 				</div>
 				<div class="row" style="margin-top: 50px;">
 					<div class="col-12 text-center" id="id_loading">
