@@ -63,7 +63,7 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 
 		{
 			for(var i=self._particle_list.length-1 ; i>=0 ; i--){
-				if(self._particle_list[i].IsEnd()){
+				if(self._particle_list[i].NeedDelete()){
 					self._particle_list.splice(i, 1);
 					// console.log('del ' );
 					continue;
@@ -259,8 +259,8 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 
 	this.CreateParticles = function(x, y){
 		for(var i=0 ; i<30 ; i++){
-			var particle = new Particle(x, y).Init();
-			particle._ctx = self._ctx;
+			var particle = new Particle(self._ctx, x, y)
+			// particle._ctx = self._ctx;
 			self._particle_list.push(particle);
 		}
 	}

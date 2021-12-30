@@ -1,3 +1,78 @@
+class Particle extends DrawObject {
+	#x;
+	#y;
+	#w = 10;
+	#h = 10;
+	#rotate_speed = 1;
+	#move_x = 1;
+	#move_y = 1;
+	#degree = 0;
+	#alpha = 1;
+	#start_ms = Date.now();
+	#life_ms = 500;
+
+	constructor(context, x, y){
+		super(context);
+		this.#x = x;
+		this.#y = y;
+
+		this.#rotate_speed = this.#Random(-30, 30);
+
+		var width = this.#Random(10, 30);
+		this.#w = this.#h = width;
+
+		this.#move_x = this.#Random(-10, 10);
+		this.#move_y = this.#Random(-10, 10);
+	}
+
+	#Random(min, max){
+		return Math.random() * (max - min) + min;;
+	};
+
+	Update(){
+		this.#degree += this.#rotate_speed;
+		this.#x += this.#move_x;
+		this.#y += this.#move_y;		
+		this.#alpha -= 0.03;
+		if(this.#alpha < 0){
+			this.#alpha = 0;
+		}
+
+		this.#Draw();
+	}
+
+	#Draw(){
+		var cx = this.#x + this.#w/2;
+		var cy = this.#y + this.#h/2;
+
+		this._ctx.save();
+
+		this._ctx.translate(cx, cy);
+		this._ctx.rotate(this.#degree * Math.PI/180);
+		this._ctx.translate(-cx, -cy);
+
+		this._ctx.lineWidth = 1;
+		this._ctx.fillStyle = 'white';
+		this._ctx.strokeStyle = 'black';
+		this._ctx.globalAlpha = this.#alpha;
+		this._ctx.fillRect(this.#x, this.#y, this.#w, this.#h);
+		this._ctx.strokeRect(this.#x,this.#y, this.#w, this.#h);
+
+		this._ctx.restore();
+	};
+
+	NeedDelete(){
+		var now = Date.now();
+		var diff = now - this.#start_ms;
+		if( diff > this.#life_ms){
+			return true;
+		}
+		return false;
+	};
+}
+
+
+/*
 function Particle(x, y){
 	var self = this;
 	this._ctx = null;
@@ -70,3 +145,4 @@ function Particle(x, y){
 		return false;
 	};
 }
+*/

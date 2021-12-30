@@ -324,7 +324,9 @@ function PlayGameControl(){
 			}
 		}
 
-		webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
+		if(typeof webkit !== 'undefined'){
+			webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
+		}
 	};
 
 	this.InitGameModules = function(){
