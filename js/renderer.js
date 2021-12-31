@@ -11,7 +11,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 	this._screen_width = screen_width;
 	this._screen_height = screen_height;
 	this._show_index_number = false;
-	this._progress_percent = 0;
 	this._draw_object_list_1 = [];
 	this._draw_object_list_2 = [];
 	this._draw_object_list_3 = [];
@@ -60,8 +59,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			self._draw_object_list_1[i].Update();
 		}
 
-		// self.DrawVerticalLine();
-
 		//Layer 2
 		for(var i=self._draw_object_list_2.length-1 ; i>=0 ; i--){
 			if(self._draw_object_list_2[i].NeedDelete()){
@@ -70,10 +67,16 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			}
 			self._draw_object_list_2[i].Update();
 		}
-		
-		if(self._render_mode == RENDER_MODE.PLAY){
-			self.DrawProgress();
+
+		//Layer 3
+		for(var i=self._draw_object_list_3.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_3[i].NeedDelete()){
+				self._draw_object_list_3.splice(i, 1);
+				continue;
+			}
+			self._draw_object_list_3[i].Update();
 		}
+		
 		self.DrawEmpty();
 
 		//Layer 5
@@ -94,15 +97,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 
 	this.UpdateScore = function(score){
 		self._score = score;
-	};
-
-	this.UpdateProgress = function(pr){
-		self._progress_percent = pr;
-	};
-
-	this.DrawProgress = function(){
-		var line_size = self._game_width * self._progress_percent;
-		self.DrawLineWidth(0, 0, line_size, 0, 'red', 20);
 	};
 
 	this.DrawObjs = function(game_objs, gameobj_begin_idx){

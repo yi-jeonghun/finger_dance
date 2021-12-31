@@ -28,6 +28,7 @@ function GameControl(width, height){
 	this._game_type = null;
 	this._cur_wave_idx = 0;
 	this._progress_percent = 0;
+	this._draw_progress_bar = null;
 
 	this.Init = function(){
 		console.log('GameControl Init');
@@ -295,8 +296,8 @@ function GameControl(width, height){
 	this.PrepareGame = function(){
 		window._renderer.ClearDrawObject();
 
+		var ctx = window._renderer._ctx;
 		{//guide lines
-			var ctx = window._renderer._ctx;
 			var line_width = 1;
 			var life_ms = -1;
 			var base_line_draw_obj = new DrawLine(ctx, 0, self._base_line, self._width, self._base_line, line_width, 'RED', life_ms);
@@ -315,6 +316,11 @@ function GameControl(width, height){
 			window._renderer.AddDrawObject(1, vertical_line2);
 			window._renderer.AddDrawObject(1, vertical_line3);
 		}
+
+		if(self._draw_progress_bar == null){
+			self._draw_progress_bar = new DrawProgressBar(ctx, 0, 0, self._width, 0, 20, 'RED');			
+		}
+		window._renderer.AddDrawObject(3, self._draw_progress_bar);
 
 		self._game_data.CreateGameObjects(self._game_level);
 	};
@@ -453,7 +459,7 @@ function GameControl(width, height){
 
 			{
 				self._progress_percent = self._total_hit_count / self._game_data._game_objs.length;
-				_renderer.UpdateProgress(self._progress_percent);
+				self._draw_progress_bar.SetProgress(self._progress_percent);
 			}
 
 			_renderer.UpdateScore(self._score);
