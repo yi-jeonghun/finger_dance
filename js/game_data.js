@@ -1,6 +1,5 @@
 function GameData(dimension, direction){
 	var self = this;
-	this._game_type = null;
 	this._speed = 150;//pixel per second
 	this._base_line = 100;
 	this._beat_list = [
@@ -9,13 +8,6 @@ function GameData(dimension, direction){
 			 * {
 			 * 	t: timelapse_ms,
 			 * 	m: mask
-			 * }
-			 * 
-			 * ball_info(Dash)
-			 * {
-			 *  t: timelapse_ms,
-			 *  n: number(beat type)
-			 *  l: duration
 			 * }
 			 */
 		];
@@ -27,10 +19,6 @@ function GameData(dimension, direction){
 
 	this.Init = function(){
 		return this;
-	};
-
-	this.SetGameType = function(game_type){
-		self._game_type = game_type;
 	};
 
 	this.SetWaveNBeat = function(wave_n_beat){
@@ -191,11 +179,7 @@ function GameData(dimension, direction){
 	};
 
 	this.CreateNotes = function(ball_info, default_time_offset){
-		if(self._game_type == GAME_TYPE.DDR){
-			self.CreateNotes_DDR(ball_info, default_time_offset);
-		}else if(self._game_type == GAME_TYPE.Dash){
-			self.CreateNotes_Dash(ball_info, default_time_offset);
-		}
+		self.CreateNotes_DDR(ball_info, default_time_offset);
 		self._note_order++;
 	};
 
@@ -204,7 +188,7 @@ function GameData(dimension, direction){
 			var obj = null;
 
 			if(self._dimension == DIMENSION._2D){
-				obj = new Ball(self._game_type, ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+				obj = new Ball(ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			}else if(self._dimension == DIMENSION._3D){
 				obj = new ThreeNote(ARROW.LEFT, ball_info.t, self._speed, self._base_line).Init();
 			}
@@ -218,7 +202,7 @@ function GameData(dimension, direction){
 			var obj = null;
 
 			if(self._dimension == DIMENSION._2D){
-				obj = new Ball(self._game_type, ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+				obj = new Ball(ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			}else if(self._dimension == DIMENSION._3D){
 				obj = new ThreeNote(ARROW.UP, ball_info.t, self._speed, self._base_line).Init();
 			}
@@ -232,7 +216,7 @@ function GameData(dimension, direction){
 			var obj = null;
 
 			if(self._dimension == DIMENSION._2D){
-				obj = new Ball(self._game_type, ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+				obj = new Ball(ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			}else if(self._dimension == DIMENSION._3D){
 				obj = new ThreeNote(ARROW.RIGHT, ball_info.t, self._speed, self._base_line).Init();
 			}
@@ -246,7 +230,7 @@ function GameData(dimension, direction){
 			var obj = null;
 
 			if(self._dimension == DIMENSION._2D){
-				obj = new Ball(self._game_type, ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+				obj = new Ball(ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			}else if(self._dimension == DIMENSION._3D){
 				obj = new ThreeNote(ARROW.DOWN, ball_info.t, self._speed, self._base_line).Init();
 			}
@@ -256,15 +240,6 @@ function GameData(dimension, direction){
 			}
 			self._game_objs.push(obj);
 		}
-	};
-
-	this.CreateNotes_Dash = function(ball_info, default_time_offset){
-		var obj = new Ball(self._game_type, ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
-
-		if(default_time_offset != undefined){
-			obj.UpdatePos(default_time_offset);
-		}
-		self._game_objs.push(obj);
 	};
 
 	this.DeleteWave = function(idx){
@@ -291,36 +266,18 @@ function GameData(dimension, direction){
 		var beat_info = null;
 		if(idx == 0){
 			var diff = self._beat_list[idx+1].t - self._beat_list[idx].t;
-
-			if(self._game_type == GAME_TYPE.DDR){
-				beat_info = {
-					t: self._beat_list[idx].t-diff,
-					m: LEFT_BIT
-				};
-			}else if(self._game_type == GAME_TYPE.Dash){
-				beat_info = {
-					t: self._beat_list[idx].t-diff,
-					n: 1
-				};
-			}
+			beat_info = {
+				t: self._beat_list[idx].t-diff,
+				m: LEFT_BIT
+			};
 		}else{
 			var half = (self._beat_list[idx-1].t - self._beat_list[idx].t)/2;
 			half = Math.abs(half);
 			half = Math.floor(half);
-			console.log('half ' + half);
-
-			if(self._game_type == GAME_TYPE.DDR){
-				beat_info = {
-					t: self._beat_list[idx].t - half,
-					m: LEFT_BIT
-				};
-			}else if(self._game_type == GAME_TYPE.Dash){
-				beat_info = {
-					t: self._beat_list[idx].t - half,
-					n: 1
-				};
-			}
-			console.log('beat_info.t ' + beat_info.t);
+			beat_info = {
+				t: self._beat_list[idx].t - half,
+				m: LEFT_BIT
+			};
 		}
 
 		if(beat_info != null){

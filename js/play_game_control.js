@@ -253,30 +253,7 @@ function PlayGameControl(){
 		self.ShowHidePlayStopButton(false, true);
 		$('#id_retry_area').css('display', 'none');
 
-		self.UpdatePlayCount();
 		window._game_control.PlayGame();
-	};
-
-	this.UpdatePlayCount = function(){
-		var data = {
-			game_id:self._game_id
-		};
-		$.ajax({
-			url: '/beat_api/update_play_count',
-			type: 'POST',
-			data: JSON.stringify(data),
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'json',
-			success: function (res) {
-				if(res.ok){
-					console.log('updated ');
-					self._play_count++;
-					$('#id_text_play_count').html(self._play_count);
-				}else{
-					alert(res.err);
-				}
-			}
-		});
 	};
 
 	this.OnYoutubeStopped = function(){
@@ -355,7 +332,6 @@ function PlayGameControl(){
 		$('#id_label_artist').html(game_data.artist);
 
 		// console.log('self._video_id ' + self._video_id);
-		_game_control.SetGameType(game_data.game_type);
 		_game_control._video_id = self._video_id;
 
 		if(self._is_mobile_device){

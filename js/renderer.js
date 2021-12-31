@@ -35,13 +35,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		console.log('scale_height ' + scale_height);
 
 		self._ctx.scale(scale_width, scale_height);
-
-		if(self._render_mode == RENDER_MODE.PLAY){
-			self.DrawEmpty();
-		}else if(self._render_mode == RENDER_MODE.RECORD){
-			self.DrawEmpty();
-		}
-
 		return this;
 	};
 
@@ -75,7 +68,14 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			self._draw_object_list_3[i].Update();
 		}
 		
-		self.DrawEmpty();
+		//Layer 4
+		for(var i=self._draw_object_list_4.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_4[i].NeedDelete()){
+				self._draw_object_list_4.splice(i, 1);
+				continue;
+			}
+			self._draw_object_list_4[i].Update();
+		}
 
 		//Layer 5
 		for(var i=self._draw_object_list_5.length-1 ; i>=0 ; i--){
@@ -97,10 +97,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			self._draw_object_list_7[i].Update();
 		}
 	};
-
-	// this.UpdateScore = function(score){
-	// 	self._score = score;
-	// };
 
 	this.DrawObjs = function(game_objs, gameobj_begin_idx){
 		for(var i=gameobj_begin_idx ; i<game_objs.length ; i++){
@@ -135,41 +131,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		self._ctx.lineWidth = 1;
 		self._ctx.strokeStyle = style;
 		self._ctx.stroke();
-	};
-
-	this.DrawLineWidth = function(sx, sy, ex, ey, style, width){
-		self._ctx.beginPath(); 
-		self._ctx.moveTo(sx, sy);
-		self._ctx.lineTo(ex, ey);
-		self._ctx.lineWidth = 1;
-		self._ctx.strokeStyle = style;
-		self._ctx.lineWidth = width;
-		self._ctx.stroke();
-	};
-
-	this.DrawEmpty = function(){
-		var quarter_x = self._game_width / 4;
-		var first_x = quarter_x / 2;
-
-		var dw = 65;
-		var dh = 65;
-		
-
-		self._ctx.drawImage(_atlas._img, 
-			_atlas._img_l_empty.x, _atlas._img_l_empty.y, _atlas._img_l_empty.w, _atlas._img_l_empty.h, 
-			(first_x - dw/2), self._base_line - dh/2, dw, dh);
-
-		self._ctx.drawImage(_atlas._img, 
-			_atlas._img_d_empty.x, _atlas._img_d_empty.y, _atlas._img_d_empty.w, _atlas._img_d_empty.h, 
-			((first_x + quarter_x) - dw/2), self._base_line - dh/2, dw, dh);
-				
-		self._ctx.drawImage(_atlas._img, 
-			_atlas._img_u_empty.x, _atlas._img_u_empty.y, _atlas._img_u_empty.w, _atlas._img_u_empty.h, 
-			((first_x + quarter_x*2) - dw/2), self._base_line - dh/2, dw, dh);
-
-		self._ctx.drawImage(_atlas._img, 
-			_atlas._img_r_empty.x, _atlas._img_r_empty.y, _atlas._img_r_empty.w, _atlas._img_r_empty.h, 
-			((first_x + quarter_x*3) - dw/2), self._base_line - dh/2, dw, dh);
 	};
 
 	this.ClearDrawObject = function(){

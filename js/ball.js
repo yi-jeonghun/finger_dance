@@ -1,6 +1,5 @@
-function Ball(game_type, arrow_or_num, offset_ms, speed_pps, base_line, move_direction, order){
+function Ball(arrow_or_num, offset_ms, speed_pps, base_line, move_direction, order){
 	var self = this;
-	this._game_type = game_type;
 	this._arrow_or_num = arrow_or_num;
 	this._img = null;
 	this._x = 0;
@@ -26,7 +25,6 @@ function Ball(game_type, arrow_or_num, offset_ms, speed_pps, base_line, move_dir
 		var quarter_x = 400 / 4;
 		var first_x = quarter_x / 2;
 
-		if(self._game_type == GAME_TYPE.DDR)
 		{
 			if(self._arrow_or_num == ARROW.LEFT){
 				self._img = _atlas._img_l;
@@ -41,11 +39,6 @@ function Ball(game_type, arrow_or_num, offset_ms, speed_pps, base_line, move_dir
 				self._img = _atlas._img_r;
 				self._x_base = first_x + quarter_x*3;
 			}
-		}
-		else if(self._game_type == GAME_TYPE.Dash)
-		{
-			self._img = _atlas._img_l;
-			self._x_base = first_x;
 		}
 
 		self._x = self._x_base - self._w/2;
