@@ -404,6 +404,7 @@ function GameControl(width, height){
 			if(self._hit_queue.length > 0){
 				var hit = self._hit_queue[0];
 				_renderer.Hit(hit.arrow, hit.hit_result, hit.combo);
+				self.CreateHitText(hit);
 				console.log('hit.hit_result.hit ' + hit.hit_result.hit);
 
 				if(self._is_excercise_mode == false){
@@ -458,6 +459,30 @@ function GameControl(width, height){
 		}
 
 		requestAnimationFrame(self.Update);
+	};
+
+	this.CreateHitText = function(hit){
+		var y = self._base_line;
+		var one_width = 400 / 5;
+		var x = 0;
+		switch(hit.arrow){
+			case ARROW.LEFT:
+				x = one_width;
+				break;
+			case ARROW.DOWN:
+				x = one_width * 2;
+				break;
+			case ARROW.UP:
+				x = one_width * 3;
+				break;
+			case ARROW.RIGHT:
+					x = one_width * 4;
+				break;
+		}
+		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, x, y+50, 26, 'blue', 200);
+		var draw_score_obj = new DrawText(window._renderer._ctx, hit.hit_result.score, x, y+80, 26, 'blue', 200);
+		window._renderer.AddDrawText(draw_text_obj);
+		window._renderer.AddDrawText(draw_score_obj);
 	};
 
 	this._color_table = ['#3d5a80', '#98c1d9', '#e0fbfc', '#ee6c4d', '#84a59d', '#00b4d8', '#f1c453', '#e6beae'];

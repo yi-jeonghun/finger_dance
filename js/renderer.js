@@ -13,6 +13,7 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 	this._show_index_number = false;
 	this._progress_percent = 0;
 	this._particle_list = [];
+	this._draw_text_list = [];
 
 	this.Init = function(){
 		self._canvas = document.getElementById('ddr_player_layer1');
@@ -45,10 +46,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		return this;
 	};
 
-	// this.StartGame = function(){
-	// 	self.Update();
-	// };
-
 	this.Update = function(game_objs, gameobj_begin_idx){
 		// console.log('game_objs len ' + game_objs.length);
 		self._ctx.clearRect(0, 0, self._game_width, self._game_height);
@@ -56,7 +53,12 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		self.DrawVerticalLine();
 
 		if(self._render_mode == RENDER_MODE.PLAY){
-			self.DrawHit();
+			for(var i=0 ; i<self._draw_text_list.length ; i++){
+				self._draw_text_list[i].Update();
+				if(self._draw_text_list[i].NeedDelete()){
+					self._draw_text_list.splice(i, 1);
+				}
+			}
 			self.DrawProgress();
 		}
 		self.DrawEmpty();
@@ -65,7 +67,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			for(var i=self._particle_list.length-1 ; i>=0 ; i--){
 				if(self._particle_list[i].NeedDelete()){
 					self._particle_list.splice(i, 1);
-					// console.log('del ' );
 					continue;
 				}
 				self._particle_list[i].Update();
@@ -194,22 +195,10 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			((first_x + quarter_x*3) - dw/2), self._base_line - dh/2, dw, dh);
 	};
 
-	this._hit_left = false;
-	this._hit_up = false;
-	this._hit_right = false;
-	this._hit_down = false;
-	this._hit_step_left = 0;
-	this._hit_step_up = 1;
-	this._hit_step_right = 1;
-	this._hit_step_down = 1;
-	this._hit_left_dur = 0;
-	this._hit_up_dur = 0;
-	this._hit_right_dur = 0;
-	this._hit_down_dur = 0;
-	this._hit_result_left = null;
-	this._hit_result_up = null;
-	this._hit_result_right = null;
-	this._hit_result_dopwn = null;
+	this.AddDrawText = function(draw_text){
+		self._draw_text_list.push(draw_text);
+	};
+
 	this._hit_combo = false;
 	this._hit_combo_dur = 0;
 	this._hit_combo_count = 0;
@@ -219,32 +208,15 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		var first_x = quarter_x / 2;
 
 		if(arrow == ARROW.LEFT){
-			self._hit_left = true;
-			console.log('HIT LEFT ' + true);
-			self._hit_left_dur = Date.now();
-			self._hit_result_left = hit_result;
-			self._hit_step_left = 1.3;
 			self.CreateParticles(first_x, self._base_line);
 		}
 		if(arrow == ARROW.UP){
-			self._hit_up = true;
-			self._hit_up_dur = Date.now();
-			self._hit_result_up = hit_result;
-			self._hit_step_up = 1;
 			self.CreateParticles(quarter_x*2+first_x, self._base_line);
 		}
 		if(arrow == ARROW.RIGHT){
-			self._hit_right = true;
-			self._hit_right_dur = Date.now();
-			self._hit_result_right = hit_result;
-			self._hit_step_right = 1;
 			self.CreateParticles(quarter_x*3+first_x, self._base_line);
 		}
 		if(arrow == ARROW.DOWN){
-			self._hit_down = true;
-			self._hit_down_dur = Date.now();
-			self._hit_result_down = hit_result;
-			self._hit_step_down = 1;
 			self.CreateParticles(quarter_x+first_x, self._base_line);
 		}
 
@@ -259,105 +231,10 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 
 	this.CreateParticles = function(x, y){
 		for(var i=0 ; i<30 ; i++){
-			var particle = new Particle(self._ctx, x, y)
-			// particle._ctx = self._ctx;
+			var particle = new Particle(self._ctx, x, y);
 			self._particle_list.push(particle);
 		}
 	}
-
-	this.DrawHit = function(){
-		var quarter_x = self._game_width / 4;
-		var first_x = quarter_x / 2;
-
-		var one_width = 400 / 5;
-		var dur = 200;
-		var step = 0.12;
-		var color = 'blue';
-
-		if(self._hit_left){
-			var dw = _atlas._img_l_hit.w * self._hit_step_left;
-			var dh = _atlas._img_l_hit.h * self._hit_step_left;
-			var dx = first_x - dw/2;//one_width - dw/2;
-			var dy = self._base_line - dh/2;
-			self._hit_step_left = self._hit_step_left + step;
-
-			// self._ctx.drawImage(_atlas._img, 
-			// 	_atlas._img_l_hit.x, _atlas._img_l_hit.y, _atlas._img_l_hit.w, _atlas._img_l_hit.h, 
-			// 	dx, dy, dw, dh);
-			
-			var fx = one_width;
-			var fy = self._base_line;
-			self.DrawText(self._hit_result_left.text, fx, fy+50, 26, color);
-			self.DrawText(self._hit_result_left.score, fx, fy+80, 26, color);
-
-			if((Date.now() - self._hit_left_dur) > dur){
-				self._hit_left = false;
-			}
-		}
-
-		if(self._hit_down){
-			var dw = _atlas._img_d_hit.w * self._hit_step_down;
-			var dh = _atlas._img_d_hit.h * self._hit_step_down;
-			var dx = first_x + quarter_x - dw/2;//one_width*2 - dw/2;
-			var dy = self._base_line - dh/2;
-			self._hit_step_down = self._hit_step_down + step;
-
-			// self._ctx.drawImage(_atlas._img, 
-			// 	_atlas._img_d_hit.x, _atlas._img_d_hit.y, _atlas._img_d_hit.w, _atlas._img_d_hit.h, 
-			// 	dx, dy, dw, dh);
-
-			var fx = one_width*2;
-			var fy = self._base_line;
-			self.DrawText(self._hit_result_down.text, fx, fy+50, 26, color);
-			self.DrawText(self._hit_result_down.score, fx, fy+80, 26, color);
-
-			if((Date.now() - self._hit_down_dur) > dur){
-				self._hit_down = false;
-			}
-		}
-		
-		if(self._hit_up){
-			var dw = _atlas._img_u_hit.w * self._hit_step_up;
-			var dh = _atlas._img_u_hit.h * self._hit_step_up;
-			var dx = first_x + quarter_x*2 - dw/2;//one_width*3 - dw/2;
-			var dy = self._base_line - dh/2;
-			self._hit_step_up = self._hit_step_up + step;
-
-			// self._ctx.drawImage(_atlas._img, 
-			// 	_atlas._img_u_hit.x, _atlas._img_u_hit.y, _atlas._img_u_hit.w, _atlas._img_u_hit.h, 
-			// 	dx, dy, dw, dh);
-
-			var fx = one_width*3;
-			var fy = self._base_line;	
-			self.DrawText(self._hit_result_up.text, fx, fy+50, 26, color);
-			self.DrawText(self._hit_result_up.score, fx, fy+80, 26, color);
-
-			if((Date.now() - self._hit_up_dur) > dur){
-				self._hit_up = false;
-			}
-		}
-
-		if(self._hit_right){
-			var dw = _atlas._img_r_hit.w * self._hit_step_right;
-			var dh = _atlas._img_r_hit.h * self._hit_step_right;
-			var dx = first_x + quarter_x*3 - dw/2;//one_width*4 - dw/2;
-			var dy = self._base_line - dh/2;
-			self._hit_step_right = self._hit_step_right + step;
-
-			// self._ctx.drawImage(_atlas._img, 
-			// 	_atlas._img_r_hit.x, _atlas._img_r_hit.y, _atlas._img_r_hit.w, _atlas._img_r_hit.h, 
-			// 	dx, dy, dw, dh);
-
-			var fx = one_width*4;
-			var fy = self._base_line;
-			self.DrawText(self._hit_result_right.text, fx, fy+50, 26, color);
-			self.DrawText(self._hit_result_right.score, fx, fy+80, 26, color);
-	
-			if((Date.now() - self._hit_right_dur) > dur){
-				self._hit_right = false;
-			}
-		}
-	};
 
 	this.DrawText = function(txt, x, y, size, color){
 		var font_size = new Number(size) 
