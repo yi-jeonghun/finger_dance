@@ -93,6 +93,16 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		if(self._render_mode == RENDER_MODE.PLAY){
 			self.DrawScore();
 		}
+
+		//Layer 7
+		for(var i=self._draw_object_list_7.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_7[i].NeedDelete()){
+				self._draw_object_list_7.splice(i, 1);
+				continue;
+			}
+			self._draw_object_list_7[i].Update();
+		}
+
 	};
 
 	this.UpdateScore = function(score){
@@ -221,20 +231,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		}
 	};
 
-	this._hit_combo = false;
-	this._hit_combo_dur = 0;
-	this._hit_combo_count = 0;
-	
-	this.Hit = function(combo){
-		if(combo > 1){
-			self._hit_combo = true;
-			self._hit_combo_dur = Date.now();
-			self._hit_combo_count = combo;
-		}else{
-			self._hit_combo = false;
-		}
-	};
-
 	this.DrawText = function(txt, x, y, size, color){
 		var font_size = new Number(size) 
 		self._ctx.textBaseline = "middle";
@@ -252,13 +248,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 
 	this.DrawScore = function(){
 		self.DrawText(self._score, 200, 50, 50, 'red');
-
-		if(self._hit_combo){
-			var txt = self._hit_combo_count-1 + " COMBO";
-			txt += "\n +" + (10 * (self._hit_combo_count-1));
-
-			self.DrawText(txt, 200, 220, 25, 'blue');
-		}
 	};
 
 	this.DisplayResult = function(is_complete){

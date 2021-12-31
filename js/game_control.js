@@ -29,6 +29,7 @@ function GameControl(width, height){
 	this._cur_wave_idx = 0;
 	this._progress_percent = 0;
 	this._draw_progress_bar = null;
+	this._draw_text_combo = null;
 
 	this.Init = function(){
 		console.log('GameControl Init');
@@ -182,8 +183,7 @@ function GameControl(width, height){
 		// 	hit_result:{
 		//		score:0,
 		// 		text:''
-		//	},
-		//	combo:0,
+		//	}
 		// }
 	];
 
@@ -234,8 +234,7 @@ function GameControl(width, height){
 	
 					self._hit_queue.push({
 						arrow: arrow,
-						hit_result: hit_result,
-						combo: self._combo
+						hit_result: hit_result
 					});
 
 					if(hit_result.hit == true){
@@ -257,8 +256,7 @@ function GameControl(width, height){
 						self._combo = 0;
 						self._hit_queue.push({
 							arrow: arrow,
-							hit_result: hit_result,
-							combo: 0
+							hit_result: hit_result
 						});
 					}else{		
 						var hit_result = go_to_hit.HitNote(arrow, timelapse);
@@ -276,8 +274,7 @@ function GameControl(width, height){
 		
 						self._hit_queue.push({
 							arrow: arrow,
-							hit_result: hit_result,
-							combo: self._combo
+							hit_result: hit_result
 						});
 
 						if(hit_result.hit == true){
@@ -296,31 +293,44 @@ function GameControl(width, height){
 	this.PrepareGame = function(){
 		window._renderer.ClearDrawObject();
 
-		var ctx = window._renderer._ctx;
-		{//guide lines
-			var line_width = 1;
-			var life_ms = -1;
-			var base_line_draw_obj = new DrawLine(ctx, 0, self._base_line, self._width, self._base_line, line_width, 'RED', life_ms);
+		{
+			var ctx = window._renderer._ctx;
+			{//guide lines
+				var line_width = 1;
+				var life_ms = -1;
+				var base_line_draw_obj = new DrawLine(ctx, 0, self._base_line, self._width, self._base_line, line_width, 'RED', life_ms);
+	
+				var quarter_x = self._width / 4;
+				var vertical_line1 = new DrawLine(ctx, quarter_x, 0, quarter_x, self._height, line_width, '#aaa', life_ms);
+				var vertical_line2 = new DrawLine(ctx, quarter_x*2, 0, quarter_x*2, self._height, line_width, '#aaa', life_ms);
+				var vertical_line3 = new DrawLine(ctx, quarter_x*3, 0, quarter_x*3, self._height, line_width, '#aaa', life_ms);
+	
+				base_line_draw_obj.Update();
+				vertical_line1.Update();
+				vertical_line2.Update();
+				vertical_line3.Update();
+				window._renderer.AddDrawObject(1, base_line_draw_obj);
+				window._renderer.AddDrawObject(1, vertical_line1);
+				window._renderer.AddDrawObject(1, vertical_line2);
+				window._renderer.AddDrawObject(1, vertical_line3);
+			}
 
-			var quarter_x = self._width / 4;
-			var vertical_line1 = new DrawLine(ctx, quarter_x, 0, quarter_x, self._height, line_width, '#aaa', life_ms);
-			var vertical_line2 = new DrawLine(ctx, quarter_x*2, 0, quarter_x*2, self._height, line_width, '#aaa', life_ms);
-			var vertical_line3 = new DrawLine(ctx, quarter_x*3, 0, quarter_x*3, self._height, line_width, '#aaa', life_ms);
+			{//progress bar
+				if(self._draw_progress_bar == null){
+					self._draw_progress_bar = new DrawProgressBar(ctx, 0, 0, self._width, 0, 20, 'RED');			
+				}
+				window._renderer.AddDrawObject(3, self._draw_progress_bar);
+			}
 
-			base_line_draw_obj.Update();
-			vertical_line1.Update();
-			vertical_line2.Update();
-			vertical_line3.Update();
-			window._renderer.AddDrawObject(1, base_line_draw_obj);
-			window._renderer.AddDrawObject(1, vertical_line1);
-			window._renderer.AddDrawObject(1, vertical_line2);
-			window._renderer.AddDrawObject(1, vertical_line3);
+			{//combo text
+				if(self._draw_text_combo == null){
+					self._draw_text_combo = new DrawText(ctx, '', 200, 220, 25, 'blue', -1);
+				}
+				self._draw_text_combo.Update();
+				window._renderer.AddDrawObject(7, self._draw_text_combo);
+			}
+
 		}
-
-		if(self._draw_progress_bar == null){
-			self._draw_progress_bar = new DrawProgressBar(ctx, 0, 0, self._width, 0, 20, 'RED');			
-		}
-		window._renderer.AddDrawObject(3, self._draw_progress_bar);
 
 		self._game_data.CreateGameObjects(self._game_level);
 	};
@@ -347,7 +357,6 @@ function GameControl(width, height){
 		self._gameobj_begin_idx = 0;
 		self._finish_notified = false;
 	
-		_renderer._hit_combo = false;
 		_renderer.UpdateScore(self._score);
 
 		{
@@ -432,9 +441,15 @@ function GameControl(width, height){
 
 			if(self._hit_queue.length > 0){
 				var hit = self._hit_queue[0];
-				_renderer.Hit(hit.combo);
 				self.CreateHitEffect(hit);
 				console.log('hit.hit_result.hit ' + hit.hit_result.hit);
+				if(self._combo > 1){
+					var txt = self._combo-1 + " COMBO";
+					txt += "\n +" + (10 * (self._combo-1));
+					self._draw_text_combo.SetText(txt);
+				}else{
+					self._draw_text_combo.SetText('');
+				}
 
 				if(self._is_excercise_mode == false){
 					//실패하는 경우 게임 종료하기.
@@ -451,7 +466,7 @@ function GameControl(width, height){
 
 				if(self._hit_queue.length == 1){
 					if(self._vibration_on_off){
-						self.VibrateAsync(hit.hit_result.score, hit.combo);
+						self.VibrateAsync(hit.hit_result.score);
 					}
 				}
 				self._hit_queue.splice(0, 1);
@@ -545,7 +560,7 @@ function GameControl(width, height){
 		}
 	};
 
-	this.VibrateAsync = function(score, combo){
+	this.VibrateAsync = function(score){
 		return new Promise(function(){
 			var dur = score;
 			switch(score){
@@ -565,8 +580,8 @@ function GameControl(width, height){
 					dur = 100;
 					break;
 			}
-			if(combo > 1){
-				dur += combo * 10;				
+			if(self._combo > 1){
+				dur += self._combo * 10;				
 				if(dur > 200){
 					dur = 200;
 				}
