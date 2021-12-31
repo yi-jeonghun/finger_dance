@@ -12,8 +12,16 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 	this._screen_height = screen_height;
 	this._show_index_number = false;
 	this._progress_percent = 0;
-	this._particle_list = [];
-	this._draw_text_list = [];
+	this._draw_object_list_1 = [];
+	this._draw_object_list_2 = [];
+	this._draw_object_list_3 = [];
+	this._draw_object_list_4 = [];
+	this._draw_object_list_5 = [];
+	this._draw_object_list_6 = [];
+	this._draw_object_list_7 = [];
+	this._draw_object_list_8 = [];
+	this._draw_object_list_9 = [];
+	this._draw_object_list_10 = [];
 
 	this.Init = function(){
 		self._canvas = document.getElementById('ddr_player_layer1');
@@ -31,13 +39,10 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		self._ctx.scale(scale_width, scale_height);
 
 		if(self._render_mode == RENDER_MODE.PLAY){
-			self.DrawBaseLine();
 			self.DrawVerticalLine();
 			self.DrawEmpty();
 			self.DrawScore();
 		}else if(self._render_mode == RENDER_MODE.RECORD){
-			// self._base_line = 100;
-			self.DrawBaseLine();
 			self.DrawVerticalLine();
 			self.DrawEmpty();
 			// self.DrawScore();
@@ -47,31 +52,40 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 	};
 
 	this.Update = function(game_objs, gameobj_begin_idx){
-		// console.log('game_objs len ' + game_objs.length);
 		self._ctx.clearRect(0, 0, self._game_width, self._game_height);
-		self.DrawBaseLine();
+
+		//Layer 1
+		for(var i=self._draw_object_list_1.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_1[i].NeedDelete()){
+				self._draw_object_list_1.splice(i, 1);
+				continue;
+			}
+			self._draw_object_list_1[i].Update();
+		}
+
 		self.DrawVerticalLine();
 
-		if(self._render_mode == RENDER_MODE.PLAY){
-			for(var i=0 ; i<self._draw_text_list.length ; i++){
-				if(self._draw_text_list[i].NeedDelete()){
-					self._draw_text_list.splice(i, 1);
-					continue;
-				}
-				self._draw_text_list[i].Update();
+		//Layer 2
+		for(var i=self._draw_object_list_2.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_2[i].NeedDelete()){
+				self._draw_object_list_2.splice(i, 1);
+				continue;
 			}
+			self._draw_object_list_2[i].Update();
+		}
+		
+		if(self._render_mode == RENDER_MODE.PLAY){
 			self.DrawProgress();
 		}
 		self.DrawEmpty();
 
-		{
-			for(var i=self._particle_list.length-1 ; i>=0 ; i--){
-				if(self._particle_list[i].NeedDelete()){
-					self._particle_list.splice(i, 1);
-					continue;
-				}
-				self._particle_list[i].Update();
+		//Layer 5
+		for(var i=self._draw_object_list_5.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_5[i].NeedDelete()){
+				self._draw_object_list_5.splice(i, 1);
+				continue;
 			}
+			self._draw_object_list_5[i].Update();
 		}
 
 		self.DrawObjs(game_objs, gameobj_begin_idx);
@@ -108,8 +122,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 
 			self.DrawLine(0, go._y+go._h/2, self._game_width, go._y+go._h/2, '#aaa');
 
-			// drawed_cnt++;
-			// console.log('y ' + go._y);
 			self._ctx.drawImage(_atlas._img,
 				go._img.x, go._img.y, go._img.w, go._img.h,
 				go._x, go._y, go._w, go._h);
@@ -119,29 +131,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				var fy = go._y + go._h/2;
 				self.DrawText(go._order+1, fx, fy, 25);
 			}
-		}
-		// console.log('drawed_cnt ' + drawed_cnt);
-	};
-
-	this.DrawBaseLine = function(){
-		if(self._render_mode == RENDER_MODE.PLAY){
-			if(self._debug){
-				self.DrawLine(0, 100, self._game_width, 100, '#aaa');
-				self.DrawLine(0, 200, self._game_width, 200, '#aaa');
-				self.DrawLine(0, 300, self._game_width, 300, '#aaa');
-				self.DrawLine(0, 400, self._game_width, 400, '#aaa');
-				self.DrawLine(0, 500, self._game_width, 500, '#aaa');
-			}	
-			self.DrawLine(0, self._base_line, self._game_width, self._base_line, 'RED');	
-		}else if(self._render_mode == RENDER_MODE.RECORD){
-			if(self._debug){
-				self.DrawLine(0, 200, self._game_width, 200, '#aaa');
-				self.DrawLine(0, 300, self._game_width, 300, '#aaa');
-				self.DrawLine(0, 400, self._game_width, 400, '#aaa');
-				self.DrawLine(0, 500, self._game_width, 500, '#aaa');
-				self.DrawLine(0, 600, self._game_width, 600, '#aaa');
-			}	
-			self.DrawLine(0, self._base_line, self._game_width, self._base_line, 'RED');	
 		}
 	};
 
@@ -196,12 +185,56 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			((first_x + quarter_x*3) - dw/2), self._base_line - dh/2, dw, dh);
 	};
 
-	this.AddDrawText = function(draw_text){
-		self._draw_text_list.push(draw_text);
+	this.ClearDrawObject = function(){
+		self._draw_object_list_1 = [];
+		self._draw_object_list_2 = [];
+		self._draw_object_list_3 = [];
+		self._draw_object_list_4 = [];
+		self._draw_object_list_5 = [];
+		self._draw_object_list_6 = [];
+		self._draw_object_list_7 = [];
+		self._draw_object_list_8 = [];
+		self._draw_object_list_9 = [];
+		self._draw_object_list_10 = [];
 	};
 
-	this.AddParticle = function(particle){
-		self._particle_list.push(particle);
+	this.AddDrawObject = function(layer, draw_object){
+		if(layer < 1 || layer > 10){
+			console.log('Layer Range Error');
+			return;
+		}
+		switch(layer){
+			case 1:
+				self._draw_object_list_1.push(draw_object);
+				break;
+			case 2:
+				self._draw_object_list_2.push(draw_object);
+				break;
+			case 3:
+				self._draw_object_list_3.push(draw_object);
+				break;
+			case 4:
+				self._draw_object_list_4.push(draw_object);
+				break;
+			case 5:
+				self._draw_object_list_5.push(draw_object);
+				break;
+			case 6:
+				self._draw_object_list_6.push(draw_object);
+				break;
+			case 7:
+				self._draw_object_list_7.push(draw_object);
+				break;
+			case 8:
+				self._draw_object_list_8.push(draw_object);
+				break;
+			case 9:
+				self._draw_object_list_9.push(draw_object);
+				break;
+			case 10:
+				self._draw_object_list_10.push(draw_object);
+				break;
+		}
 	};
 
 	this._hit_combo = false;

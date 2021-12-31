@@ -293,6 +293,13 @@ function GameControl(width, height){
 	};
 
 	this.PrepareGame = function(){
+		window._renderer.ClearDrawObject();
+		{
+			var base_line_draw_obj = new DrawLine(window._renderer._ctx, 0, self._base_line, self._width, self._base_line, 1, 'RED', -1);
+			base_line_draw_obj.Update();
+			window._renderer.AddDrawObject(1, base_line_draw_obj);
+		}
+
 		self._game_data.CreateGameObjects(self._game_level);
 	};
 
@@ -489,8 +496,8 @@ function GameControl(width, height){
 		}
 		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, text_x, text_y+50, 26, 'blue', 200);
 		var draw_score_obj = new DrawText(window._renderer._ctx, hit.hit_result.score, text_x, text_y+80, 26, 'blue', 200);
-		window._renderer.AddDrawText(draw_text_obj);
-		window._renderer.AddDrawText(draw_score_obj);
+		window._renderer.AddDrawObject(2, draw_text_obj);
+		window._renderer.AddDrawObject(2, draw_score_obj);
 		self.CreateParticles(particle_x, self._base_line);
 	};
 
@@ -498,7 +505,7 @@ function GameControl(width, height){
 		console.log('x ' + x + ' y ' + y);
 		for(var i=0 ; i<30 ; i++){
 			var particle = new Particle(window._renderer._ctx, x, y);
-			window._renderer.AddParticle(particle);
+			window._renderer.AddDrawObject(5, particle);
 		}
 	};
 
