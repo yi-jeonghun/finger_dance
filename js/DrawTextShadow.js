@@ -1,4 +1,4 @@
-class DrawText extends DrawObject {
+class DrawTextShadow extends DrawObject {
 	#text;
 	#x;
 	#y;
@@ -26,11 +26,21 @@ class DrawText extends DrawObject {
 			return;
 		}
 
-		this._ctx.textBaseline = "middle";
-		this._ctx.font = this.#font_size + "px Arial";
-		this._ctx.textAlign = "center";
-		this._ctx.fillStyle = this.#color;
-		this._ctx.fillText(this.#text, this.#x, this.#y);
+		{
+			this._ctx.textBaseline = "middle";
+			this._ctx.font = this.#font_size + "px Arial";
+			this._ctx.textAlign = "center";
+			this._ctx.fillStyle = 'white';
+			this._ctx.fillText(this.#text, this.#x+2, this.#y+2);
+		}
+
+		{
+			this._ctx.textBaseline = "middle";
+			this._ctx.font = this.#font_size + "px Arial";
+			this._ctx.textAlign = "center";
+			this._ctx.fillStyle = this.#color;
+			this._ctx.fillText(this.#text, this.#x, this.#y);
+		}
 	}
 
 	NeedDelete(){

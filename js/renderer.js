@@ -238,21 +238,4 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		self._ctx.fillStyle = color;
 		self._ctx.fillText(txt, x, y);
 	};
-
-	this.DisplayResult = function(is_complete, score){
-		// console.log('DisplayResult ' + score);
-		if(is_complete){
-			self.DrawText("Congraturations!", 202, 302, 50, 'White');
-			self.DrawText("Congraturations!", 200, 300, 50, 'Red');
-	
-			self.DrawText("Your New Score", 202, 352, 33, 'White');
-			self.DrawText("Your New Score", 200, 350, 33, 'Red');
-	
-			self.DrawText("Score " + score, 202, 402, 33, 'White');
-			self.DrawText("Score " + score, 200, 400, 33, 'Blue');
-		}else{
-			self.DrawText("Oops!", 202, 302, 50, 'White');
-			self.DrawText("Oops!", 200, 300, 50, 'Red');
-		}
-	};
 }

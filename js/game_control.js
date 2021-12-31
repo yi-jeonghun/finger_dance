@@ -505,10 +505,21 @@ function GameControl(width, height){
 			if(self._is_complete == false){
 				_renderer.Update(self._failed_gameobj_list, 0);
 			}
-			_renderer.DisplayResult(self._is_complete, self._score);
+			self.DisplayResult();
 		}
 
 		requestAnimationFrame(self.Update);
+	};
+
+	this.DisplayResult = function(){
+		var ctx = window._renderer._ctx;
+		if(self._is_complete){
+			new DrawTextShadow(ctx, 'Congraturations!', 200, 300, 50, 'Red', -1).Update();
+			new DrawTextShadow(ctx, 'Your New Score', 200, 350, 33, 'Red', -1).Update();
+			new DrawTextShadow(ctx, "Score " + self._score, 200, 400, 33, 'Blue', -1).Update();
+		}else{
+			new DrawTextShadow(ctx, "Oops!", 200, 300, 50, 'Red', -1).Update();
+		}
 	};
 
 	this.CreateHitEffect = function(hit){
