@@ -39,13 +39,10 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		self._ctx.scale(scale_width, scale_height);
 
 		if(self._render_mode == RENDER_MODE.PLAY){
-			self.DrawVerticalLine();
 			self.DrawEmpty();
 			self.DrawScore();
 		}else if(self._render_mode == RENDER_MODE.RECORD){
-			self.DrawVerticalLine();
 			self.DrawEmpty();
-			// self.DrawScore();
 		}
 
 		return this;
@@ -63,7 +60,7 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			self._draw_object_list_1[i].Update();
 		}
 
-		self.DrawVerticalLine();
+		// self.DrawVerticalLine();
 
 		//Layer 2
 		for(var i=self._draw_object_list_2.length-1 ; i>=0 ; i--){
@@ -151,13 +148,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		self._ctx.strokeStyle = style;
 		self._ctx.lineWidth = width;
 		self._ctx.stroke();
-	};
-
-	this.DrawVerticalLine = function(){
-		var quarter_x = self._game_width / 4;
-		self.DrawLine(quarter_x, 0, quarter_x, self._game_height, '#aaa');
-		self.DrawLine(quarter_x*2, 0, quarter_x*2, self._game_height, '#aaa');
-		self.DrawLine(quarter_x*3, 0, quarter_x*3, self._game_height, '#aaa');
 	};
 
 	this.DrawEmpty = function(){

@@ -294,10 +294,26 @@ function GameControl(width, height){
 
 	this.PrepareGame = function(){
 		window._renderer.ClearDrawObject();
-		{
-			var base_line_draw_obj = new DrawLine(window._renderer._ctx, 0, self._base_line, self._width, self._base_line, 1, 'RED', -1);
+
+		{//guide lines
+			var ctx = window._renderer._ctx;
+			var line_width = 1;
+			var life_ms = -1;
+			var base_line_draw_obj = new DrawLine(ctx, 0, self._base_line, self._width, self._base_line, line_width, 'RED', life_ms);
+
+			var quarter_x = self._width / 4;
+			var vertical_line1 = new DrawLine(ctx, quarter_x, 0, quarter_x, self._height, line_width, '#aaa', life_ms);
+			var vertical_line2 = new DrawLine(ctx, quarter_x*2, 0, quarter_x*2, self._height, line_width, '#aaa', life_ms);
+			var vertical_line3 = new DrawLine(ctx, quarter_x*3, 0, quarter_x*3, self._height, line_width, '#aaa', life_ms);
+
 			base_line_draw_obj.Update();
+			vertical_line1.Update();
+			vertical_line2.Update();
+			vertical_line3.Update();
 			window._renderer.AddDrawObject(1, base_line_draw_obj);
+			window._renderer.AddDrawObject(1, vertical_line1);
+			window._renderer.AddDrawObject(1, vertical_line2);
+			window._renderer.AddDrawObject(1, vertical_line3);
 		}
 
 		self._game_data.CreateGameObjects(self._game_level);
