@@ -403,8 +403,8 @@ function GameControl(width, height){
 
 			if(self._hit_queue.length > 0){
 				var hit = self._hit_queue[0];
-				_renderer.Hit(hit.arrow, hit.hit_result, hit.combo);
-				self.CreateHitText(hit);
+				_renderer.Hit(hit.combo);
+				self.CreateHitEffect(hit);
 				console.log('hit.hit_result.hit ' + hit.hit_result.hit);
 
 				if(self._is_excercise_mode == false){
@@ -461,28 +461,45 @@ function GameControl(width, height){
 		requestAnimationFrame(self.Update);
 	};
 
-	this.CreateHitText = function(hit){
-		var y = self._base_line;
+	this.CreateHitEffect = function(hit){
+		var text_y = self._base_line;
 		var one_width = 400 / 5;
-		var x = 0;
+		var text_x = 0;
+		var quarter_x = self._width / 4;
+		var first_x = quarter_x / 2;
+		var particle_x = 0;
+
 		switch(hit.arrow){
 			case ARROW.LEFT:
-				x = one_width;
+				text_x = one_width;
+				particle_x = first_x;
 				break;
 			case ARROW.DOWN:
-				x = one_width * 2;
+				text_x = one_width * 2;
+				particle_x = quarter_x+first_x;
 				break;
 			case ARROW.UP:
-				x = one_width * 3;
+				text_x = one_width * 3;
+				particle_x = quarter_x*2+first_x;
 				break;
 			case ARROW.RIGHT:
-					x = one_width * 4;
+				text_x = one_width * 4;
+				particle_x = quarter_x*3+first_x;
 				break;
 		}
-		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, x, y+50, 26, 'blue', 200);
-		var draw_score_obj = new DrawText(window._renderer._ctx, hit.hit_result.score, x, y+80, 26, 'blue', 200);
+		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, text_x, text_y+50, 26, 'blue', 200);
+		var draw_score_obj = new DrawText(window._renderer._ctx, hit.hit_result.score, text_x, text_y+80, 26, 'blue', 200);
 		window._renderer.AddDrawText(draw_text_obj);
 		window._renderer.AddDrawText(draw_score_obj);
+		self.CreateParticles(particle_x, self._base_line);
+	};
+
+	this.CreateParticles = function(x, y){
+		console.log('x ' + x + ' y ' + y);
+		for(var i=0 ; i<30 ; i++){
+			var particle = new Particle(window._renderer._ctx, x, y);
+			window._renderer.AddParticle(particle);
+		}
 	};
 
 	this._color_table = ['#3d5a80', '#98c1d9', '#e0fbfc', '#ee6c4d', '#84a59d', '#00b4d8', '#f1c453', '#e6beae'];

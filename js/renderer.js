@@ -54,10 +54,11 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 
 		if(self._render_mode == RENDER_MODE.PLAY){
 			for(var i=0 ; i<self._draw_text_list.length ; i++){
-				self._draw_text_list[i].Update();
 				if(self._draw_text_list[i].NeedDelete()){
 					self._draw_text_list.splice(i, 1);
+					continue;
 				}
+				self._draw_text_list[i].Update();
 			}
 			self.DrawProgress();
 		}
@@ -199,27 +200,15 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		self._draw_text_list.push(draw_text);
 	};
 
+	this.AddParticle = function(particle){
+		self._particle_list.push(particle);
+	};
+
 	this._hit_combo = false;
 	this._hit_combo_dur = 0;
 	this._hit_combo_count = 0;
 	
-	this.Hit = function(arrow, hit_result, combo){
-		var quarter_x = self._game_width / 4;
-		var first_x = quarter_x / 2;
-
-		if(arrow == ARROW.LEFT){
-			self.CreateParticles(first_x, self._base_line);
-		}
-		if(arrow == ARROW.UP){
-			self.CreateParticles(quarter_x*2+first_x, self._base_line);
-		}
-		if(arrow == ARROW.RIGHT){
-			self.CreateParticles(quarter_x*3+first_x, self._base_line);
-		}
-		if(arrow == ARROW.DOWN){
-			self.CreateParticles(quarter_x+first_x, self._base_line);
-		}
-
+	this.Hit = function(combo){
 		if(combo > 1){
 			self._hit_combo = true;
 			self._hit_combo_dur = Date.now();
@@ -228,13 +217,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			self._hit_combo = false;
 		}
 	};
-
-	this.CreateParticles = function(x, y){
-		for(var i=0 ; i<30 ; i++){
-			var particle = new Particle(self._ctx, x, y);
-			self._particle_list.push(particle);
-		}
-	}
 
 	this.DrawText = function(txt, x, y, size, color){
 		var font_size = new Number(size) 
