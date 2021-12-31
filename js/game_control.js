@@ -30,6 +30,7 @@ function GameControl(width, height){
 	this._progress_percent = 0;
 	this._draw_progress_bar = null;
 	this._draw_text_combo = null;
+	this._draw_text_score = null;
 
 	this.Init = function(){
 		console.log('GameControl Init');
@@ -329,7 +330,13 @@ function GameControl(width, height){
 				self._draw_text_combo.Update();
 				window._renderer.AddDrawObject(7, self._draw_text_combo);
 			}
-
+			{//score text
+				if(self._draw_text_score == null){
+					self._draw_text_score = new DrawText(ctx, '', 200, 50, 50, 'red', -1);
+				}
+				self._draw_text_score.Update();
+				window._renderer.AddDrawObject(7, self._draw_text_score);
+			}
 		}
 
 		self._game_data.CreateGameObjects(self._game_level);
@@ -357,7 +364,7 @@ function GameControl(width, height){
 		self._gameobj_begin_idx = 0;
 		self._finish_notified = false;
 	
-		_renderer.UpdateScore(self._score);
+		self._draw_text_score.SetText(self._score);
 
 		{
 			_yt_player.SetEventListener(self.YT_OnYoutubeReady, self.YT_OnFlowEvent, self.YT_OnPlayerReady, self.YT_OnPlayerStateChange);
@@ -442,7 +449,6 @@ function GameControl(width, height){
 			if(self._hit_queue.length > 0){
 				var hit = self._hit_queue[0];
 				self.CreateHitEffect(hit);
-				console.log('hit.hit_result.hit ' + hit.hit_result.hit);
 				if(self._combo > 1){
 					var txt = self._combo-1 + " COMBO";
 					txt += "\n +" + (10 * (self._combo-1));
@@ -477,7 +483,7 @@ function GameControl(width, height){
 				self._draw_progress_bar.SetProgress(self._progress_percent);
 			}
 
-			_renderer.UpdateScore(self._score);
+			self._draw_text_score.SetText(self._score);
 			_renderer.Update(self._game_data._game_objs, self._gameobj_begin_idx);
 
 			if(self._game_data._game_objs.length == self._total_hit_count){
@@ -494,12 +500,12 @@ function GameControl(width, height){
 		}
 
 		if(self._finish_notified){
-			_renderer.UpdateScore(self._score);
+			self._draw_text_score.SetText(self._score);
 			// console.log('gameobj_begin_idx ' + self._gameobj_begin_idx);
 			if(self._is_complete == false){
 				_renderer.Update(self._failed_gameobj_list, 0);
 			}
-			_renderer.DisplayResult(self._is_complete);
+			_renderer.DisplayResult(self._is_complete, self._score);
 		}
 
 		requestAnimationFrame(self.Update);
@@ -539,7 +545,6 @@ function GameControl(width, height){
 	};
 
 	this.CreateParticles = function(x, y){
-		console.log('x ' + x + ' y ' + y);
 		for(var i=0 ; i<30 ; i++){
 			var particle = new Particle(window._renderer._ctx, x, y);
 			window._renderer.AddDrawObject(5, particle);

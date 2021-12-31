@@ -4,7 +4,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 	this._ctx = null;
 	this._base_line = 600;
 	this._debug = false;
-	this._score = 0;
 	this._render_mode = RENDER_MODE.RECORD;
 	this._game_width = game_width;
 	this._game_height = game_height;
@@ -39,7 +38,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 
 		if(self._render_mode == RENDER_MODE.PLAY){
 			self.DrawEmpty();
-			self.DrawScore();
 		}else if(self._render_mode == RENDER_MODE.RECORD){
 			self.DrawEmpty();
 		}
@@ -90,10 +88,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 
 		self.DrawObjs(game_objs, gameobj_begin_idx);
 
-		if(self._render_mode == RENDER_MODE.PLAY){
-			self.DrawScore();
-		}
-
 		//Layer 7
 		for(var i=self._draw_object_list_7.length-1 ; i>=0 ; i--){
 			if(self._draw_object_list_7[i].NeedDelete()){
@@ -102,12 +96,11 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			}
 			self._draw_object_list_7[i].Update();
 		}
-
 	};
 
-	this.UpdateScore = function(score){
-		self._score = score;
-	};
+	// this.UpdateScore = function(score){
+	// 	self._score = score;
+	// };
 
 	this.DrawObjs = function(game_objs, gameobj_begin_idx){
 		for(var i=gameobj_begin_idx ; i<game_objs.length ; i++){
@@ -246,11 +239,7 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		self._ctx.fillText(txt, x, y);
 	};
 
-	this.DrawScore = function(){
-		self.DrawText(self._score, 200, 50, 50, 'red');
-	};
-
-	this.DisplayResult = function(is_complete){
+	this.DisplayResult = function(is_complete, score){
 		// console.log('DisplayResult ' + score);
 		if(is_complete){
 			self.DrawText("Congraturations!", 202, 302, 50, 'White');
@@ -259,8 +248,8 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			self.DrawText("Your New Score", 202, 352, 33, 'White');
 			self.DrawText("Your New Score", 200, 350, 33, 'Red');
 	
-			self.DrawText("Score " + self._score, 202, 402, 33, 'White');
-			self.DrawText("Score " + self._score, 200, 400, 33, 'Blue');
+			self.DrawText("Score " + score, 202, 402, 33, 'White');
+			self.DrawText("Score " + score, 200, 400, 33, 'Blue');
 		}else{
 			self.DrawText("Oops!", 202, 302, 50, 'White');
 			self.DrawText("Oops!", 200, 300, 50, 'Red');
