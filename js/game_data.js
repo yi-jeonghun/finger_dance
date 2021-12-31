@@ -1,4 +1,4 @@
-function GameData(dimension, direction){
+function GameData(direction){
 	var self = this;
 	this._speed = 150;//pixel per second
 	this._base_line = 100;
@@ -13,7 +13,6 @@ function GameData(dimension, direction){
 		];
 	this._wave_list = [];
 	this._game_objs = [];
-	this._dimension = dimension;
 	this._move_direction = direction;
 	this._note_order = 0;
 
@@ -185,56 +184,28 @@ function GameData(dimension, direction){
 
 	this.CreateNotes_DDR = function(ball_info, default_time_offset){
 		if(ball_info.m & LEFT_BIT){
-			var obj = null;
-
-			if(self._dimension == DIMENSION._2D){
-				obj = new Ball(ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
-			}else if(self._dimension == DIMENSION._3D){
-				obj = new ThreeNote(ARROW.LEFT, ball_info.t, self._speed, self._base_line).Init();
-			}
-
+			var obj = new Ball(ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 			self._game_objs.push(obj);
 		}
 		if(ball_info.m & UP_BIT){
-			var obj = null;
-
-			if(self._dimension == DIMENSION._2D){
-				obj = new Ball(ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
-			}else if(self._dimension == DIMENSION._3D){
-				obj = new ThreeNote(ARROW.UP, ball_info.t, self._speed, self._base_line).Init();
-			}
-
+			var obj = new Ball(ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 			self._game_objs.push(obj);
 		}
 		if(ball_info.m & RIGHT_BIT){
-			var obj = null;
-
-			if(self._dimension == DIMENSION._2D){
-				obj = new Ball(ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
-			}else if(self._dimension == DIMENSION._3D){
-				obj = new ThreeNote(ARROW.RIGHT, ball_info.t, self._speed, self._base_line).Init();
-			}
-
+			var obj = new Ball(ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 			self._game_objs.push(obj);
 		}
 		if(ball_info.m & DOWN_BIT){
-			var obj = null;
-
-			if(self._dimension == DIMENSION._2D){
-				obj = new Ball(ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
-			}else if(self._dimension == DIMENSION._3D){
-				obj = new ThreeNote(ARROW.DOWN, ball_info.t, self._speed, self._base_line).Init();
-			}
-
+			var obj = new Ball(ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}

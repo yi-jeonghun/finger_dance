@@ -37,12 +37,12 @@ function GameControl(width, height){
 		
 		_yt_player.SetEventListener(self.YT_OnYoutubeReady, self.YT_OnFlowEvent, self.YT_OnPlayerReady, self.YT_OnPlayerStateChange);
 
-		self._game_data = new GameData(DIMENSION._2D, MOVE_DIRECTION.UPWARD);
+		self._game_data = new GameData(MOVE_DIRECTION.UPWARD);
 		self.InitKeyHandle();
 		self.Update();
 		return this;
 	};
-	
+
 	this.SetVideoID = function(video_id){
 		self._video_id = video_id;
 	};
