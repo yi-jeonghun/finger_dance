@@ -3,13 +3,10 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 	this._canvas = null;
 	this._ctx = null;
 	this._base_line = 600;
-	this._debug = false;
-	this._render_mode = RENDER_MODE.RECORD;
 	this._game_width = game_width;
 	this._game_height = game_height;
 	this._screen_width = screen_width;
 	this._screen_height = screen_height;
-	this._show_index_number = false;
 	this._draw_object_list_1 = [];
 	this._draw_object_list_2 = [];
 	this._draw_object_list_3 = [];
@@ -47,7 +44,9 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				self._draw_object_list_1.splice(i, 1);
 				continue;
 			}
-			self._draw_object_list_1[i].Update();
+			if(self._draw_object_list_1[i].IsVisible){
+				self._draw_object_list_1[i].Update();
+			}
 		}
 
 		//Layer 2
@@ -56,7 +55,9 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				self._draw_object_list_2.splice(i, 1);
 				continue;
 			}
-			self._draw_object_list_2[i].Update();
+			if(self._draw_object_list_2[i].IsVisible()){
+				self._draw_object_list_2[i].Update();
+			}
 		}
 
 		//Layer 3
@@ -65,7 +66,9 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				self._draw_object_list_3.splice(i, 1);
 				continue;
 			}
-			self._draw_object_list_3[i].Update();
+			if(self._draw_object_list_3[i].IsVisible()){
+				self._draw_object_list_3[i].Update();
+			}
 		}
 		
 		//Layer 4
@@ -74,7 +77,9 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				self._draw_object_list_4.splice(i, 1);
 				continue;
 			}
-			self._draw_object_list_4[i].Update();
+			if(self._draw_object_list_4[i].IsVisible()){
+				self._draw_object_list_4[i].Update();
+			}
 		}
 
 		//Layer 5
@@ -83,7 +88,9 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				self._draw_object_list_5.splice(i, 1);
 				continue;
 			}
-			self._draw_object_list_5[i].Update();
+			if(self._draw_object_list_5[i].IsVisible()){
+				self._draw_object_list_5[i].Update();
+			}
 		}
 
 		//Layer 6
@@ -103,7 +110,42 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				self._draw_object_list_7.splice(i, 1);
 				continue;
 			}
-			self._draw_object_list_7[i].Update();
+			if(self._draw_object_list_7[i].IsVisible()){
+				self._draw_object_list_7[i].Update();
+			}
+		}
+
+		//Layer 8
+		for(var i=self._draw_object_list_8.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_8[i].NeedDelete()){
+				self._draw_object_list_8.splice(i, 1);
+				continue;
+			}
+			if(self._draw_object_list_8[i].IsVisible()){
+				self._draw_object_list_8[i].Update();
+			}
+		}
+
+		//Layer 9
+		for(var i=self._draw_object_list_9.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_9[i].NeedDelete()){
+				self._draw_object_list_9.splice(i, 1);
+				continue;
+			}
+			if(self._draw_object_list_9[i].IsVisible()){
+				self._draw_object_list_9[i].Update();
+			}
+		}
+
+		//Layer 10
+		for(var i=self._draw_object_list_10.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_10[i].NeedDelete()){
+				self._draw_object_list_10.splice(i, 1);
+				continue;
+			}
+			if(self._draw_object_list_10[i].IsVisible()){
+				self._draw_object_list_10[i].Update();
+			}
 		}
 	};
 
