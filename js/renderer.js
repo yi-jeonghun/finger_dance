@@ -2,7 +2,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 	var self = this;
 	this._canvas = null;
 	this._ctx = null;
-	this._base_line = 600;
 	this._game_width = game_width;
 	this._game_height = game_height;
 	this._screen_width = screen_width;

@@ -374,7 +374,6 @@ function GameControl(width, height){
 
 		self._game_started = true;
 		{
-			_renderer._base_line = self._base_line;
 			_renderer._render_mode = RENDER_MODE.PLAY;	
 			console.log('_renderer._render_mode  ' + _renderer._render_mode);
 		}
