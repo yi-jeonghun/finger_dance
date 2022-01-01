@@ -1,4 +1,4 @@
-function Ball(arrow_or_num, offset_ms, speed_pps, base_line, move_direction, order){
+function DrawBeat(arrow_or_num, offset_ms, speed_pps, base_line, move_direction, order){
 	var self = this;
 	this._arrow_or_num = arrow_or_num;
 	this._img = null;

@@ -190,8 +190,8 @@ function GameControl(width, height){
 		return new Promise(function(resolve, reject){
 			var go_to_hit_list = [];
 			for(var i=0 ; i<arrow_list.length ; i++){
-				for(var k=0 ; k<self._game_data._game_objs.length ; k++){
-					var go = self._game_data._game_objs[k];
+				for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
+					var go = self._game_data._draw_beat_list[k];
 					if(go._is_hit || go._passed){
 						continue;
 					}
@@ -437,8 +437,8 @@ function GameControl(width, height){
 				}
 			}
 
-			for(var i=self._gameobj_begin_idx ; i<self._game_data._game_objs.length ; i++){
-				var go = self._game_data._game_objs[i];
+			for(var i=self._gameobj_begin_idx ; i<self._game_data._draw_beat_list.length ; i++){
+				var go = self._game_data._draw_beat_list[i];
 				if(go._passed){
 					self._gameobj_begin_idx = i+1;
 
@@ -451,7 +451,7 @@ function GameControl(width, height){
 							}
 							self._finish_notified = true;
 							self._failed_gameobj_list = [];
-							self._failed_gameobj_list = self._game_data._game_objs;
+							self._failed_gameobj_list = self._game_data._draw_beat_list;
 
 							//실패의 원인을 표시하기 위해
 							//passed가 아닌 것으로 한다.
@@ -483,7 +483,7 @@ function GameControl(width, height){
 					if(hit.hit_result.hit == false){
 						self._finish_notified = true;
 						self._failed_gameobj_list = [];
-						self._failed_gameobj_list = self._game_data._game_objs;
+						self._failed_gameobj_list = self._game_data._draw_beat_list;
 						if(self._cb_on_game_finished){
 							self._cb_on_game_finished(self._is_complete, self._progress_percent, self._score);
 						}
@@ -500,14 +500,14 @@ function GameControl(width, height){
 			}
 
 			{
-				self._progress_percent = self._total_hit_count / self._game_data._game_objs.length;
+				self._progress_percent = self._total_hit_count / self._game_data._draw_beat_list.length;
 				self._draw_progress_bar.SetProgress(self._progress_percent);
 			}
 
 			self._draw_text_score.SetText(self._score);
-			_renderer.Update(self._game_data._game_objs, self._gameobj_begin_idx);
+			_renderer.Update(self._game_data._draw_beat_list, self._gameobj_begin_idx);
 
-			if(self._game_data._game_objs.length == self._total_hit_count){
+			if(self._game_data._draw_beat_list.length == self._total_hit_count){
 				if(self._finish_notified == false){
 					self._finish_notified = true;
 					self._is_complete = true;

@@ -12,7 +12,7 @@ function GameData(direction){
 			 */
 		];
 	this._wave_list = [];
-	this._game_objs = [];
+	this._draw_beat_list = [];
 	this._move_direction = direction;
 	this._note_order = 0;
 
@@ -53,10 +53,10 @@ function GameData(direction){
 	};
 
 	this.UpdateGameObject = function(ball_info){
-		for(var i=self._game_objs.length-1 ; i>=0 ; i--){
-			var go = self._game_objs[i];
+		for(var i=self._draw_beat_list.length-1 ; i>=0 ; i--){
+			var go = self._draw_beat_list[i];
 			if(ball_info.t == go._offset_ms){
-				self._game_objs.splice(i, 1);
+				self._draw_beat_list.splice(i, 1);
 			}
 		}
 		self.CreateNotes(ball_info);
@@ -123,12 +123,10 @@ function GameData(direction){
 	};
 
 	this.UpdateGameObjectOffset = function(org_ms, new_ms, timelapse){
-		// console.log('org ' + org_ms + ' new ' + new_ms + ' cur ' + timelapse);
-		for(var i=0 ; i<self._game_objs.length ; i++){
-			// console.log('i ' + i + ' ' + self._game_objs[i]._offset_ms);
-			if(self._game_objs[i]._offset_ms == org_ms){
-				self._game_objs[i].ChangeOffset(new_ms);
-				self._game_objs[i].Update(timelapse);
+		for(var i=0 ; i<self._draw_beat_list.length ; i++){
+			if(self._draw_beat_list[i]._offset_ms == org_ms){
+				self._draw_beat_list[i].ChangeOffset(new_ms);
+				self._draw_beat_list[i].Update(timelapse);
 			}
 		}
 	};
@@ -159,7 +157,7 @@ function GameData(direction){
 		}
 
 		self._note_order = 0;
-		self._game_objs = [];
+		self._draw_beat_list = [];
 		for(var i=0 ; i<self._beat_list.length ; i++){
 			self.CreateNotes(self._beat_list[i]);
 		}
@@ -171,7 +169,7 @@ function GameData(direction){
 	 */
 	this.CreateGameObjectsWithGivenTime = function(given_ms){
 		self._note_order = 0;
-		self._game_objs = [];
+		self._draw_beat_list = [];
 		for(var i=0 ; i<self._beat_list.length ; i++){
 			self.CreateNotes(self._beat_list[i], given_ms);
 		}
@@ -184,32 +182,32 @@ function GameData(direction){
 
 	this.CreateNotes_DDR = function(ball_info, default_time_offset){
 		if(ball_info.m & LEFT_BIT){
-			var obj = new Ball(ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+			var obj = new DrawBeat(ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
-			self._game_objs.push(obj);
+			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & UP_BIT){
-			var obj = new Ball(ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+			var obj = new DrawBeat(ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
-			self._game_objs.push(obj);
+			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & RIGHT_BIT){
-			var obj = new Ball(ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+			var obj = new DrawBeat(ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
-			self._game_objs.push(obj);
+			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & DOWN_BIT){
-			var obj = new Ball(ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+			var obj = new DrawBeat(ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
-			self._game_objs.push(obj);
+			self._draw_beat_list.push(obj);
 		}
 	};
 
@@ -221,9 +219,9 @@ function GameData(direction){
 		var beat_info = self._beat_list[idx];
 		self._beat_list.splice(idx, 1);
 
-		for(var i=self._game_objs.length-1 ; i>=0 ; i--){
-			if(beat_info.t == self._game_objs[i]._offset_ms){
-				self._game_objs.splice(i, 1);
+		for(var i=self._draw_beat_list.length-1 ; i>=0 ; i--){
+			if(beat_info.t == self._draw_beat_list[i]._offset_ms){
+				self._draw_beat_list.splice(i, 1);
 			}
 		}
 	};
