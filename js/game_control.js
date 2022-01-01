@@ -188,15 +188,15 @@ function GameControl(width, height){
 		timelapse += self._base_offset_ms;
 
 		return new Promise(function(resolve, reject){
-			var go_to_hit_list = [];
+			var draw_beat_to_hit_list = [];
 			for(var i=0 ; i<arrow_list.length ; i++){
 				for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
-					var go = self._game_data._draw_beat_list[k];
-					if(go._is_hit || go._passed){
+					var draw_beat = self._game_data._draw_beat_list[k];
+					if(draw_beat.IsHit() || draw_beat.Passed()){
 						continue;
 					}
-					if(go._arrow_or_num == arrow_list[i]){
-						go_to_hit_list[i] = go;
+					if(draw_beat.GetArrowOrNum() == arrow_list[i]){
+						draw_beat_to_hit_list[i] = draw_beat;
 						break;
 					}
 				}
@@ -204,15 +204,15 @@ function GameControl(width, height){
 
 			var is_multi_hit = false;
 			if(arrow_list.length == 2){
-				if(go_to_hit_list.length == 2){
-					if(go_to_hit_list[0]._offset_ms == go_to_hit_list[1]._offset_ms){
+				if(draw_beat_to_hit_list.length == 2){
+					if(draw_beat_to_hit_list[0]._offset_ms == draw_beat_to_hit_list[1]._offset_ms){
 						is_multi_hit = true;
 					}
 				}
 			}
 
 			if(is_multi_hit){
-				var hit_result = go_to_hit_list[0].HitNote(arrow_list[0], timelapse);
+				var hit_result = draw_beat_to_hit_list[0].HitNote(arrow_list[0], timelapse);
 				for(var i=0 ; i<arrow_list.length ; i++){
 					self._score += hit_result.score;
 	
@@ -238,8 +238,8 @@ function GameControl(width, height){
 			}else{
 				for(var i=0 ; i<arrow_list.length ; i++){
 					var arrow = arrow_list[i];
-					var go_to_hit = go_to_hit_list[i];
-					if(go_to_hit == null || go_to_hit == undefined){
+					var draw_beat_to_hit = draw_beat_to_hit_list[i];
+					if(draw_beat_to_hit == null || draw_beat_to_hit == undefined){
 
 						var hit_result = {
 							hit:false,
@@ -253,7 +253,7 @@ function GameControl(width, height){
 							hit_result: hit_result
 						});
 					}else{		
-						var hit_result = go_to_hit.HitNote(arrow, timelapse);
+						var hit_result = draw_beat_to_hit.HitNote(arrow, timelapse);
 						self._score += hit_result.score;
 		
 						if(hit_result.text == 'Perfect'){
@@ -361,6 +361,9 @@ function GameControl(width, height){
 		}
 
 		self._game_data.CreateGameObjects(self._game_level);
+		for(var i=0 ; i<self._game_data._draw_beat_list.length ; i++){
+			window._renderer.AddDrawObject(6, self._game_data._draw_beat_list[i]);
+		}
 	};
 
 	this.PlayGame = function(){
@@ -438,16 +441,16 @@ function GameControl(width, height){
 			}
 
 			for(var i=self._gameobj_begin_idx ; i<self._game_data._draw_beat_list.length ; i++){
-				var go = self._game_data._draw_beat_list[i];
-				if(go._passed){
+				var draw_beat = self._game_data._draw_beat_list[i];
+				if(draw_beat.Passed()){
 					self._gameobj_begin_idx = i+1;
 
 					if(self._is_excercise_mode == false){
 						//놓치면 게임 종료
-						if(go._is_hit == false){
+						if(draw_beat.IsHit() == false){
 							{
-								go._is_fail_cause = true;
-								go._passed = false;
+								draw_beat.SetIsFailCause();
+								draw_beat.SetPassed(false);
 							}
 							self._finish_notified = true;
 							self._failed_gameobj_list = [];
@@ -462,7 +465,7 @@ function GameControl(width, height){
 						}
 					}
 				}
-				if(go.Update(self._timelapse + self._base_offset_ms) == false){
+				if(draw_beat.Move(self._timelapse + self._base_offset_ms) == false){
 					break;
 				}
 			}
@@ -505,7 +508,7 @@ function GameControl(width, height){
 			}
 
 			self._draw_text_score.SetText(self._score);
-			_renderer.Update(self._game_data._draw_beat_list, self._gameobj_begin_idx);
+			_renderer.Update();
 
 			if(self._game_data._draw_beat_list.length == self._total_hit_count){
 				if(self._finish_notified == false){
@@ -524,7 +527,7 @@ function GameControl(width, height){
 			self._draw_text_score.SetText(self._score);
 			// console.log('gameobj_begin_idx ' + self._gameobj_begin_idx);
 			if(self._is_complete == false){
-				_renderer.Update(self._failed_gameobj_list, 0);
+				_renderer.Update();
 			}
 			self.DisplayResult();
 		}

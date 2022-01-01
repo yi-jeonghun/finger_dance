@@ -182,28 +182,28 @@ function GameData(direction){
 
 	this.CreateNotes_DDR = function(ball_info, default_time_offset){
 		if(ball_info.m & LEFT_BIT){
-			var obj = new DrawBeat(ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+			var obj = new DrawBeat(window._renderer._ctx, ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & UP_BIT){
-			var obj = new DrawBeat(ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+			var obj = new DrawBeat(window._renderer._ctx, ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & RIGHT_BIT){
-			var obj = new DrawBeat(ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+			var obj = new DrawBeat(window._renderer._ctx, ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & DOWN_BIT){
-			var obj = new DrawBeat(ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order).Init();
+			var obj = new DrawBeat(window._renderer._ctx, ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}

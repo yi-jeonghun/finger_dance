@@ -38,7 +38,7 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		return this;
 	};
 
-	this.Update = function(game_objs, gameobj_begin_idx){
+	this.Update = function(){
 		self._ctx.clearRect(0, 0, self._game_width, self._game_height);
 
 		//Layer 1
@@ -86,7 +86,16 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			self._draw_object_list_5[i].Update();
 		}
 
-		self.DrawObjs(game_objs, gameobj_begin_idx);
+		//Layer 6
+		for(var i=self._draw_object_list_6.length-1 ; i>=0 ; i--){
+			if(self._draw_object_list_6[i].NeedDelete()){
+				self._draw_object_list_6.splice(i, 1);
+				continue;
+			}
+			if(self._draw_object_list_6[i].IsVisible()){
+				self._draw_object_list_6[i].Update();
+			}
+		}
 
 		//Layer 7
 		for(var i=self._draw_object_list_7.length-1 ; i>=0 ; i--){
@@ -96,41 +105,6 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			}
 			self._draw_object_list_7[i].Update();
 		}
-	};
-
-	this.DrawObjs = function(game_objs, gameobj_begin_idx){
-		for(var i=gameobj_begin_idx ; i<game_objs.length ; i++){
-			var go = game_objs[i];
-
-			if(go._is_hit || go._passed){
-				continue;
-			}
-
-			if(go._y < -100 || go._y > 700){
-				continue;
-			}
-
-			self.DrawLine(0, go._y+go._h/2, self._game_width, go._y+go._h/2, '#aaa');
-
-			self._ctx.drawImage(_atlas._img,
-				go._img.x, go._img.y, go._img.w, go._img.h,
-				go._x, go._y, go._w, go._h);
-			
-			if(self._show_index_number){
-				var fx = go._x + go._w/2;
-				var fy = go._y + go._h/2;
-				self.DrawText(go._order+1, fx, fy, 25);
-			}
-		}
-	};
-
-	this.DrawLine = function(sx, sy, ex, ey, style){
-		self._ctx.beginPath(); 
-		self._ctx.moveTo(sx, sy);
-		self._ctx.lineTo(ex, ey);
-		self._ctx.lineWidth = 1;
-		self._ctx.strokeStyle = style;
-		self._ctx.stroke();
 	};
 
 	this.ClearDrawObject = function(){
@@ -183,20 +157,5 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				self._draw_object_list_10.push(draw_object);
 				break;
 		}
-	};
-
-	this.DrawText = function(txt, x, y, size, color){
-		var font_size = new Number(size) 
-		self._ctx.textBaseline = "middle";
-		// var border_size = font_size + 2;
-		// self._ctx.font = border_size + "px Arial";
-		// self._ctx.textAlign = "center";
-		// self._ctx.fillStyle = "white";
-		// self._ctx.fillText(txt, x, y);
-
-		self._ctx.font = font_size + "px Arial";
-		self._ctx.textAlign = "center";
-		self._ctx.fillStyle = color;
-		self._ctx.fillText(txt, x, y);
 	};
 }

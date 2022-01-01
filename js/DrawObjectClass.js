@@ -12,5 +12,9 @@ class DrawObject {
 	NeedDelete(){
 		return false;
 	}
+
+	IsVisible(){
+		return true;
+	}
 }
 
