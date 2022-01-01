@@ -1,1 +1,0 @@
-terser --compress --mangle --verbose Drums.js drum_player.js atlas.js const.js common.js timer.js youtube_iframe_player.js renderer.js particle.js game_data.js game_control.js ball.js play_game_control.js  -o play_game_min.js
