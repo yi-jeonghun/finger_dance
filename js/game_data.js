@@ -41,7 +41,7 @@ function GameData(direction){
 	this.AddBall = function(ball_info){
 		self._beat_list.push(ball_info);
 		self.SortBeatList();
-		self.CreateNotes(ball_info);
+		self.CreateDrawBeat(ball_info);
 	};
 
 	this.SortBeatList = function(){
@@ -59,7 +59,7 @@ function GameData(direction){
 				self._draw_beat_list.splice(i, 1);
 			}
 		}
-		self.CreateNotes(ball_info);
+		self.CreateDrawBeat(ball_info);
 	};
 	
 	//DDR용으로만 사용되는 함수임.
@@ -159,7 +159,7 @@ function GameData(direction){
 		self._note_order = 0;
 		self._draw_beat_list = [];
 		for(var i=0 ; i<self._beat_list.length ; i++){
-			self.CreateNotes(self._beat_list[i]);
+			self.CreateDrawBeat(self._beat_list[i]);
 		}
 	};
 
@@ -171,16 +171,12 @@ function GameData(direction){
 		self._note_order = 0;
 		self._draw_beat_list = [];
 		for(var i=0 ; i<self._beat_list.length ; i++){
-			self.CreateNotes(self._beat_list[i], given_ms);
+			self.CreateDrawBeat(self._beat_list[i], given_ms);
+			self._note_order++;
 		}
 	};
 
-	this.CreateNotes = function(ball_info, default_time_offset){
-		self.CreateNotes_DDR(ball_info, default_time_offset);
-		self._note_order++;
-	};
-
-	this.CreateNotes_DDR = function(ball_info, default_time_offset){
+	this.CreateDrawBeat = function(ball_info, default_time_offset){
 		if(ball_info.m & LEFT_BIT){
 			var obj = new DrawBeat(window._renderer._ctx, ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
