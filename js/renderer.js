@@ -34,8 +34,12 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		return this;
 	};
 
-	this.Update = function(){
+	this.ClearScreen = function(){
 		self._ctx.clearRect(0, 0, self._game_width, self._game_height);
+	};
+
+	this.Update = function(){
+		self.ClearScreen();
 
 		//Layer 1
 		for(var i=self._draw_object_list_1.length-1 ; i>=0 ; i--){
@@ -197,6 +201,13 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 			case 10:
 				self._draw_object_list_10.push(draw_object);
 				break;
+		}
+	};
+
+	this.ReplaceLayer6 = function(draw_object_list){
+		self._draw_object_list_6 = [];
+		for(var i=0 ; i<draw_object_list.length ; i++){
+			self._draw_object_list_6.push(draw_object_list[i]);
 		}
 	};
 }

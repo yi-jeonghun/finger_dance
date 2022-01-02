@@ -285,11 +285,12 @@ function GameControl(width, height){
 	};
 
 	this.PrepareGame = function(){
+		window._renderer.ClearScreen();
 		window._renderer.ClearDrawObject();
 
 		var profile = new GameProfiles(window._renderer._ctx, self._width, self._height, self._base_line);
 		{
-			profile.LoadGameProfile();
+			profile.PLAY_LoadStaticAssets();
 			{//progress bar
 				self._draw_progress_bar = profile.GetProgressBar();
 				window._renderer.AddDrawObject(3, self._draw_progress_bar);

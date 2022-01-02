@@ -11,13 +11,13 @@ class GameProfiles{
 		this.#base_line = base_line;
 	}
 
-	LoadGameProfile(){
+	PLAY_LoadStaticAssets(){
 		var quarter_x = this.#width / 4;
 		var first_x = quarter_x / 2;
+		var life_ms = -1;
 
 		{//guide lines
 			var line_width = 1;
-			var life_ms = -1;
 			var base_line_draw_obj = new DrawLine(this.#ctx, 0, this.#base_line, this.#width, this.#base_line, line_width, 'RED', life_ms);
 
 			var vertical_line1 = new DrawLine(this.#ctx, quarter_x, 0, quarter_x, this.#height, line_width, '#aaa', life_ms);
@@ -40,28 +40,32 @@ class GameProfiles{
 			
 			var di_l = new DrawImage(this.#ctx, _atlas._img, 
 				_atlas._img_l_empty.x, _atlas._img_l_empty.y, _atlas._img_l_empty.w, _atlas._img_l_empty.h, 
-				(first_x - dw/2), this.#base_line - dh/2, dw, dh, -1);
+				(first_x - dw/2), this.#base_line - dh/2, dw, dh, life_ms);
 			di_l.Update();
 			window._renderer.AddDrawObject(4, di_l);
 			
 			var di_d = new DrawImage(this.#ctx, _atlas._img, 
 				_atlas._img_d_empty.x, _atlas._img_d_empty.y, _atlas._img_d_empty.w, _atlas._img_d_empty.h, 
-				((first_x + quarter_x) - dw/2), this.#base_line - dh/2, dw, dh, -1);
+				((first_x + quarter_x) - dw/2), this.#base_line - dh/2, dw, dh, life_ms);
 			di_d.Update();
 			window._renderer.AddDrawObject(4, di_d);
 
 			var di_u = new DrawImage(this.#ctx, _atlas._img, 
 				_atlas._img_u_empty.x, _atlas._img_u_empty.y, _atlas._img_u_empty.w, _atlas._img_u_empty.h, 
-				((first_x + quarter_x*2) - dw/2), this.#base_line - dh/2, dw, dh, -1);
+				((first_x + quarter_x*2) - dw/2), this.#base_line - dh/2, dw, dh, life_ms);
 			di_u.Update();
 			window._renderer.AddDrawObject(4, di_u);
 	
 			var di_r = new DrawImage(this.#ctx, _atlas._img, 
 				_atlas._img_r_empty.x, _atlas._img_r_empty.y, _atlas._img_r_empty.w, _atlas._img_r_empty.h, 
-				((first_x + quarter_x*3) - dw/2), this.#base_line - dh/2, dw, dh, -1);
+				((first_x + quarter_x*3) - dw/2), this.#base_line - dh/2, dw, dh, life_ms);
 			di_r.Update();
 			window._renderer.AddDrawObject(4, di_r);
 		}
+	}
+
+	RECORD_LoadStaticAssets(){
+		this.PLAY_LoadStaticAssets();
 	}
 
 	GetProgressBar(){

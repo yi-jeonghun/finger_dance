@@ -126,7 +126,7 @@ function GameData(direction){
 		for(var i=0 ; i<self._draw_beat_list.length ; i++){
 			if(self._draw_beat_list[i]._offset_ms == org_ms){
 				self._draw_beat_list[i].ChangeOffset(new_ms);
-				self._draw_beat_list[i].Update(timelapse);
+				self._draw_beat_list[i].Move(timelapse);
 			}
 		}
 	};
