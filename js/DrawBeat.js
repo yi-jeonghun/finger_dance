@@ -269,6 +269,9 @@ class DrawBeat extends DrawObject{
 		if(this.#y < -100 || this.#y > 700){
 			return false;
 		}
+		if(this.#passed){
+			return false;
+		}
 		return true;
 	}
 }
