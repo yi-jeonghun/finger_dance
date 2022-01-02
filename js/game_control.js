@@ -1,4 +1,4 @@
-function GameControl(width, height){
+function GameControl(width, height, is_show_beat_order){
 	var self = this;
 	this._width = width;
 	this._height = height;
@@ -30,6 +30,7 @@ function GameControl(width, height){
 	this._draw_progress_bar = null;
 	this._draw_text_combo = null;
 	this._draw_text_score = null;
+	this._is_show_beat_order = is_show_beat_order;
 
 	this.Init = function(){
 		console.log('GameControl Init');
@@ -37,7 +38,7 @@ function GameControl(width, height){
 		
 		_yt_player.SetEventListener(self.YT_OnYoutubeReady, self.YT_OnFlowEvent, self.YT_OnPlayerReady, self.YT_OnPlayerStateChange);
 
-		self._game_data = new GameData(MOVE_DIRECTION.UPWARD);
+		self._game_data = new GameData(MOVE_DIRECTION.UPWARD, self._is_show_beat_order);
 		self.InitKeyHandle();
 		self.Update();
 		return this;
@@ -307,7 +308,7 @@ function GameControl(width, height){
 			}
 		}
 
-		self._game_data.CreateGameObjects(self._game_level);
+		self._game_data.CreateDrawBeatList(self._game_level);
 		for(var i=0 ; i<self._game_data._draw_beat_list.length ; i++){
 			window._renderer.AddDrawObject(6, self._game_data._draw_beat_list[i]);
 		}

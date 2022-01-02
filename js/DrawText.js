@@ -21,6 +21,11 @@ class DrawText extends DrawObject {
 		this.#text = text;
 	}
 
+	SetPosition(x, y){
+		this.#x = x;
+		this.#y = y;
+	}
+
 	Update(){
 		if(this.#text == ''){
 			return;

@@ -1,4 +1,4 @@
-function GameData(direction){
+function GameData(direction, is_show_beat_order){
 	var self = this;
 	this._speed = 150;//pixel per second
 	this._base_line = 100;
@@ -15,6 +15,7 @@ function GameData(direction){
 	this._draw_beat_list = [];
 	this._move_direction = direction;
 	this._note_order = 0;
+	this._is_show_beat_order = is_show_beat_order;
 
 	this.Init = function(){
 		return this;
@@ -131,7 +132,7 @@ function GameData(direction){
 		}
 	};
 
-	this.CreateGameObjects = function(game_level){
+	this.CreateDrawBeatList = function(game_level){
 		switch(game_level){
 			case 1:
 				self._speed = 150;
@@ -156,9 +157,13 @@ function GameData(direction){
 				break;
 		}
 
+		console.log('self._is_show_beat_order ' + self._is_show_beat_order);
 		self._note_order = 0;
 		self._draw_beat_list = [];
 		for(var i=0 ; i<self._beat_list.length ; i++){
+			if(self._is_show_beat_order){
+				self._note_order++;
+			}
 			self.CreateDrawBeat(self._beat_list[i]);
 		}
 	};
@@ -167,12 +172,14 @@ function GameData(direction){
 	 * editor에서 특정 시간에서 부터 플레이를 할 때
 	 * note를 주어진 시간 만큼 진행시켜놓기 위해 필요한 함수.
 	 */
-	this.CreateGameObjectsWithGivenTime = function(given_ms){
+	this.CreateDrawBeatListWithGivenTime = function(given_ms){
 		self._note_order = 0;
 		self._draw_beat_list = [];
 		for(var i=0 ; i<self._beat_list.length ; i++){
+			if(self._is_show_beat_order){
+				self._note_order++;
+			}
 			self.CreateDrawBeat(self._beat_list[i], given_ms);
-			self._note_order++;
 		}
 	};
 

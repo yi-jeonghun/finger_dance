@@ -21,6 +21,7 @@ class DrawBeat extends DrawObject{
 	#move_direction;
 	#is_fail_cause = false;
 	#order;
+	#draw_text = null;
 
 	constructor(context, arrow_or_num, offset_ms, speed_pps, base_line, move_direction, order){
 		super(context);
@@ -33,6 +34,10 @@ class DrawBeat extends DrawObject{
 		this.#move_direction = move_direction;
 		this.#order = order;
 	
+		if(this.#order > 0){
+			this.#draw_text = new DrawText(context, this.#order, this.#x, this.#y, 25, 'RED', -1);
+		}
+
 		var quarter_x = 400 / 4;
 		var first_x = quarter_x / 2;
 
@@ -227,11 +232,12 @@ class DrawBeat extends DrawObject{
 			this.#sx, this.#sy, this.#sw, this.#sh,
 			this.#x, this.#y, this.#w, this.#h);
 		
-		// if(self._show_index_number){
-		// 	var fx = go._x + go._w/2;
-		// 	var fy = go._y + go._h/2;
-		// 	self.DrawText(go._order+1, fx, fy, 25);
-		// }
+		if(this.#draw_text != null){
+			var fx = this.#x + this.#w/2;
+			var fy = this.#y + this.#h/2;
+			this.#draw_text.SetPosition(fx, fy);
+			this.#draw_text.Update();
+		}
 	}
 
 	NeedDelete(){

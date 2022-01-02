@@ -242,7 +242,8 @@ function PlayGameControl(){
 
 		window._yt_player = new YoutubePlayer().Init();
 		window._renderer = new Renderer(game_width, game_height, screen_width, screen_height).Init();
-		window._game_control = new GameControl(game_width, game_height).Init();
+		var is_show_beat_order = false;
+		window._game_control = new GameControl(game_width, game_height, is_show_beat_order).Init();
 	};
 
 	this.DisplayGameData = function(game_data){
