@@ -37,3 +37,8 @@ const GAME_TYPE = {
 	DDR:0,
 	Dash:1
 };
+
+const BACKGROUND_TYPE = {
+	IMG:'IMG',
+	STYLE:'STYLE'
+};
