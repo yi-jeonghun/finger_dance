@@ -265,6 +265,7 @@ function PlayGameControl(){
 
 		var wave_n_beat = JSON.parse(game_data.wave_n_beat);
 		_game_control._game_level = game_data.level;
+		//FIXME game_data에 background list도 포함시킬 것.
 		_game_control.SetWaveNBeat(wave_n_beat);
 		_game_control.PrepareGame();
 

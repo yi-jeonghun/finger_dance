@@ -281,8 +281,8 @@ function GameControl(width, height, is_show_beat_order){
 		});
 	};
 
-	this.SetWaveNBeat = function(wave_n_beat){
-		self._game_data.SetWaveNBeat(wave_n_beat);
+	this.SetWaveNBeat = function(wave_n_beat, background_list){
+		self._game_data.SetWaveNBeat(wave_n_beat, background_list);
 	};
 
 	this.PrepareGame = function(){

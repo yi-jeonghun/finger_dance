@@ -2,17 +2,27 @@ function GameData(direction, is_show_beat_order){
 	var self = this;
 	this._speed = 150;//pixel per second
 	this._base_line = 100;
+
+	// Beat 정보
 	this._beat_list = [
-			/**
-			 * ball_info(DDR)
-			 * {
-			 * 	t: timelapse_ms,
-			 * 	m: mask
-			 * }
-			 */
-		];
-	this._wave_list = [];
+		/**
+		 * ball_info(DDR)
+		 * {
+		 * 	t: timelapse_ms,
+		 * 	m: mask
+		 * }
+		 */
+	];
+
+	//움직이는 Beat 객체
 	this._draw_beat_list = [];
+
+	//play 중에 사용되는 background rule
+	this._wave_list = [];
+
+	// 이 게임에서 사용하는 전체의 background
+	this._background_list = [];
+
 	this._move_direction = direction;
 	this._note_order = 0;
 	this._is_show_beat_order = is_show_beat_order;
@@ -21,9 +31,10 @@ function GameData(direction, is_show_beat_order){
 		return this;
 	};
 
-	this.SetWaveNBeat = function(wave_n_beat){
+	this.SetWaveNBeat = function(wave_n_beat, background_list){
 		self._wave_list = wave_n_beat.wave_list;
 		self._beat_list = wave_n_beat.beat_list;
+		self._background_list = background_list;
 	};
 
 	this.GetWaveNBeat = function(){
@@ -279,5 +290,28 @@ function GameData(direction, is_show_beat_order){
 	this.ClearNoteList = function(){
 		self._wave_list = [];
 		self._beat_list = [];
+	};
+
+	// BACKGROUND =============================================
+
+	this.AddBackground = function(background){
+		for(var i=0 ; i<self._background_list.length ; i++){
+			if(self._background_list[i].background_uid == background.background_uid){
+				alert('already edded');
+				return false;
+			}
+		}
+		self._background_list.push(background);
+		return true;
+	};
+
+	this.DeleteBackground = function(background_uid){
+		for(var i=0 ; i<self._background_list.length ; i++){
+			if(self._background_list[i].background_uid == background_uid){
+				self._background_list.splice(i, 1);
+				return true;
+			}
+		}
+		return false;
 	};
 }
