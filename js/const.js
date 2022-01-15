@@ -44,7 +44,7 @@ const BG_TYPE = {
 };
 
 const BG_SELECT_TYPE = {
-	FIXMED: 0,
-	RANDOM: 1,
-	SEQUENCE: 2
+	FIXED: 'FIXED',
+	RANDOM: 'RANDOM',
+	SEQUENCE: 'SEQUENCE'
 };
