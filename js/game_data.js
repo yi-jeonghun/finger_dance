@@ -4,23 +4,33 @@ function GameData(direction, is_show_beat_order){
 	this._base_line = 100;
 
 	// Beat 정보
-	this._beat_list = [
-		/**
-		 * ball_info(DDR)
-		 * {
-		 * 	t: timelapse_ms,
-		 * 	m: mask
-		 * }
-		 */
-	];
+	/*{
+		t: timelapse_ms,
+		m: mask
+	}*/
+	this._beat_list = [];
 
 	//움직이는 Beat 객체
 	this._draw_beat_list = [];
 
 	//play 중에 사용되는 background rule
+	/*{
+		t: timelapse_ms,
+		action: {
+			type: BG_ACT_TYPE[FIXED, RANDOM, SEQUENCE],
+			background_uid: ''
+		}
+	}*/
 	this._wave_list = [];
 
 	// 이 게임에서 사용하는 전체의 background
+	/*{
+		background:uid: '',
+		name:'',
+		type: BG_TYPE[IMG, STYLE],
+		image_path: '',
+		style: ''
+	}*/
 	this._background_list = [];
 
 	this._move_direction = direction;
