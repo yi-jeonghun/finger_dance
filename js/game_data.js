@@ -16,10 +16,8 @@ function GameData(direction, is_show_beat_order){
 	//play 중에 사용되는 background rule
 	/*{
 		t: timelapse_ms,
-		select: {
-			type: BG_SELECT_TYPE[FIXED, RANDOM, SEQUENCE],
-			background_uid: ''
-		}
+		type: BG_SELECT_TYPE[FIXED, RANDOM, SEQUENCE],
+		background_uid: ''
 	}*/
 	this._wave_list = [];
 
@@ -58,10 +56,8 @@ function GameData(direction, is_show_beat_order){
 	this.AddWave = function(time){
 		var wave = {
 			t: time,
-			select: {
-				type: BG_SELECT_TYPE.RANDOM,
-				background_uid: null
-			}
+			type: BG_SELECT_TYPE.RANDOM,
+			background_uid: null
 		};
 		self._wave_list.push(wave);
 		self.SortWaveList();
@@ -331,4 +327,14 @@ function GameData(direction, is_show_beat_order){
 		}
 		return false;
 	};
+
+	this.GetBackground = function(background_uid){
+		for (let i = 0; i < self._background_list.length; i++) {
+			const bg = self._background_list[i];
+			if(bg.background_uid == background_uid){
+				return bg;
+			}
+		}
+	};
+	return null;
 }
