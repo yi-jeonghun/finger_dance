@@ -16,8 +16,8 @@ function GameData(direction, is_show_beat_order){
 	//play 중에 사용되는 background rule
 	/*{
 		t: timelapse_ms,
-		action: {
-			type: BG_ACT_TYPE[FIXED, RANDOM, SEQUENCE],
+		select: {
+			type: BG_SELECT_TYPE[FIXED, RANDOM, SEQUENCE],
 			background_uid: ''
 		}
 	}*/
@@ -56,7 +56,14 @@ function GameData(direction, is_show_beat_order){
 	};
 
 	this.AddWave = function(time){
-		self._wave_list.push(time);
+		var wave = {
+			t: time,
+			select: {
+				type: BG_SELECT_TYPE.RANDOM,
+				background_uid: null
+			}
+		};
+		self._wave_list.push(wave);
 		self.SortWaveList();
 	};
 

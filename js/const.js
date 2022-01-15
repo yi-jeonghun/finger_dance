@@ -43,7 +43,7 @@ const BG_TYPE = {
 	STYLE:'STYLE'
 };
 
-const BG_ACT_TYPE = {
+const BG_SELECT_TYPE = {
 	FIXMED: 0,
 	RANDOM: 1,
 	SEQUENCE: 2
