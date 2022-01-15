@@ -77,6 +77,10 @@ function GameData(direction, is_show_beat_order){
 		self._wave_list.sort(function(a, b){return a.t - b.t});
 	};
 
+	this.SortBackgroundList = function(){
+		self._background_list.sort(function(a, b){return a.display_order - b.display_order});
+	};
+
 	this.UpdateGameObject = function(ball_info){
 		for(var i=self._draw_beat_list.length-1 ; i>=0 ; i--){
 			var go = self._draw_beat_list[i];
@@ -333,6 +337,24 @@ function GameData(direction, is_show_beat_order){
 			}
 		}
 		return false;
+	};
+
+	this.ChangeOrderBackground = function(idx, plus_minus){
+		if(plus_minus == 'minus'){
+			if(idx == 0){
+				return false;
+			}	
+			self._background_list[idx].display_order--;
+			self._background_list[idx-1].display_order++;
+		}else if(plus_minus == 'plus'){
+			if(idx == self._background_list.length-1){
+				return false;
+			}
+			self._background_list[idx].display_order++;
+			self._background_list[idx+1].display_order--;
+		}
+		self.SortBackgroundList();
+		return true;
 	};
 
 	this.GetBackground = function(background_uid){
