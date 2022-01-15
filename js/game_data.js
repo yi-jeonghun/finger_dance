@@ -74,7 +74,7 @@ function GameData(direction, is_show_beat_order){
 	};
 
 	this.SortWaveList = function(){
-		self._wave_list.sort(function(a, b){return a - b});
+		self._wave_list.sort(function(a, b){return a.t - b.t});
 	};
 
 	this.UpdateGameObject = function(ball_info){
