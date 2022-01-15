@@ -25,7 +25,6 @@ function GameControl(width, height, is_show_beat_order){
 	this._is_complete = false;
 	this._is_excercise_mode = false;
 	this._total_hit_count = 0;
-	this._cur_wave_idx = 0;
 	this._progress_percent = 0;
 	this._draw_progress_bar = null;
 	this._draw_text_combo = null;
@@ -312,6 +311,10 @@ function GameControl(width, height, is_show_beat_order){
 		for(var i=0 ; i<self._game_data._draw_beat_list.length ; i++){
 			window._renderer.AddDrawObject(6, self._game_data._draw_beat_list[i]);
 		}
+
+		self._cur_wave_idx = 0;
+		self._wave_sequence_idx = 0;
+		self.ShowBackground(0);
 	};
 
 	this.PlayGame = function(){
@@ -533,17 +536,64 @@ function GameControl(width, height, is_show_beat_order){
 		}
 	};
 
-	this._color_table = ['#3d5a80', '#98c1d9', '#e0fbfc', '#ee6c4d', '#84a59d', '#00b4d8', '#f1c453', '#e6beae'];
+	this._cur_wave_idx = 0;
+	this._wave_sequence_idx = 0;
 	this.UpdateWave = function(){
-		if(self._cur_wave_idx >= self._game_data._wave_list.length){
+		if(self._cur_wave_idx >= self._game_data._wave_list.length - 1){
 			return;
 		}
 
-		var idx = parseInt(Math.random() * (self._color_table.length));
+		var next_wave_idx = self._cur_wave_idx + 1;
 
-		if(self._timelapse >= self._game_data._wave_list[self._cur_wave_idx]){
-			$('#ddr_player_bg_layer').css('background-color', self._color_table[idx]);
-			self._cur_wave_idx++;
+		if(self._timelapse < self._game_data._wave_list[next_wave_idx].t){
+			return;
+		}
+		self._cur_wave_idx++;
+		self.ShowBackground(self._cur_wave_idx);
+	};
+
+	this.ShowBackground = function(idx){
+		console.log('ShowBackground ' + idx);
+		console.log('self._game_data._wave_list.length ' + self._game_data._wave_list.length);
+		if(idx > self._game_data._wave_list.length -1){
+			return;
+		}
+
+		var wave = self._game_data._wave_list[idx];
+		var background = null;
+		console.log('wave.type ' + wave.type);
+		switch(wave.type){
+			case BG_SELECT_TYPE.FIXED:
+				background = self._game_data.GetBackground(wave.background_uid);
+				break;
+			case BG_SELECT_TYPE.RANDOM:
+				var min = 0;
+				var max = self._game_data._background_list.length - 1;
+				var random_idx = Math.random() * (max - min) + min;
+				if(random_idx < self._game_data._background_list.length){
+					background = self._game_data._background_list[random_idx];
+				}
+				break;
+			case BG_SELECT_TYPE.SEQUENCE:
+				if(self._wave_sequence_idx < self._game_data._background_list.length){
+					background = self._game_data._background_list[self._wave_sequence_idx];
+					self._wave_sequence_idx++;
+					if(self._wave_sequence_idx >= self._game_data._background_list.length){
+						self._wave_sequence_idx = 0;
+					}
+				}
+				break;
+		}
+
+		console.log('background ' + JSON.stringify(background));
+		if(background != null){
+			if(background.type == BG_TYPE.IMG){
+				console.log('background.image_path ' + background.image_path);
+				var img_url = `url("${background.image_path}")`;
+				$('#ddr_player_bg_layer').css('background-image', `${img_url}`);
+			}else if(background.type == BG_TYPE.STYLE){
+
+			}
 		}
 	};
 
