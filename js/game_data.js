@@ -287,7 +287,14 @@ function GameData(direction, is_show_beat_order){
 			return;
 		}
 
-		self.AddWave(self._beat_list[beat_idx].t);
+		//첫번째 비트로 선택하여 Wave를 추가하는 경우에는
+		//time을 항상 0으로 함.
+		//게임 시작과 함께 백그라운드가 나오게 하기 위함.
+		var time_ms = self._beat_list[beat_idx].t;
+		if(beat_idx == 0){
+			time_ms = 0;
+		}
+		self.AddWave(time_ms);
 	}
 
 	this.Shift = function(offset){
