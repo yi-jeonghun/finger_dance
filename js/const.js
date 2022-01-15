@@ -38,7 +38,13 @@ const GAME_TYPE = {
 	Dash:1
 };
 
-const BACKGROUND_TYPE = {
+const BG_TYPE = {
 	IMG:'IMG',
 	STYLE:'STYLE'
+};
+
+const BG_ACT_TYPE = {
+	FIXMED: 0,
+	RANDOM: 1,
+	SEQUENCE: 2
 };
