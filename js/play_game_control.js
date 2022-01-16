@@ -264,9 +264,9 @@ function PlayGameControl(){
 		_game_control._cb_on_youtube_video_ready_to_play = self.OnYoutubeVideoReadyToPlay();
 
 		var wave_n_beat = JSON.parse(game_data.wave_n_beat);
+		var background_list = JSON.parse(game_data.background_list);
 		_game_control._game_level = game_data.level;
-		//FIXME game_data에 background list도 포함시킬 것.
-		_game_control.SetWaveNBeat(wave_n_beat);
+		_game_control.SetWaveNBeat(wave_n_beat, background_list);
 		_game_control.PrepareGame();
 
 		$('#id_text_level').html(game_data.level);
