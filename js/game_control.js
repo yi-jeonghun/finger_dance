@@ -589,7 +589,7 @@ function GameControl(width, height, is_show_beat_order){
 		if(background != null){
 			if(background.type == BG_TYPE.IMG){
 				console.log('background.image_path ' + background.image_path);
-				var img_url = `url("${background.image_path}")`;
+				var img_url = `url("./${background.image_path}")`;
 				$('#ddr_player_bg_layer').css('background-image', `${img_url}`);
 			}else if(background.type == BG_TYPE.STYLE){
 
