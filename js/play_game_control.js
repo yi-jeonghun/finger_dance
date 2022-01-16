@@ -244,6 +244,7 @@ function PlayGameControl(){
 		window._renderer = new Renderer(game_width, game_height, screen_width, screen_height).Init();
 		var is_show_beat_order = false;
 		window._game_control = new GameControl(game_width, game_height, is_show_beat_order).Init();
+		// window._game_control._is_excercise_mode = true;
 	};
 
 	this.DisplayGameData = function(game_data){

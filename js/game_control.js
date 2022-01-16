@@ -496,6 +496,7 @@ function GameControl(width, height, is_show_beat_order){
 		}
 	};
 
+	this._particles_list = [];
 	this.CreateHitEffect = function(hit){
 		var text_y = self._base_line;
 		var one_width = 400 / 5;
@@ -508,33 +509,53 @@ function GameControl(width, height, is_show_beat_order){
 			case ARROW.LEFT:
 				text_x = one_width;
 				particle_x = first_x;
+				if(self._particles_list[0] == undefined){
+					self._particles_list[0] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
+				}
+				self._particles_list[0].Reset(particle_x, self._base_line);
+				window._renderer.AddDrawObject(5, self._particles_list[0]);
 				break;
 			case ARROW.DOWN:
 				text_x = one_width * 2;
 				particle_x = quarter_x+first_x;
+				if(self._particles_list[1] == undefined){
+					self._particles_list[1] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
+				}
+				self._particles_list[1].Reset(particle_x, self._base_line);
+				window._renderer.AddDrawObject(5, self._particles_list[1]);
 				break;
 			case ARROW.UP:
 				text_x = one_width * 3;
 				particle_x = quarter_x*2+first_x;
+				if(self._particles_list[2] == undefined){
+					self._particles_list[2] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
+				}
+				self._particles_list[2].Reset(particle_x, self._base_line);
+				window._renderer.AddDrawObject(5, self._particles_list[2]);
 				break;
 			case ARROW.RIGHT:
 				text_x = one_width * 4;
 				particle_x = quarter_x*3+first_x;
+				if(self._particles_list[3] == undefined){
+					self._particles_list[3] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
+				}
+				self._particles_list[3].Reset(particle_x, self._base_line);
+				window._renderer.AddDrawObject(5, self._particles_list[3]);
 				break;
 		}
 		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, text_x, text_y+50, 26, 'blue', 200);
 		var draw_score_obj = new DrawText(window._renderer._ctx, hit.hit_result.score, text_x, text_y+80, 26, 'blue', 200);
 		window._renderer.AddDrawObject(2, draw_text_obj);
 		window._renderer.AddDrawObject(2, draw_score_obj);
-		self.CreateParticles(particle_x, self._base_line);
+		// self.CreateParticles(particle_x, self._base_line);
 	};
 
-	this.CreateParticles = function(x, y){
-		for(var i=0 ; i<30 ; i++){
-			var particle = new Particle(window._renderer._ctx, x, y);
-			window._renderer.AddDrawObject(5, particle);
-		}
-	};
+	// this.CreateParticles = function(x, y){
+	// 	for(var i=0 ; i<30 ; i++){
+	// 		var particle = new Particle(window._renderer._ctx, x, y);
+	// 		window._renderer.AddDrawObject(5, particle);
+	// 	}
+	// };
 
 	this._cur_wave_idx = 0;
 	this._wave_sequence_idx = 0;

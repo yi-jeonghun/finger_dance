@@ -1,3 +1,42 @@
+class Particles {
+	#particle_list = [];
+	#start_ms = Date.now();
+	#life_ms = 500;
+
+	constructor(context, x, y, count){
+		for(var i=0 ; i<count ; i++){
+			var particle = new Particle(context, x, y);
+			this.#particle_list.push(particle);
+		}
+	}
+
+	Update(){
+		for(var i=0 ; i<this.#particle_list.length ; i++){
+			this.#particle_list[i].Update();
+		}
+	}
+
+	NeedDelete(){
+		var now = Date.now();
+		var diff = now - this.#start_ms;
+		if( diff > this.#life_ms){
+			return true;
+		}
+		return false;
+	};
+
+	IsVisible(){
+		return true;
+	}
+
+	Reset(x, y){
+		this.#start_ms = Date.now();
+		for(var i=0 ; i<this.#particle_list.length ; i++){
+			this.#particle_list[i].Reset(x, y);
+		}
+	}
+}
+
 class Particle extends DrawObject {
 	#x;
 	#y;
@@ -13,14 +52,16 @@ class Particle extends DrawObject {
 
 	constructor(context, x, y){
 		super(context);
+		this.Reset();
+	}
+
+	Reset(x, y){
 		this.#x = x;
 		this.#y = y;
-
+		this.#alpha = 1;
 		this.#rotate_speed = this.#Random(-30, 30);
-
 		var width = this.#Random(10, 30);
 		this.#w = this.#h = width;
-
 		this.#move_x = this.#Random(-10, 10);
 		this.#move_y = this.#Random(-10, 10);
 	}

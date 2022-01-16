@@ -184,6 +184,11 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				self._draw_object_list_4.push(draw_object);
 				break;
 			case 5:
+				for(var i=0 ; i<self._draw_object_list_5.length ; i++){
+					if(draw_object == self._draw_object_list_5[i]){
+						return;
+					}
+				}
 				self._draw_object_list_5.push(draw_object);
 				break;
 			case 6:
