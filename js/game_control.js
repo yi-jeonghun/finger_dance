@@ -511,36 +511,36 @@ function GameControl(width, height, is_show_beat_order){
 				particle_x = first_x;
 				if(self._particles_list[0] == undefined){
 					self._particles_list[0] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
+					window._renderer.AddDrawObject(5, self._particles_list[0]);
 				}
 				self._particles_list[0].Reset(particle_x, self._base_line);
-				window._renderer.AddDrawObject(5, self._particles_list[0]);
 				break;
 			case ARROW.DOWN:
 				text_x = one_width * 2;
 				particle_x = quarter_x+first_x;
 				if(self._particles_list[1] == undefined){
 					self._particles_list[1] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
+					window._renderer.AddDrawObject(5, self._particles_list[1]);
 				}
 				self._particles_list[1].Reset(particle_x, self._base_line);
-				window._renderer.AddDrawObject(5, self._particles_list[1]);
 				break;
 			case ARROW.UP:
 				text_x = one_width * 3;
 				particle_x = quarter_x*2+first_x;
 				if(self._particles_list[2] == undefined){
 					self._particles_list[2] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
+					window._renderer.AddDrawObject(5, self._particles_list[2]);
 				}
 				self._particles_list[2].Reset(particle_x, self._base_line);
-				window._renderer.AddDrawObject(5, self._particles_list[2]);
 				break;
 			case ARROW.RIGHT:
 				text_x = one_width * 4;
 				particle_x = quarter_x*3+first_x;
 				if(self._particles_list[3] == undefined){
 					self._particles_list[3] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
+					window._renderer.AddDrawObject(5, self._particles_list[3]);
 				}
 				self._particles_list[3].Reset(particle_x, self._base_line);
-				window._renderer.AddDrawObject(5, self._particles_list[3]);
 				break;
 		}
 		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, text_x, text_y+50, 26, 'blue', 200);

@@ -17,15 +17,15 @@ class Particles {
 	}
 
 	NeedDelete(){
-		var now = Date.now();
-		var diff = now - this.#start_ms;
-		if( diff > this.#life_ms){
-			return true;
-		}
 		return false;
 	};
 
 	IsVisible(){
+		var now = Date.now();
+		var diff = now - this.#start_ms;
+		if( diff > this.#life_ms){
+			return false;
+		}
 		return true;
 	}
 
