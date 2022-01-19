@@ -5,7 +5,8 @@ class Particles {
 
 	constructor(context, x, y, count){
 		for(var i=0 ; i<count ; i++){
-			var particle = new Particle(context, x, y);
+			// var particle = new Particle(context, x, y);
+			var particle = new ParticleImage(context, x, y);
 			this.#particle_list.push(particle);
 		}
 	}
@@ -112,78 +113,78 @@ class Particle extends DrawObject {
 	};
 }
 
+class ParticleImage extends DrawObject {
+	#x;
+	#y;
+	#w = 10;
+	#h = 10;
+	#rotate_speed = 1;
+	#move_x = 1;
+	#move_y = 1;
+	#degree = 0;
+	#alpha = 1;
+	#start_ms = Date.now();
+	#life_ms = 500;
+	#img;
 
-/*
-function Particle(x, y){
-	var self = this;
-	this._ctx = null;
-	this._x = x;
-	this._y = y;
-	this._w = 10;
-	this._h = 10;
-	this._rotate_speed = 1;
-	this._move_x = 1;
-	this._move_y = 1;
-	this._degree = 0;
-	this._alpha = 1;
-	this._start_ms = Date.now();
-	this._life_ms = 500;
-
-	this.Init = function(){
-		self._rotate_speed = self.Random(-30, 30);
-
-		var width = self.Random(10, 30);
-		self._w = self._h = width;
-
-		self._move_x = self.Random(-10, 10);
-		self._move_y = self.Random(-10, 10);
-
-		return this;
+	constructor(context, x, y){
+		super(context);
+		this.#img = new Image();
+		this.#img.src = './upload/particle/particle_yello_star.png';
+		this.Reset();
 	}
 
-	this.Random = function(min, max){
+	Reset(x, y){
+		this.#x = x;
+		this.#y = y;
+		this.#alpha = 1;
+		this.#rotate_speed = this.#Random(-30, 30);
+		var width = this.#Random(10, 50);
+		this.#w = this.#h = width;
+		this.#move_x = this.#Random(-10, 10);
+		this.#move_y = this.#Random(-10, 10);
+	}
+
+	#Random(min, max){
 		return Math.random() * (max - min) + min;;
 	};
 
-	this.Update = function(){
-		self._degree += self._rotate_speed;
-		self._x += self._move_x;
-		self._y += self._move_y;		
-		self._alpha -= 0.03;
-		if(self._alpha < 0){
-			self._alpha = 0;
+	Update(){
+		this.#degree += this.#rotate_speed;
+		this.#x += this.#move_x;
+		this.#y += this.#move_y;		
+		this.#alpha -= 0.03;
+		if(this.#alpha < 0){
+			this.#alpha = 0;
 		}
 
-		self.Draw();
+		this._Draw();
+	}
+
+	_Draw(){
+		var cx = this.#x + this.#w/2;
+		var cy = this.#y + this.#h/2;
+
+		this._ctx.save();
+
+		this._ctx.translate(cx, cy);
+		this._ctx.rotate(this.#degree * Math.PI/180);
+		this._ctx.translate(-cx, -cy);
+		this._ctx.globalAlpha = this.#alpha;
+
+		this._ctx.drawImage(this.#img,
+			0, 0, 50, 50,
+			this.#x, this.#y, this.#w, this.#h);
+	
+		this._ctx.restore();
 	};
 
-	this.Draw = function(){
-		var cx = self._x + self._w/2;
-		var cy = self._y + self._h/2;
-
-		self._ctx.save();
-
-		self._ctx.translate(cx, cy);
-		self._ctx.rotate(self._degree * Math.PI/180);
-		self._ctx.translate(-cx, -cy);
-
-		self._ctx.lineWidth = 1;
-		self._ctx.fillStyle = 'white';
-		self._ctx.strokeStyle = 'black';
-		self._ctx.globalAlpha = self._alpha;
-		self._ctx.fillRect(self._x, self._y, self._w, self._h);
-		self._ctx.strokeRect(self._x, self._y, self._w, self._h);
-
-		self._ctx.restore();
-	};
-
-	this.IsEnd = function(){
+	NeedDelete(){
 		var now = Date.now();
-		var diff = now - self._start_ms;
-		if( diff > self._life_ms){
+		var diff = now - this.#start_ms;
+		if( diff > this.#life_ms){
 			return true;
 		}
 		return false;
 	};
 }
-*/
