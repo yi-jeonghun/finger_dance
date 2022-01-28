@@ -38,6 +38,10 @@ const GAME_TYPE = {
 	Dash:1
 };
 
+const BEAT_TYPE_COUNT = {
+	[GAME_TYPE.DDR]:4,
+};
+
 const BG_TYPE = {
 	IMG:'IMG',
 	STYLE:'STYLE'

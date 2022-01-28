@@ -3,10 +3,10 @@ class Particles {
 	#start_ms = Date.now();
 	#life_ms = 500;
 
-	constructor(context, x, y, count){
-		for(var i=0 ; i<count ; i++){
+	constructor(context, x, y, image_path){
+		for(var i=0 ; i<15 ; i++){
 			// var particle = new Particle(context, x, y);
-			var particle = new ParticleImage(context, x, y);
+			var particle = new ParticleImage(context, x, y, image_path);
 			this.#particle_list.push(particle);
 		}
 	}
@@ -127,11 +127,11 @@ class ParticleImage extends DrawObject {
 	#life_ms = 500;
 	#img;
 
-	constructor(context, x, y){
+	constructor(context, x, y, img_path){
 		super(context);
 		this.#img = new Image();
-		this.#img.src = './upload/particle/particle_yello_star.png';
-		this.Reset();
+		this.#img.src = img_path;
+		this.Reset(x, y);
 	}
 
 	Reset(x, y){

@@ -266,8 +266,9 @@ function PlayGameControl(){
 
 		var wave_n_beat = JSON.parse(game_data.wave_n_beat);
 		var background_list = JSON.parse(game_data.background_list);
+		var particle_list = JSON.parse(game_data.particle_list);
 		_game_control._game_level = game_data.level;
-		_game_control.SetWaveNBeat(wave_n_beat, background_list);
+		_game_control.SetWaveNBeat(wave_n_beat, background_list, particle_list);
 		_game_control.PrepareGame();
 
 		$('#id_text_level').html(game_data.level);

@@ -1,7 +1,8 @@
-function GameData(direction, is_show_beat_order){
+function GameData(direction, is_show_beat_order, game_type){
 	var self = this;
 	this._speed = 150;//pixel per second
 	this._base_line = 100;
+	this._game_type = game_type;
 
 	// Beat 정보
 	/*{
@@ -31,18 +32,30 @@ function GameData(direction, is_show_beat_order){
 	}*/
 	this._background_list = [];
 
+	/*{
+		particle_uid list: '',
+		image_path: ''
+	}*/
+	this._particle_list = [];
+
 	this._move_direction = direction;
 	this._note_order = 0;
 	this._is_show_beat_order = is_show_beat_order;
 
 	this.Init = function(){
+		var beat_count = BEAT_TYPE_COUNT[self._game_type];
+		for(var i=0 ; i<beat_count ; i++){
+			self._particle_list[i] = null;
+		}
 		return this;
 	};
 
-	this.SetWaveNBeat = function(wave_n_beat, background_list){
+	this.SetWaveNBeat = function(wave_n_beat, background_list, particle_list){
 		self._wave_list = wave_n_beat.wave_list;
 		self._beat_list = wave_n_beat.beat_list;
 		self._background_list = background_list;
+		self._particle_list = particle_list;
+		console.log('self._particle_list ' + JSON.stringify(self._particle_list));
 	};
 
 	this.GetWaveNBeat = function(){

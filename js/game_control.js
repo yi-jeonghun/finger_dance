@@ -280,8 +280,8 @@ function GameControl(width, height, is_show_beat_order){
 		});
 	};
 
-	this.SetWaveNBeat = function(wave_n_beat, background_list){
-		self._game_data.SetWaveNBeat(wave_n_beat, background_list);
+	this.SetWaveNBeat = function(wave_n_beat, background_list, particle_list){
+		self._game_data.SetWaveNBeat(wave_n_beat, background_list, particle_list);
 	};
 
 	this.PrepareGame = function(){
@@ -311,6 +311,7 @@ function GameControl(width, height, is_show_beat_order){
 		for(var i=0 ; i<self._game_data._draw_beat_list.length ; i++){
 			window._renderer.AddDrawObject(6, self._game_data._draw_beat_list[i]);
 		}
+		self._particles_list = [];
 
 		self._cur_wave_idx = 0;
 		self._wave_sequence_idx = 0;
@@ -510,8 +511,11 @@ function GameControl(width, height, is_show_beat_order){
 				text_x = one_width;
 				particle_x = first_x;
 				if(self._particles_list[0] == undefined){
-					self._particles_list[0] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
-					window._renderer.AddDrawObject(5, self._particles_list[0]);
+					if(self._game_data._particle_list[0] != null){
+						var img_path = self._game_data._particle_list[0].image_path;
+						self._particles_list[0] = new Particles(window._renderer._ctx, particle_x, self._base_line, img_path);
+						window._renderer.AddDrawObject(5, self._particles_list[0]);
+					}
 				}
 				self._particles_list[0].Reset(particle_x, self._base_line);
 				break;
@@ -519,8 +523,11 @@ function GameControl(width, height, is_show_beat_order){
 				text_x = one_width * 2;
 				particle_x = quarter_x+first_x;
 				if(self._particles_list[1] == undefined){
-					self._particles_list[1] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
-					window._renderer.AddDrawObject(5, self._particles_list[1]);
+					if(self._game_data._particle_list[1] != null){
+						var img_path = self._game_data._particle_list[1].image_path;
+						self._particles_list[1] = new Particles(window._renderer._ctx, particle_x, self._base_line, img_path);
+						window._renderer.AddDrawObject(5, self._particles_list[1]);
+					}
 				}
 				self._particles_list[1].Reset(particle_x, self._base_line);
 				break;
@@ -528,8 +535,11 @@ function GameControl(width, height, is_show_beat_order){
 				text_x = one_width * 3;
 				particle_x = quarter_x*2+first_x;
 				if(self._particles_list[2] == undefined){
-					self._particles_list[2] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
-					window._renderer.AddDrawObject(5, self._particles_list[2]);
+					if(self._game_data._particle_list[2] != null){
+						var img_path = self._game_data._particle_list[2].image_path;
+						self._particles_list[2] = new Particles(window._renderer._ctx, particle_x, self._base_line, img_path);
+						window._renderer.AddDrawObject(5, self._particles_list[2]);
+					}
 				}
 				self._particles_list[2].Reset(particle_x, self._base_line);
 				break;
@@ -537,8 +547,11 @@ function GameControl(width, height, is_show_beat_order){
 				text_x = one_width * 4;
 				particle_x = quarter_x*3+first_x;
 				if(self._particles_list[3] == undefined){
-					self._particles_list[3] = new Particles(window._renderer._ctx, particle_x, self._base_line, 30);
-					window._renderer.AddDrawObject(5, self._particles_list[3]);
+					if(self._game_data._particle_list[3] != null){
+						var img_path = self._game_data._particle_list[3].image_path;
+						self._particles_list[3] = new Particles(window._renderer._ctx, particle_x, self._base_line, img_path);
+						window._renderer.AddDrawObject(5, self._particles_list[3]);
+					}
 				}
 				self._particles_list[3].Reset(particle_x, self._base_line);
 				break;
