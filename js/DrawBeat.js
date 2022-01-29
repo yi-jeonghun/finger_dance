@@ -1,4 +1,5 @@
 class DrawBeat extends DrawObject{
+	_atlas;
 	#atlas_img;
 	#img;
 	#sx;
@@ -23,10 +24,11 @@ class DrawBeat extends DrawObject{
 	#order;
 	#draw_text = null;
 
-	constructor(context, arrow_or_num, offset_ms, speed_pps, base_line, move_direction, order){
+	constructor(context, atlas, arrow_or_num, offset_ms, speed_pps, base_line, move_direction, order){
 		super(context);
 
-		this.#atlas_img = _atlas._img;
+		this._atlas = atlas;
+		this.#atlas_img = atlas._img;
 		this.#arrow_or_num = arrow_or_num;
 		this.#speed = speed_pps;//pps
 		this.#offset_ms = offset_ms;
@@ -44,16 +46,16 @@ class DrawBeat extends DrawObject{
 		{
 			var img = null;
 			if(this.#arrow_or_num == ARROW.LEFT){
-				img = _atlas._img_l;
+				img = this._atlas._img_l;
 				this.#x_base = first_x;
 			}else if(this.#arrow_or_num == ARROW.DOWN){
-				img = _atlas._img_d;
+				img = this._atlas._img_d;
 				this.#x_base = first_x + quarter_x;
 			}else if(this.#arrow_or_num == ARROW.UP){
-				img = _atlas._img_u;
+				img = this._atlas._img_u;
 				this.#x_base = first_x + quarter_x*2;
 			}else if(this.#arrow_or_num == ARROW.RIGHT){
-				img = _atlas._img_r;
+				img = this._atlas._img_r;
 				this.#x_base = first_x + quarter_x*3;
 			}
 

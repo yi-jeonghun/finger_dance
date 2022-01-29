@@ -3,9 +3,11 @@ class GameProfiles{
 	#width;
 	#height;
 	#base_line;
+	_atlas = null;
 
-	constructor(ctx, width, height, base_line){
+	constructor(ctx, atlas, width, height, base_line){
 		this.#ctx = ctx;
+		this._atlas = atlas;
 		this.#width = width;
 		this.#height = height;
 		this.#base_line = base_line;
@@ -38,26 +40,27 @@ class GameProfiles{
 			var dw = 65;
 			var dh = 65;
 			
-			var di_l = new DrawImage(this.#ctx, _atlas._img, 
-				_atlas._img_l_empty.x, _atlas._img_l_empty.y, _atlas._img_l_empty.w, _atlas._img_l_empty.h, 
+			console.log('this._atlas._img.src ' + this._atlas._img.src);
+			var di_l = new DrawImage(this.#ctx, this._atlas._img, 
+				this._atlas._img_l_empty.x, this._atlas._img_l_empty.y, this._atlas._img_l_empty.w, this._atlas._img_l_empty.h, 
 				(first_x - dw/2), this.#base_line - dh/2, dw, dh, life_ms);
 			di_l.Update();
 			window._renderer.AddDrawObject(4, di_l);
 			
-			var di_d = new DrawImage(this.#ctx, _atlas._img, 
-				_atlas._img_d_empty.x, _atlas._img_d_empty.y, _atlas._img_d_empty.w, _atlas._img_d_empty.h, 
+			var di_d = new DrawImage(this.#ctx, this._atlas._img, 
+				this._atlas._img_d_empty.x, this._atlas._img_d_empty.y, this._atlas._img_d_empty.w, this._atlas._img_d_empty.h, 
 				((first_x + quarter_x) - dw/2), this.#base_line - dh/2, dw, dh, life_ms);
 			di_d.Update();
 			window._renderer.AddDrawObject(4, di_d);
 
-			var di_u = new DrawImage(this.#ctx, _atlas._img, 
-				_atlas._img_u_empty.x, _atlas._img_u_empty.y, _atlas._img_u_empty.w, _atlas._img_u_empty.h, 
+			var di_u = new DrawImage(this.#ctx, this._atlas._img, 
+				this._atlas._img_u_empty.x, this._atlas._img_u_empty.y, this._atlas._img_u_empty.w, this._atlas._img_u_empty.h, 
 				((first_x + quarter_x*2) - dw/2), this.#base_line - dh/2, dw, dh, life_ms);
 			di_u.Update();
 			window._renderer.AddDrawObject(4, di_u);
 	
-			var di_r = new DrawImage(this.#ctx, _atlas._img, 
-				_atlas._img_r_empty.x, _atlas._img_r_empty.y, _atlas._img_r_empty.w, _atlas._img_r_empty.h, 
+			var di_r = new DrawImage(this.#ctx, this._atlas._img, 
+				this._atlas._img_r_empty.x, this._atlas._img_r_empty.y, this._atlas._img_r_empty.w, this._atlas._img_r_empty.h, 
 				((first_x + quarter_x*3) - dw/2), this.#base_line - dh/2, dw, dh, life_ms);
 			di_r.Update();
 			window._renderer.AddDrawObject(4, di_r);

@@ -1,5 +1,6 @@
-function Atlas(){
+function Atlas(image_path){
 	var self = this;
+	this._image_path = image_path;
 	this._img = null;
 
 	this._img_l = null;
@@ -19,7 +20,8 @@ function Atlas(){
 
 	this.Init = function(){
 		self._img = new Image();
-		self._img.src = 'img/atlas.png';
+		self._img.src = '.' + self._image_path;//'img/atlas.png';
+		console.log('self._img.src ' + self._img.src);
 		self.LoadSprite();
 		return this;
 	};

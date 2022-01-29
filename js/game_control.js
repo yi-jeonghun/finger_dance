@@ -30,6 +30,7 @@ function GameControl(width, height, is_show_beat_order){
 	this._draw_text_combo = null;
 	this._draw_text_score = null;
 	this._is_show_beat_order = is_show_beat_order;
+	this._atlas = null;
 
 	this.Init = function(){
 		console.log('GameControl Init');
@@ -280,15 +281,18 @@ function GameControl(width, height, is_show_beat_order){
 		});
 	};
 
-	this.SetWaveNBeat = function(wave_n_beat, background_list, particle_list){
-		self._game_data.SetWaveNBeat(wave_n_beat, background_list, particle_list);
+	this.SetWaveNBeat = function(wave_n_beat, background_list, particle_list, beat_atlas_uid, beat_atlas_image_path){
+		self._game_data.SetWaveNBeat(wave_n_beat, background_list, particle_list, beat_atlas_uid, beat_atlas_image_path);
 	};
 
 	this.PrepareGame = function(){
 		window._renderer.ClearScreen();
 		window._renderer.ClearDrawObject();
+		console.log('self._game_data._beat_atlas_image_path ' + self._game_data._beat_atlas_image_path);
+		self._atlas = new Atlas(self._game_data._beat_atlas_image_path).Init();
+		console.log('self._atlas._img.src ' + self._atlas._img.src);
 
-		var profile = new GameProfiles(window._renderer._ctx, self._width, self._height, self._base_line);
+		var profile = new GameProfiles(window._renderer._ctx, self._atlas, self._width, self._height, self._base_line);
 		{
 			profile.PLAY_LoadStaticAssets();
 			{//progress bar
@@ -307,7 +311,7 @@ function GameControl(width, height, is_show_beat_order){
 			}
 		}
 
-		self._game_data.CreateDrawBeatList(self._game_level);
+		self._game_data.CreateDrawBeatList(self._game_level, self._atlas);
 		for(var i=0 ; i<self._game_data._draw_beat_list.length ; i++){
 			window._renderer.AddDrawObject(6, self._game_data._draw_beat_list[i]);
 		}

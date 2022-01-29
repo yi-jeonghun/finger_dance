@@ -37,6 +37,8 @@ function GameData(direction, is_show_beat_order, game_type){
 		image_path: ''
 	}*/
 	this._particle_list = [];
+	this._beat_atlas_uid = '';
+	this._beat_atlas_image_path = '';
 
 	this._move_direction = direction;
 	this._note_order = 0;
@@ -50,11 +52,13 @@ function GameData(direction, is_show_beat_order, game_type){
 		return this;
 	};
 
-	this.SetWaveNBeat = function(wave_n_beat, background_list, particle_list){
+	this.SetWaveNBeat = function(wave_n_beat, background_list, particle_list, beat_atlas_uid, beat_atlas_image_path){
 		self._wave_list = wave_n_beat.wave_list;
 		self._beat_list = wave_n_beat.beat_list;
 		self._background_list = background_list;
 		self._particle_list = particle_list;
+		self._beat_atlas_uid = beat_atlas_uid;
+		self._beat_atlas_image_path = beat_atlas_image_path;
 		console.log('self._particle_list ' + JSON.stringify(self._particle_list));
 	};
 
@@ -173,7 +177,7 @@ function GameData(direction, is_show_beat_order, game_type){
 		}
 	};
 
-	this.CreateDrawBeatList = function(game_level){
+	this.CreateDrawBeatList = function(game_level, atlas){
 		switch(game_level){
 			case 1:
 				self._speed = 150;
@@ -205,7 +209,7 @@ function GameData(direction, is_show_beat_order, game_type){
 			if(self._is_show_beat_order){
 				self._note_order++;
 			}
-			self.CreateDrawBeat(self._beat_list[i]);
+			self.CreateDrawBeat(self._beat_list[i], atlas);
 		}
 	};
 
@@ -224,30 +228,30 @@ function GameData(direction, is_show_beat_order, game_type){
 		}
 	};
 
-	this.CreateDrawBeat = function(ball_info, default_time_offset){
+	this.CreateDrawBeat = function(ball_info, atlas, default_time_offset){
 		if(ball_info.m & LEFT_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			var obj = new DrawBeat(window._renderer._ctx, atlas, ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & UP_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			var obj = new DrawBeat(window._renderer._ctx, atlas, ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & RIGHT_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			var obj = new DrawBeat(window._renderer._ctx, atlas, ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & DOWN_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			var obj = new DrawBeat(window._renderer._ctx, atlas, ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
