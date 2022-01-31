@@ -312,7 +312,7 @@ function GameControl(width, height, is_show_beat_order){
 			}
 		}
 
-		self._game_data.CreateDrawBeatList(self._game_level, self._atlas);
+		self._game_data.CreateDrawBeatList(self._game_level);
 		for(var i=0 ; i<self._game_data._draw_beat_list.length ; i++){
 			window._renderer.AddDrawObject(6, self._game_data._draw_beat_list[i]);
 		}
