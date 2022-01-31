@@ -1,6 +1,6 @@
 $('document').ready(function(){
 	window._timer = new Timer().Init();
-
+	window._resource_loader = new ResourceLoader();
 	window._play_game_control = new PlayGameControl().Init();
 });
 
@@ -33,6 +33,7 @@ function PlayGameControl(){
 		self._is_embedded = GetURLParam('e') != null ? true : false;
 
 		// console.log('_game_id ' + self._game_id);
+		window._resource_loader.SetCallback(self.OnResourceLoaded);
 
 		if(self._game_id != null){
 			var path = `db/${self._game_id}.json`;
@@ -117,6 +118,18 @@ function PlayGameControl(){
 		$('#id_btn_retry').on('click', self.RetryGame);
 	};
 
+	this.OnResourceLoaded = function(percent){
+		// console.log('percent ' + percent);
+		var pstr = percent * 100;
+		pstr += "%";
+		$('#id_span_percent').html(pstr);
+		// console.log('pstr ' + pstr);
+		if(percent == 1){
+			$('#id_loading').css('display', 'none');
+			self.ShowHidePlayStopButton(true, false);
+		}
+	};
+
 	this.RetryGame = function(){
 		$('#id_retry_area').css('display', 'none');
 		// window._game_control.StopGame();
@@ -136,6 +149,7 @@ function PlayGameControl(){
 	};
 
 	this.ShowHidePlayStopButton = function(show_play, show_stop){
+		console.log('ShowHidePlayStopButton play[' + show_play + '] stop[' + show_stop + ']');
 		if(show_play){
 			if(self._level_allowed_to_play == true){
 				$('#id_btn_play').css('display', '');
@@ -262,7 +276,7 @@ function PlayGameControl(){
 		}
 		_game_control._cb_on_youtube_stopped = self.OnYoutubeStopped;
 		_game_control._cb_on_game_finished = self.OnGameFinished;
-		_game_control._cb_on_youtube_video_ready_to_play = self.OnYoutubeVideoReadyToPlay();
+		_game_control._cb_on_youtube_video_ready_to_play = self.OnYoutubeVideoReadyToPlay;
 
 		var wave_n_beat = JSON.parse(game_data.wave_n_beat);
 		var background_list = JSON.parse(game_data.background_list);
@@ -273,12 +287,15 @@ function PlayGameControl(){
 			for(var i=0 ; i<background_list.length ; i++){
 				if(background_list[i].layer1_image_path != ''){
 					background_list[i].layer1_image_path = '.' + background_list[i].layer1_image_path;
+					window._resource_loader.AddImage(background_list[i].layer1_image_path);
 				}
 				if(background_list[i].layer2_image_path != ''){
 					background_list[i].layer2_image_path = '.' + background_list[i].layer2_image_path;
+					window._resource_loader.AddImage(background_list[i].layer2_image_path);
 				}
 				if(background_list[i].layer3_image_path != ''){
 					background_list[i].layer3_image_path = '.' + background_list[i].layer3_image_path;
+					window._resource_loader.AddImage(background_list[i].layer3_image_path);
 				}
 			}
 
@@ -287,11 +304,13 @@ function PlayGameControl(){
 			for(var i=0 ; i<particle_list.length ; i++){
 				if(particle_list[i]){
 					particle_list[i].image_path = '.' + particle_list[i].image_path;
+					window._resource_loader.AddImage(particle_list[i].image_path);
 				}
 			}
 			if(game_data.beat_atlas_image_path){
 				// console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
 				game_data.beat_atlas_image_path = '.' + game_data.beat_atlas_image_path;
+				window._resource_loader.AddImage(game_data.beat_atlas_image_path);
 				// console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
 			}
 		}
@@ -303,9 +322,11 @@ function PlayGameControl(){
 	};
 
 	this.OnYoutubeVideoReadyToPlay = function(){
-		// console.log('OnYoutubeVideoReadyToPlay ');
-		$('#id_loading').css('display', 'none');
-		self.ShowHidePlayStopButton(true, false);
+		console.log('OnYoutubeVideoReadyToPlay ');
+		window._resource_loader.OnYoutubeLoaded();
+		// return;
+		// $('#id_loading').css('display', 'none');
+		// self.ShowHidePlayStopButton(true, false);
 	};
 
 	this.Like = function(){

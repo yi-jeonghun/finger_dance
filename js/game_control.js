@@ -66,7 +66,7 @@ function GameControl(width, height, is_show_beat_order){
 		// console.log('YT_OnPlayerReady ' + duration);
 
 		if(self._cb_on_youtube_video_ready_to_play != null){
-			saelf._cb_on_youtube_video_ready_to_play();
+			self._cb_on_youtube_video_ready_to_play();
 		}
 
 		_yt_player.SetPlaybackQuality();
