@@ -22,13 +22,13 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 		self._canvas.width = self._screen_width;
 		self._canvas.height = self._screen_height;
 
-		console.log('self._canvas ' +self._canvas);
+		// console.log('self._canvas ' +self._canvas);
 		self._ctx = self._canvas.getContext('2d');
 
 		var scale_width = self._screen_width / self._game_width;
 		var scale_height = self._screen_height / self._game_height;
-		console.log('scale_width ' + scale_width);
-		console.log('scale_height ' + scale_height);
+		// console.log('scale_width ' + scale_width);
+		// console.log('scale_height ' + scale_height);
 
 		self._ctx.scale(scale_width, scale_height);
 		return this;

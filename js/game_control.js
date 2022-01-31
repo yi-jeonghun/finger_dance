@@ -33,7 +33,7 @@ function GameControl(width, height, is_show_beat_order){
 	this._atlas = null;
 
 	this.Init = function(){
-		console.log('GameControl Init');
+		// console.log('GameControl Init');
 		self._id_debug_ele = $('#id_debug');
 		
 		_yt_player.SetEventListener(self.YT_OnYoutubeReady, self.YT_OnFlowEvent, self.YT_OnPlayerReady, self.YT_OnPlayerStateChange);
@@ -49,12 +49,12 @@ function GameControl(width, height, is_show_beat_order){
 	};
 
 	this.YT_OnYoutubeReady = function(){
-		console.log('YT_OnYoutubeReady');
+		// console.log('YT_OnYoutubeReady');
 		
 		//https://www.youtube.com/watch?v=-tJYN-eG1zk
 		// _yt_player.LoadVideo('V1bFr2SWP1I');
 		// _yt_player.LoadVideo('MhURDZVpnZ8');
-		console.log('self._video_id ' + self._video_id);
+		// console.log('self._video_id ' + self._video_id);
 		if(self._video_id != ''){
 			_yt_player.LoadVideo(self._video_id);
 		}
@@ -63,7 +63,7 @@ function GameControl(width, height, is_show_beat_order){
 	this.YT_OnPlayerReady = function(pb_rates, duration){
 		self._duration_sec = duration;
 		// _game_maker._duration_sec = duration;
-		console.log('YT_OnPlayerReady ' + duration);
+		// console.log('YT_OnPlayerReady ' + duration);
 
 		if(self._cb_on_youtube_video_ready_to_play != null){
 			saelf._cb_on_youtube_video_ready_to_play();
@@ -289,9 +289,9 @@ function GameControl(width, height, is_show_beat_order){
 		window._renderer.ClearScreen();
 		window._renderer.ClearDrawObject();
 		window._background_renderer.ClearScreen();
-		console.log('self._game_data._beat_atlas_image_path ' + self._game_data._beat_atlas_image_path);
+		// console.log('self._game_data._beat_atlas_image_path ' + self._game_data._beat_atlas_image_path);
 		self._atlas = new Atlas(self._game_data._beat_atlas_image_path).Init();
-		console.log('self._atlas._img.src ' + self._atlas._img.src);
+		// console.log('self._atlas._img.src ' + self._atlas._img.src);
 
 		var profile = new GameProfiles(window._renderer._ctx, self._atlas, self._width, self._height, self._base_line);
 		{
@@ -594,15 +594,15 @@ function GameControl(width, height, is_show_beat_order){
 	};
 
 	this.ShowBackground = function(idx){
-		console.log('ShowBackground ' + idx);
-		console.log('self._game_data._wave_list.length ' + self._game_data._wave_list.length);
+		// console.log('ShowBackground ' + idx);
+		// console.log('self._game_data._wave_list.length ' + self._game_data._wave_list.length);
 		if(idx > self._game_data._wave_list.length -1){
 			return;
 		}
 
 		var wave = self._game_data._wave_list[idx];
 		var background = null;
-		console.log('wave.type ' + wave.type);
+		// console.log('wave.type ' + wave.type);
 		switch(wave.type){
 			case BG_SELECT_TYPE.FIXED:
 				background = self._game_data.GetBackground(wave.background_uid);
@@ -626,7 +626,7 @@ function GameControl(width, height, is_show_beat_order){
 				break;
 		}
 
-		console.log('background ' + JSON.stringify(background));
+		// console.log('background ' + JSON.stringify(background));
 		if(background != null){
 			window._background_renderer.SetBackground(background);
 		}

@@ -2,7 +2,7 @@ $('document').ready(function(){
 });
 
 function onYouTubeIframeAPIReady(){
-	console.log('onYouTubeIframeAPIReady');
+	// console.log('onYouTubeIframeAPIReady');
 	_yt_player.Ready();
 }
 
@@ -20,7 +20,7 @@ function YoutubePlayer(){
 	this._cb_on_player_state_changed = null;
 
 	this.Init = function(){
-		console.log('YoutubePlayer Init');
+		// console.log('YoutubePlayer Init');
 		
 		var tag = document.createElement('script');
 
@@ -32,7 +32,7 @@ function YoutubePlayer(){
 
 	this.SetEventListener = function(cb_on_youtube_ready, cb_on_flow_event, 
 		cb_on_player_ready, cb_on_player_state_changed){
-			console.log('SetEventListener');
+			// console.log('SetEventListener');
 		self._cb_on_youtube_ready = cb_on_youtube_ready;
 		self._cb_on_flow_event = cb_on_flow_event;
 		self._cb_on_player_ready = cb_on_player_ready;
@@ -40,7 +40,7 @@ function YoutubePlayer(){
 	};
 
 	this.Ready = function(){
-		console.log('Ready');
+		// console.log('Ready');
 		if(self._cb_on_youtube_ready) self._cb_on_youtube_ready();
 		if(self._video_id != null){
 			self.LoadVideo(self._video_id);

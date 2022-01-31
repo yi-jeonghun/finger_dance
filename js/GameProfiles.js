@@ -40,7 +40,7 @@ class GameProfiles{
 			var dw = 65;
 			var dh = 65;
 			
-			console.log('this._atlas._img.src ' + this._atlas._img.src);
+			// console.log('this._atlas._img.src ' + this._atlas._img.src);
 			var di_l = new DrawImage(this.#ctx, this._atlas._img, 
 				this._atlas._img_l_empty.x, this._atlas._img_l_empty.y, this._atlas._img_l_empty.w, this._atlas._img_l_empty.h, 
 				(first_x - dw/2), this.#base_line - dh/2, dw, dh, life_ms);

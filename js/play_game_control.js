@@ -1,5 +1,4 @@
 $('document').ready(function(){
-	window._atlas = new Atlas().Init();
 	window._timer = new Timer().Init();
 
 	window._play_game_control = new PlayGameControl().Init();
@@ -25,7 +24,7 @@ function PlayGameControl(){
 		}else{ 
 			self._is_mobile_device = false;
 		}
-		console.log('self._is_mobile_device ' + self._is_mobile_device);
+		// console.log('self._is_mobile_device ' + self._is_mobile_device);
 
 		self.InitLayout();
 		self.InitComponentHandle();
@@ -33,12 +32,12 @@ function PlayGameControl(){
 		self._game_id = GetURLParam('id');
 		self._is_embedded = GetURLParam('e') != null ? true : false;
 
-		console.log('_game_id ' + self._game_id);
+		// console.log('_game_id ' + self._game_id);
 
 		if(self._game_id != null){
 			var path = `db/${self._game_id}.json`;
 			$.getJSON(path, function(json) {
-				console.log('json loaded ');
+				// console.log('json loaded ');
 				window._game_data = json;
 				// console.log(json); // this will show the info it in firebug console
 				self.DisplayGameData(window._game_data);
@@ -250,7 +249,7 @@ function PlayGameControl(){
 
 	this.DisplayGameData = function(game_data){
 		self._video_id = game_data.video_id;
-		console.log('self._video_id ' + self._video_id);
+		// console.log('self._video_id ' + self._video_id);
 
 		$('#id_label_title').html(game_data.title);
 		$('#id_label_artist').html(game_data.artist);
@@ -283,17 +282,17 @@ function PlayGameControl(){
 				}
 			}
 
-			console.log('PARTICLE image path ');
-			console.log('particle_list ' + JSON.stringify(particle_list));
+			// console.log('PARTICLE image path ');
+			// console.log('particle_list ' + JSON.stringify(particle_list));
 			for(var i=0 ; i<particle_list.length ; i++){
 				if(particle_list[i]){
 					particle_list[i].image_path = '.' + particle_list[i].image_path;
 				}
 			}
 			if(game_data.beat_atlas_image_path){
-				console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
+				// console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
 				game_data.beat_atlas_image_path = '.' + game_data.beat_atlas_image_path;
-				console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
+				// console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
 			}
 		}
 
@@ -304,7 +303,7 @@ function PlayGameControl(){
 	};
 
 	this.OnYoutubeVideoReadyToPlay = function(){
-		console.log('OnYoutubeVideoReadyToPlay ');
+		// console.log('OnYoutubeVideoReadyToPlay ');
 		$('#id_loading').css('display', 'none');
 		self.ShowHidePlayStopButton(true, false);
 	};

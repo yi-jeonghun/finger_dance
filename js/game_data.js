@@ -59,7 +59,7 @@ function GameData(direction, is_show_beat_order, game_type){
 		self._particle_list = particle_list;
 		self._beat_atlas_uid = beat_atlas_uid;
 		self._beat_atlas_image_path = beat_atlas_image_path;
-		console.log('self._particle_list ' + JSON.stringify(self._particle_list));
+		// console.log('self._particle_list ' + JSON.stringify(self._particle_list));
 	};
 
 	this.GetWaveNBeat = function(){
@@ -202,7 +202,7 @@ function GameData(direction, is_show_beat_order, game_type){
 				break;
 		}
 
-		console.log('self._is_show_beat_order ' + self._is_show_beat_order);
+		// console.log('self._is_show_beat_order ' + self._is_show_beat_order);
 		self._note_order = 0;
 		self._draw_beat_list = [];
 		for(var i=0 ; i<self._beat_list.length ; i++){

@@ -21,7 +21,7 @@ function Atlas(image_path){
 	this.Init = function(){
 		self._img = new Image();
 		self._img.src = self._image_path;//'img/atlas.png';
-		console.log('self._img.src ' + self._img.src);
+		// console.log('self._img.src ' + self._img.src);
 		self.LoadSprite();
 		return this;
 	};
