@@ -269,6 +269,34 @@ function PlayGameControl(){
 		var background_list = JSON.parse(game_data.background_list);
 		var particle_list = JSON.parse(game_data.particle_list);
 		_game_control._game_level = game_data.level;
+
+		{//Update Image Path
+			for(var i=0 ; i<background_list.length ; i++){
+				if(background_list[i].layer1_image_path != ''){
+					background_list[i].layer1_image_path = '.' + background_list[i].layer1_image_path;
+				}
+				if(background_list[i].layer2_image_path != ''){
+					background_list[i].layer2_image_path = '.' + background_list[i].layer2_image_path;
+				}
+				if(background_list[i].layer3_image_path != ''){
+					background_list[i].layer3_image_path = '.' + background_list[i].layer3_image_path;
+				}
+			}
+
+			console.log('PARTICLE image path ');
+			console.log('particle_list ' + JSON.stringify(particle_list));
+			for(var i=0 ; i<particle_list.length ; i++){
+				if(particle_list[i]){
+					particle_list[i].image_path = '.' + particle_list[i].image_path;
+				}
+			}
+			if(game_data.beat_atlas_image_path){
+				console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
+				game_data.beat_atlas_image_path = '.' + game_data.beat_atlas_image_path;
+				console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
+			}
+		}
+
 		_game_control.SetWaveNBeat(wave_n_beat, background_list, particle_list, game_data.beat_atlas_uid, game_data.beat_atlas_image_path);
 		_game_control.PrepareGame();
 
