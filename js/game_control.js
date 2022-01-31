@@ -288,6 +288,7 @@ function GameControl(width, height, is_show_beat_order){
 	this.PrepareGame = function(){
 		window._renderer.ClearScreen();
 		window._renderer.ClearDrawObject();
+		window._background_renderer.ClearScreen();
 		console.log('self._game_data._beat_atlas_image_path ' + self._game_data._beat_atlas_image_path);
 		self._atlas = new Atlas(self._game_data._beat_atlas_image_path).Init();
 		console.log('self._atlas._img.src ' + self._atlas._img.src);
@@ -464,6 +465,7 @@ function GameControl(width, height, is_show_beat_order){
 
 			self._draw_text_score.SetText(self._score);
 			_renderer.Update();
+			_background_renderer.Update();
 
 			if(self._game_data._draw_beat_list.length == self._total_hit_count){
 				if(self._finish_notified == false){
@@ -476,6 +478,7 @@ function GameControl(width, height, is_show_beat_order){
 			}
 
 			self.UpdateWave();
+			window._background_renderer.Update();
 		}
 
 		if(self._finish_notified){
@@ -625,13 +628,7 @@ function GameControl(width, height, is_show_beat_order){
 
 		console.log('background ' + JSON.stringify(background));
 		if(background != null){
-			if(background.type == BG_TYPE.IMG){
-				console.log('background.image_path ' + background.image_path);
-				var img_url = `url("./${background.image_path}")`;
-				$('#ddr_player_bg_layer').css('background-image', `${img_url}`);
-			}else if(background.type == BG_TYPE.STYLE){
-
-			}
+			window._background_renderer.SetBackground(background);
 		}
 	};
 

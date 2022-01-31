@@ -22,20 +22,33 @@
 		width: 100%;
 		/* height: calc(100% - 200px); */
 	}
-	#ddr_player_bg_layer{
+	#bg_layer1{
 		position: absolute;
 		z-index: 1;
 		left: 0px;
 		top: 0px;
 		width: 100%;
 		height: 100%;
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: 50% 50%
+	}
+	#bg_layer2{
+		position: absolute;
+		z-index: 2;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+	}
+	#bg_layer3{
+		position: absolute;
+		z-index: 3;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
 	}
 	#ddr_player_layer1{
 		position: absolute;
-		z-index: 2;
+		z-index: 4;
 		left: 0px;
 		top: 0px;
 		width: 100%;
@@ -43,7 +56,7 @@
 	}
 	#info_layer{
 		position: absolute;
-		z-index: 2;
+		z-index: 10;
 		left: 0px;
 		top: 0px;
 		color: #eee;
@@ -55,7 +68,7 @@
 	}
 	#play_layer{
 		position: absolute;
-		z-index: 2;
+		z-index: 10;
 		left: 0px;
 		top: 0px;
 		color: white;
@@ -64,7 +77,7 @@
 	}
 	#rank_layer{
 		position: absolute;
-		z-index: 3;
+		z-index: 10;
 		left: 0px;
 		top: 0px;
 		width: 100%;
@@ -73,7 +86,7 @@
 	}
 	#record_layer{
 		position: absolute;
-		z-index: 3;
+		z-index: 10;
 		left: 0px;
 		top: 0px;
 		width: 100%;
@@ -115,7 +128,7 @@
 	}
 	#ddr_player_bg_layer{
 		position: fixed;
-		z-index: 1;
+		z-index: 0;
 		left: 0px;
 		top: 0px;
 		/* width: 100%;
@@ -124,9 +137,33 @@
 		background-repeat: no-repeat;
 		background-position: 50% 50%
 	}
+	#bg_layer1{
+		position: absolute;
+		z-index: 1;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+	}
+	#bg_layer2{
+		position: absolute;
+		z-index: 2;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+	}
+	#bg_layer3{
+		position: absolute;
+		z-index: 3;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+	}
 	#ddr_player_layer1{
 		position: fixed;
-		z-index: 2;
+		z-index: 4;
 		left: 0px;
 		top: 0px;
 		/* width: 100%;
@@ -139,7 +176,7 @@
 	}
 	#info_layer{
 		position: fixed;
-		z-index: 2;
+		z-index: 10;
 		/* left: 0px; */
 		top: 0px;
 		color: #eee;
@@ -150,7 +187,7 @@
 	}
 	#play_layer{
 		position: absolute;
-		z-index: 2;
+		z-index: 10;
 		left: 0px;
 		top: 0px;
 		color: white;
@@ -159,7 +196,7 @@
 	}
 	#rank_layer{
 		position: fixed;
-		z-index: 3;
+		z-index: 10;
 		left: 0px;
 		top: 0px;
 		width: 100%;

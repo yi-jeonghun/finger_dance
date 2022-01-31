@@ -76,19 +76,23 @@
 		<script src="js/DrawImage.js"></script>
 		<script src="js/DrawBeat.js"></script>
 		<script src="js/renderer.js"></script>
+		<script src="js/BackgroundRenderer.js"></script>
 		<script src="js/particle.js"></script>
 		<script src="js/game_data.js"></script>
 		<script src="js/GameProfiles.js"></script>
 		<script src="js/game_control.js"></script>
 		<script src="js/play_game_control.js"></script>
-
 </head>
 
 <body>
 
 <div id="lo_play">
 	<div id="ddr_player">
-		<div id="ddr_player_bg_layer"></div>
+		<div id="ddr_player_bg_layer">
+			<canvas id="bg_layer1"></canvas>
+			<canvas id="bg_layer2"></canvas>
+			<canvas id="bg_layer3"></canvas>
+		</div>
 		<canvas id="ddr_player_layer1" style="border:1px solid #aaa"></canvas>
 
 		<div id="info_layer">
@@ -152,7 +156,7 @@
 						<button id="id_btn_retry" type="button" class="btn btn-light" style="width: 150px; height: 50px; font-size: 1.5em;">RETRY</button>
 					</div>
 				</div>
-		</div>
+			</div>
 		</div>
 
 		<div id="rank_layer">

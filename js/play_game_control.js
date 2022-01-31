@@ -242,6 +242,7 @@ function PlayGameControl(){
 
 		window._yt_player = new YoutubePlayer().Init();
 		window._renderer = new Renderer(game_width, game_height, screen_width, screen_height).Init();
+		window._background_renderer = new BackgroundRenderer().Init('bg_layer', game_width, game_height, screen_width, screen_height);
 		var is_show_beat_order = false;
 		window._game_control = new GameControl(game_width, game_height, is_show_beat_order).Init();
 		// window._game_control._is_excercise_mode = true;

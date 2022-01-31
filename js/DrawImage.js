@@ -26,7 +26,7 @@ class DrawImage extends DrawObject {
 	}
 
 	Update(){
-		console.log('this.#atlas_img.src ' + this.#atlas_img.src);
+		// console.log('this.#atlas_img.src ' + this.#atlas_img.src);
 		this._ctx.drawImage(this.#atlas_img, 
 			this.#sx, this.#sy, this.#sw, this.#sh, 
 			this.#dx, this.#dy, this.#dw, this.#dh);
