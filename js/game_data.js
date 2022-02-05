@@ -101,6 +101,7 @@ function GameData(direction, is_show_beat_order, game_type){
 			background_list: self._background_list,
 			beat_atlas_uid: self._beat_atlas_uid,
 			beat_atlas_image_path: self._beat_atlas_image_path,
+			font_info: self._font_info
 		};
 		return data;
 	};
