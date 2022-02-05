@@ -281,8 +281,8 @@ function GameControl(width, height, is_show_beat_order){
 		});
 	};
 
-	this.SetWaveNBeat = function(wave_n_beat, background_list, particle_list, beat_atlas_uid, beat_atlas_image_path){
-		self._game_data.SetWaveNBeat(wave_n_beat, background_list, particle_list, beat_atlas_uid, beat_atlas_image_path);
+	this.SetGameData = function(game_data){
+		self._game_data.SetGameData(game_data);
 	};
 
 	this.PrepareGame = function(){
@@ -293,7 +293,7 @@ function GameControl(width, height, is_show_beat_order){
 		self._atlas = new Atlas(self._game_data._beat_atlas_image_path).Init();
 		// console.log('self._atlas._img.src ' + self._atlas._img.src);
 
-		var profile = new GameProfiles(window._renderer._ctx, self._atlas, self._width, self._height, self._base_line);
+		var profile = new GameProfiles(window._renderer._ctx, self._atlas, self._width, self._height, self._base_line, self._game_data._font_info);
 		{
 			profile.PLAY_LoadStaticAssets();
 			{//progress bar
@@ -496,11 +496,11 @@ function GameControl(width, height, is_show_beat_order){
 	this.DisplayResult = function(){
 		var ctx = window._renderer._ctx;
 		if(self._is_complete){
-			new DrawTextShadow(ctx, 'Congraturations!', 200, 300, 50, 'Red', -1).Update();
-			new DrawTextShadow(ctx, 'Your New Score', 200, 350, 33, 'Red', -1).Update();
-			new DrawTextShadow(ctx, "Score " + self._score, 200, 400, 33, 'Blue', -1).Update();
+			new DrawText(ctx, 'Congraturations!', 200, 300, 50, self._game_data._font_info.result.fill_color, self._game_data._font_info.result.use_stroke, self._game_data._font_info.result.stroke_color, self._game_data._font_info.result.line_width, -1).Update();
+			new DrawText(ctx, 'Your New Score', 200, 350, 33, self._game_data._font_info.result.fill_color, self._game_data._font_info.result.use_stroke, self._game_data._font_info.result.stroke_color, self._game_data._font_info.result.line_width, -1).Update();
+			new DrawText(ctx, "Score " + self._score, 200, 400, 33, self._game_data._font_info.result.fill_color, self._game_data._font_info.result.use_stroke, self._game_data._font_info.result.stroke_color, self._game_data._font_info.result.line_width, -1).Update();
 		}else{
-			new DrawTextShadow(ctx, "Oops!", 200, 300, 50, 'Red', -1).Update();
+			new DrawText(ctx, "Oops!", 200, 300, 50, self._game_data._font_info.result.fill_color, self._game_data._font_info.result.use_stroke, self._game_data._font_info.result.stroke_color, self._game_data._font_info.result.line_width, -1).Update();
 		}
 	};
 
@@ -563,19 +563,22 @@ function GameControl(width, height, is_show_beat_order){
 				self._particles_list[3].Reset(particle_x, self._base_line);
 				break;
 		}
-		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, text_x, text_y+50, 26, 'blue', 200);
-		var draw_score_obj = new DrawText(window._renderer._ctx, hit.hit_result.score, text_x, text_y+80, 26, 'blue', 200);
+		
+		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, text_x, text_y+50, 26, 
+			self._game_data._font_info.hit.fill_color, 
+			self._game_data._font_info.hit.use_stroke, 
+			self._game_data._font_info.hit.stroke_color, 
+			self._game_data._font_info.hit.line_width, 
+			200);
+		var draw_score_obj = new DrawText(window._renderer._ctx, hit.hit_result.score, text_x, text_y+80, 26, 
+			self._game_data._font_info.hit.fill_color, 
+			self._game_data._font_info.hit.use_stroke, 
+			self._game_data._font_info.hit.stroke_color, 
+			self._game_data._font_info.hit.line_width, 
+			200);
 		window._renderer.AddDrawObject(2, draw_text_obj);
 		window._renderer.AddDrawObject(2, draw_score_obj);
-		// self.CreateParticles(particle_x, self._base_line);
 	};
-
-	// this.CreateParticles = function(x, y){
-	// 	for(var i=0 ; i<30 ; i++){
-	// 		var particle = new Particle(window._renderer._ctx, x, y);
-	// 		window._renderer.AddDrawObject(5, particle);
-	// 	}
-	// };
 
 	this._cur_wave_idx = 0;
 	this._wave_sequence_idx = 0;

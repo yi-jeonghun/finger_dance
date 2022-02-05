@@ -3,14 +3,16 @@ class GameProfiles{
 	#width;
 	#height;
 	#base_line;
+	#font_info;
 	_atlas = null;
 
-	constructor(ctx, atlas, width, height, base_line){
+	constructor(ctx, atlas, width, height, base_line, font_info){
 		this.#ctx = ctx;
 		this._atlas = atlas;
 		this.#width = width;
 		this.#height = height;
 		this.#base_line = base_line;
+		this.#font_info = font_info;
 	}
 
 	PLAY_LoadStaticAssets(){
@@ -76,10 +78,21 @@ class GameProfiles{
 	}
 
 	GetComboText(){
-		return new DrawText(this.#ctx, '', 200, 220, 25, 'blue', -1);
+		
+		return new DrawText(this.#ctx, '', 200, 220, 25, 
+		this.#font_info.combo.fill_color, 
+		this.#font_info.combo.use_stroke, 
+		this.#font_info.combo.stroke_color, 
+		this.#font_info.combo.line_width, 
+		-1);
 	}
 
 	GetScoreText(){
-		return new DrawText(this.#ctx, '', 200, 50, 50, 'red', -1);
+		return new DrawText(this.#ctx, '', 200, 50, 50, 
+		this.#font_info.score.fill_color, 
+		this.#font_info.score.use_stroke, 
+		this.#font_info.score.stroke_color, 
+		this.#font_info.score.line_width, 
+		-1);
 	}
 }

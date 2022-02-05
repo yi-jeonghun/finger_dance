@@ -12,9 +12,6 @@ function GameData(direction, is_show_beat_order, game_type){
 	}*/
 	this._beat_list = [];
 
-	//움직이는 Beat 객체
-	this._draw_beat_list = [];
-
 	//play 중에 사용되는 background rule
 	/*{
 		t: timelapse_ms,
@@ -41,9 +38,38 @@ function GameData(direction, is_show_beat_order, game_type){
 	this._beat_atlas_uid = '';
 	this._beat_atlas_image_path = '';
 
+	this._font_info = {
+		score: {
+			fill_color: 'blue',
+			use_stroke: true,
+			stroke_color: 'white',
+			line_width: 3
+		},
+		hit: {
+			fill_color: 'blue',
+			use_stroke: true,
+			stroke_color: 'white',
+			line_width: 3
+		},
+		combo: {
+			fill_color: 'blue',
+			use_stroke: true,
+			stroke_color: 'white',
+			line_width: 3
+		},
+		result: {
+			fill_color: 'blue',
+			use_stroke: true,
+			stroke_color: 'white',
+			line_width: 3
+		}
+	};
+
 	this._move_direction = direction;
 	this._note_order = 0;
 	this._is_show_beat_order = is_show_beat_order;
+	//움직이는 Beat 객체
+	this._draw_beat_list = [];
 
 	this.Init = function(){
 		var beat_count = BEAT_TYPE_COUNT[self._game_type];
@@ -53,24 +79,30 @@ function GameData(direction, is_show_beat_order, game_type){
 		return this;
 	};
 
-	this.SetWaveNBeat = function(wave_n_beat, background_list, particle_list, beat_atlas_uid, beat_atlas_image_path){
-		self._wave_list = wave_n_beat.wave_list;
-		self._beat_list = wave_n_beat.beat_list;
-		self._background_list = background_list;
-		self._particle_list = particle_list;
-		self._beat_atlas_uid = beat_atlas_uid;
-		self._beat_atlas_image_path = beat_atlas_image_path;
+	/**
+	 * Database로 부터 game data를 읽은 경우
+	 */
+	this.SetGameData = function(data){
+		self._beat_list = data.beat_list;
+		self._wave_list = data.wave_list;
+		self._background_list = data.background_list;
+		self._particle_list = data.particle_list;
+		self._beat_atlas_uid = data.beat_atlas_uid;
+		self._beat_atlas_image_path = data.beat_atlas_image_path;
+		self._font_info = data.font_info;
 		self._atlas = new Atlas(self._beat_atlas_image_path).Init();
-		console.log('atlas for internal use ' + self._beat_atlas_image_path);
-		// console.log('self._particle_list ' + JSON.stringify(self._particle_list));
 	};
 
-	this.GetWaveNBeat = function(){
-		var wave_n_beat = {
-			wave_list:self._wave_list,
-			beat_list:self._beat_list
+	this.GetGameData = function(){
+		var data = {
+			beat_list: self._beat_list,
+			wave_list: self._wave_list,
+			particle_list: self._particle_list,
+			background_list: self._background_list,
+			beat_atlas_uid: self._beat_atlas_uid,
+			beat_atlas_image_path: self._beat_atlas_image_path,
 		};
-		return wave_n_beat;
+		return data;
 	};
 
 	this.AddWave = function(time){

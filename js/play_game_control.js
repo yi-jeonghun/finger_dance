@@ -315,7 +315,42 @@ function PlayGameControl(){
 			}
 		}
 
-		_game_control.SetWaveNBeat(wave_n_beat, background_list, particle_list, game_data.beat_atlas_uid, game_data.beat_atlas_image_path);
+		var converted_data = {
+			beat_list: wave_n_beat.beat_list,
+			wave_list: wave_n_beat.wave_list,
+			background_list: background_list,
+			particle_list: particle_list,
+			beat_atlas_uid: game_data.beat_atlas_uid,
+			beat_atlas_image_path: game_data.beat_atlas_image_path,
+			font_info: {
+				score:{
+					fill_color: game_data.score_fill_color,
+					use_stroke: game_data.score_use_stroke,
+					stroke_color: game_data.score_stroke_color,
+					line_width: game_data.score_line_width
+				},
+				hit:{
+					fill_color: game_data.hit_fill_color,
+					use_stroke: game_data.hit_use_stroke,
+					stroke_color: game_data.hit_stroke_color,
+					line_width: game_data.hit_line_width
+				},
+				combo:{
+					fill_color: game_data.combo_fill_color,
+					use_stroke: game_data.combo_use_stroke,
+					stroke_color: game_data.combo_stroke_color,
+					line_width: game_data.combo_line_width
+				},
+				result:{
+					fill_color: game_data.result_fill_color,
+					use_stroke: game_data.result_use_stroke,
+					stroke_color: game_data.result_stroke_color,
+					line_width: game_data.result_line_width
+				}
+			}
+		};
+
+		_game_control.SetGameData(converted_data);
 		_game_control.PrepareGame();
 
 		$('#id_text_level').html(game_data.level);

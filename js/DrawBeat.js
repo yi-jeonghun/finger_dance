@@ -37,7 +37,7 @@ class DrawBeat extends DrawObject{
 		this.#order = order;
 	
 		if(this.#order > 0){
-			this.#draw_text = new DrawText(context, this.#order, this.#x, this.#y, 25, 'RED', -1);
+			this.#draw_text = new DrawText(context, this.#order, this.#x, this.#y, 25, 'RED', true, 'white', 3, -1);
 		}
 
 		var quarter_x = 400 / 4;
