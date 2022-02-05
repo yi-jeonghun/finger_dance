@@ -35,7 +35,8 @@ const RENDER_MODE = {
 
 const GAME_TYPE = {
 	DDR:0,
-	Dash:1
+	PIANO_TILE:1,//
+	GUN_FIRE:2
 };
 
 const BEAT_TYPE_COUNT = {
