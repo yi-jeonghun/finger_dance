@@ -39,6 +39,12 @@ const GAME_TYPE = {
 	GUN_FIRE:2
 };
 
+const GAME_TYPE_STR = {
+	[GAME_TYPE.DDR]: 'DDR',
+	[GAME_TYPE.PIANO_TILE]: 'PIANO TILE',
+	[GAME_TYPE.GUN_FIRE]: 'GUN FIRE',
+}
+
 const BEAT_TYPE_COUNT = {
 	[GAME_TYPE.DDR]:4,
 };
