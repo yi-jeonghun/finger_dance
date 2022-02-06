@@ -116,10 +116,10 @@ function GameData(direction, is_show_beat_order, game_type){
 		self.SortWaveList();
 	};
 
-	this.AddBall = function(ball_info){
-		self._beat_list.push(ball_info);
+	this.AddBeat = function(beat_info){
+		self._beat_list.push(beat_info);
 		self.SortBeatList();
-		self.CreateDrawBeat(ball_info);
+		self.CreateDrawBeat(beat_info);
 	};
 
 	this.SortBeatList = function(){
@@ -134,74 +134,74 @@ function GameData(direction, is_show_beat_order, game_type){
 		self._background_list.sort(function(a, b){return a.display_order - b.display_order});
 	};
 
-	this.UpdateGameObject = function(ball_info){
+	this.UpdateGameObject = function(beat_info){
 		for(var i=self._draw_beat_list.length-1 ; i>=0 ; i--){
 			var go = self._draw_beat_list[i];
-			if(ball_info.t == go._offset_ms){
+			if(beat_info.t == go._offset_ms){
 				self._draw_beat_list.splice(i, 1);
 			}
 		}
-		self.CreateDrawBeat(ball_info);
+		self.CreateDrawBeat(beat_info);
 	};
 	
 	//DDR용으로만 사용되는 함수임.
 	//FIXME : Dash용으로 사용되는 함수 추가로 만들어야 함.
-	this.AddOrRemoveBall = function(idx, arrow){
-		var ball_info = self._beat_list[idx];
+	this.AddOrRemoveBeat = function(idx, arrow){
+		var beat_info = self._beat_list[idx];
 		
 		var cnt = 0;
-		if(ball_info.m & LEFT_BIT){
+		if(beat_info.m & LEFT_BIT){
 			cnt++;
 		}
-		if(ball_info.m & UP_BIT){
+		if(beat_info.m & UP_BIT){
 			cnt++;
 		}
-		if(ball_info.m & RIGHT_BIT){
+		if(beat_info.m & RIGHT_BIT){
 			cnt++;
 		}
-		if(ball_info.m & DOWN_BIT){
+		if(beat_info.m & DOWN_BIT){
 			cnt++;
 		}
 
 		switch(arrow){
 			case 1:
-				if(ball_info.m & LEFT_BIT){
-					ball_info.m ^= LEFT_BIT;
+				if(beat_info.m & LEFT_BIT){
+					beat_info.m ^= LEFT_BIT;
 				}else{
 					if(cnt < 2){
-						ball_info.m |= LEFT_BIT;
+						beat_info.m |= LEFT_BIT;
 					}					
 				}
 				break;
 			case 2:
-				if(ball_info.m & DOWN_BIT){
-					ball_info.m ^= DOWN_BIT;
+				if(beat_info.m & DOWN_BIT){
+					beat_info.m ^= DOWN_BIT;
 				}else{
 					if(cnt < 2){
-						ball_info.m |= DOWN_BIT;
+						beat_info.m |= DOWN_BIT;
 					}					
 				}
 				break;
 			case 3:
-				if(ball_info.m & UP_BIT){
-					ball_info.m ^= UP_BIT;
+				if(beat_info.m & UP_BIT){
+					beat_info.m ^= UP_BIT;
 				}else{
 					if(cnt < 2){
-						ball_info.m |= UP_BIT;
+						beat_info.m |= UP_BIT;
 					}					
 				}
 				break;
 			case 4:
-				if(ball_info.m & RIGHT_BIT){
-					ball_info.m ^= RIGHT_BIT;
+				if(beat_info.m & RIGHT_BIT){
+					beat_info.m ^= RIGHT_BIT;
 				}else{
 					if(cnt < 2){
-						ball_info.m |= RIGHT_BIT;
+						beat_info.m |= RIGHT_BIT;
 					}					
 				}
 				break;
 		}
-		self.UpdateGameObject(ball_info);
+		self.UpdateGameObject(beat_info);
 	};
 
 	this.UpdateGameObjectOffset = function(org_ms, new_ms, timelapse){
