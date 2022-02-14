@@ -242,13 +242,9 @@ function GameData(is_show_beat_order, game_type){
 				self._speed = 200;
 				break;
 			case 7:
-				self._speed = 400;
+				self._speed = 300;
 				break;
 		}
-
-		console.log('\n\n\n\n\n\n ');
-		console.log('self._speed ' + self._speed);
-		console.log('\n\n\n\n\n\n ');
 
 		// console.log('self._is_show_beat_order ' + self._is_show_beat_order);
 		self._note_order = 0;
@@ -276,18 +272,55 @@ function GameData(is_show_beat_order, game_type){
 		}
 	};
 
+	this.GetXRandom = function(){
+		var min = 50;
+		var max = 350;
+		var r = Math.random() * (max - min) + min;
+		return r;
+	};
+
 	this.CreateDrawBeat = function(ball_info, default_time_offset){
+		var quarter_x = 400 / 4;
+		var first_x = quarter_x / 2;
+
 		if(ball_info.m & LEFT_BIT){
 			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
+
+			if(self._game_type == GAME_TYPE.DDR){
+				obj.SetXBase(first_x);
+			}else if(self._game_type == GAME_TYPE.GUN_FIRE){
+				obj.SetXBase(self.GetXRandom());
+			}
+			self._draw_beat_list.push(obj);
+		}
+		if(ball_info.m & DOWN_BIT){
+			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			if(default_time_offset != undefined){
+				obj.UpdatePos(default_time_offset);
+			}
+
+			if(self._game_type == GAME_TYPE.DDR){
+				obj.SetXBase(first_x + quarter_x);
+			}else if(self._game_type == GAME_TYPE.GUN_FIRE){
+				obj.SetXBase(self.GetXRandom());
+			}
 			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & UP_BIT){
+			console.log('UP BIT ');
 			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
+			}
+
+			if(self._game_type == GAME_TYPE.DDR){
+				// console.log('first_x + quarter_x * 2 ' + first_x + quarter_x * 2);
+				obj.SetXBase(new Number(first_x) + new Number(quarter_x * 2));
+			}else if(self._game_type == GAME_TYPE.GUN_FIRE){
+				obj.SetXBase(self.GetXRandom());
 			}
 			self._draw_beat_list.push(obj);
 		}
@@ -296,12 +329,11 @@ function GameData(is_show_beat_order, game_type){
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
-			self._draw_beat_list.push(obj);
-		}
-		if(ball_info.m & DOWN_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
-			if(default_time_offset != undefined){
-				obj.UpdatePos(default_time_offset);
+
+			if(self._game_type == GAME_TYPE.DDR){
+				obj.SetXBase(new Number(first_x) + new Number(quarter_x * 3));
+			}else if(self._game_type == GAME_TYPE.GUN_FIRE){
+				obj.SetXBase(self.GetXRandom());
 			}
 			self._draw_beat_list.push(obj);
 		}

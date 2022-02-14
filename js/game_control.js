@@ -174,13 +174,17 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	};
 
 	this._hit_queue = [
-		// {
+		//{
 		// 	arrow:0,
 		// 	hit_result:{
 		//		score:0,
 		// 		text:''
+		//	},
+		//	hit_position:{
+		//		x: 100,
+		//		y: 100
 		//	}
-		// }
+		//}
 	];
 
 	this.Hit = async function(arrow_list, timelapse){
@@ -230,7 +234,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	
 					self._hit_queue.push({
 						arrow: arrow,
-						hit_result: hit_result
+						hit_result: hit_result,
+						hit_position: draw_beat_to_hit_list[0].GetHitPosition()
 					});
 
 					if(hit_result.hit == true){
@@ -252,7 +257,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 						self._combo = 0;
 						self._hit_queue.push({
 							arrow: arrow,
-							hit_result: hit_result
+							hit_result: hit_result,
+							hit_position: draw_beat_to_hit.GetHitPosition()
 						});
 					}else{		
 						var hit_result = draw_beat_to_hit.HitBeat(arrow, timelapse);
@@ -270,7 +276,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		
 						self._hit_queue.push({
 							arrow: arrow,
-							hit_result: hit_result
+							hit_result: hit_result,
+							hit_position: draw_beat_to_hit_list[0].GetHitPosition()
 						});
 
 						if(hit_result.hit == true){
@@ -297,11 +304,21 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			if(count <= 4){
 				var hit_result = db.HitByTouchPosition(touch_position);
 				if(hit_result != null){
+					if(hit_result.text == 'Perfect'){
+						self._combo++;
+						if(self._combo > 1){
+							var combo_score = 10 * (self._combo-1);
+							self._score += combo_score;
+						}
+					}else{
+						self._combo = 0;
+					}
+
 					self._score += hit_result.score;
-					self._combo = 0;
 					self._hit_queue.push({
 						arrow: db.GetArrowOrNum(),
-						hit_result: hit_result
+						hit_result: hit_result,
+						hit_position: db.GetHitPosition()
 					});
 				}		
 			}
@@ -428,7 +445,9 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				}
 			}
 
-			self.TouchDetect();
+			if(self._game_type == GAME_TYPE.GUN_FIRE){
+				self.TouchDetect();
+			}
 
 			for(var i=self._gameobj_begin_idx ; i<self._game_data._draw_beat_list.length ; i++){
 				var draw_beat = self._game_data._draw_beat_list[i];
@@ -465,6 +484,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				self.CreateHitEffect(hit);
 				if(self._combo > 1){
 					var txt = self._combo-1 + " COMBO";
+					console.log('\n\n\n\n ');
+					console.log('combo ');
 					txt += "\n +" + (10 * (self._combo-1));
 					self._draw_text_combo.SetText(txt);
 				}else{
@@ -540,76 +561,76 @@ function GameControl(width, height, is_show_beat_order, game_type){
 
 	this._particles_list = [];
 	this.CreateHitEffect = function(hit){
-		var text_y = self._game_data._base_line;
-		var one_width = 400 / 5;
-		var text_x = 0;
-		var quarter_x = self._width / 4;
-		var first_x = quarter_x / 2;
-		var particle_x = 0;
+		var hp = hit.hit_position;
 
 		switch(hit.arrow){
 			case ARROW.LEFT:
-				text_x = one_width;
-				particle_x = first_x;
 				if(self._particles_list[0] == undefined){
 					if(self._game_data._particle_list[0] != null){
 						var img_path = self._game_data._particle_list[0].image_path;
-						self._particles_list[0] = new Particles(window._renderer._ctx, particle_x, self._game_data._base_line, img_path);
+						self._particles_list[0] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
 						window._renderer.AddDrawObject(5, self._particles_list[0]);
 					}
 				}
-				self._particles_list[0].Reset(particle_x, self._game_data._base_line);
+				self._particles_list[0].Reset(hp.x, hp.y);
 				break;
 			case ARROW.DOWN:
-				text_x = one_width * 2;
-				particle_x = quarter_x+first_x;
 				if(self._particles_list[1] == undefined){
 					if(self._game_data._particle_list[1] != null){
 						var img_path = self._game_data._particle_list[1].image_path;
-						self._particles_list[1] = new Particles(window._renderer._ctx, particle_x, self._game_data._base_line, img_path);
+						self._particles_list[1] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
 						window._renderer.AddDrawObject(5, self._particles_list[1]);
 					}
 				}
-				self._particles_list[1].Reset(particle_x, self._game_data._base_line);
+				self._particles_list[1].Reset(hp.x, hp.y);
 				break;
 			case ARROW.UP:
-				text_x = one_width * 3;
-				particle_x = quarter_x*2+first_x;
 				if(self._particles_list[2] == undefined){
 					if(self._game_data._particle_list[2] != null){
 						var img_path = self._game_data._particle_list[2].image_path;
-						self._particles_list[2] = new Particles(window._renderer._ctx, particle_x, self._game_data._base_line, img_path);
+						self._particles_list[2] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
 						window._renderer.AddDrawObject(5, self._particles_list[2]);
 					}
 				}
-				self._particles_list[2].Reset(particle_x, self._game_data._base_line);
+				self._particles_list[2].Reset(hp.x, hp.y);
 				break;
 			case ARROW.RIGHT:
-				text_x = one_width * 4;
-				particle_x = quarter_x*3+first_x;
 				if(self._particles_list[3] == undefined){
 					if(self._game_data._particle_list[3] != null){
 						var img_path = self._game_data._particle_list[3].image_path;
-						self._particles_list[3] = new Particles(window._renderer._ctx, particle_x, self._game_data._base_line, img_path);
+						self._particles_list[3] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
 						window._renderer.AddDrawObject(5, self._particles_list[3]);
 					}
 				}
-				self._particles_list[3].Reset(particle_x, self._game_data._base_line);
+				self._particles_list[3].Reset(hp.x, hp.y);
 				break;
 		}
 		
-		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, text_x, text_y+50, 26, 
+		var text_x = hp.x;
+		var text_y = hp.y;
+		var text_y_text;
+		var text_y_score;
+
+		if(self._game_type == GAME_TYPE.DDR){
+			text_y_text = text_y + 50;
+			text_y_score = text_y + 80;
+		}else if(self._game_type == GAME_TYPE.GUN_FIRE){
+			text_y_text = text_y - 80;
+			text_y_score = text_y - 50;
+		}
+
+		var draw_text_obj = new DrawText(window._renderer._ctx, hit.hit_result.text, text_x, text_y_text, 26, 
 			self._game_data._font_info.hit.fill_color, 
 			self._game_data._font_info.hit.use_stroke, 
 			self._game_data._font_info.hit.stroke_color, 
 			self._game_data._font_info.hit.line_width, 
-			200);
-		var draw_score_obj = new DrawText(window._renderer._ctx, hit.hit_result.score, text_x, text_y+80, 26, 
+			300);
+		var draw_score_obj = new DrawText(window._renderer._ctx, hit.hit_result.score, text_x, text_y_score, 26, 
 			self._game_data._font_info.hit.fill_color, 
 			self._game_data._font_info.hit.use_stroke, 
 			self._game_data._font_info.hit.stroke_color, 
 			self._game_data._font_info.hit.line_width, 
-			200);
+			300);
 		window._renderer.AddDrawObject(2, draw_text_obj);
 		window._renderer.AddDrawObject(2, draw_score_obj);
 	};

@@ -63,8 +63,8 @@ class Particle extends DrawObject {
 		this.#rotate_speed = this.#Random(-30, 30);
 		var width = this.#Random(10, 30);
 		this.#w = this.#h = width;
-		this.#move_x = this.#Random(-10, 10);
-		this.#move_y = this.#Random(-10, 10);
+		this.#move_x = this.#Random(-50, 100);
+		this.#move_y = this.#Random(-50, 100);
 	}
 
 	#Random(min, max){

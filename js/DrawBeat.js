@@ -40,39 +40,38 @@ class DrawBeat extends DrawObject{
 			this.#draw_text = new DrawText(context, this.#order, this.#x, this.#y, 25, 'RED', true, 'white', 3, -1);
 		}
 
-		var quarter_x = 400 / 4;
-		var first_x = quarter_x / 2;
-
 		{
 			var img = null;
 			if(this.#arrow_or_num == ARROW.LEFT){
 				img = this._atlas._img_l;
-				this.#x_base = first_x;
 			}else if(this.#arrow_or_num == ARROW.DOWN){
 				img = this._atlas._img_d;
-				this.#x_base = first_x + quarter_x;
 			}else if(this.#arrow_or_num == ARROW.UP){
 				img = this._atlas._img_u;
-				this.#x_base = first_x + quarter_x*2;
 			}else if(this.#arrow_or_num == ARROW.RIGHT){
 				img = this._atlas._img_r;
-				this.#x_base = first_x + quarter_x*3;
 			}
 
 			this.#sx = img.x;
 			this.#sy = img.y;
 			this.#sw = img.w;
 			this.#sh = img.h;
+		}
+
+		this.CalcOffsetPixel();
+	};
+
+	SetXBase(x_base){
+		this.#x_base = x_base;
+		this.#x = this.#x_base - this.#w/2;
 	}
 
-		this.#x = this.#x_base - this.#w/2;
-		this.CalcOffsetPixel();
-		// {
-		// 	this.#offset_px_init = (this.#offset_ms/1000) * this.#speed;
-		// 	this.#offset_px_init = this.#base_line_px + this.#offset_px_init;
-		// 	this.#offset_px_init = this.#offset_px_init - (this.#h/2);
-		// }
-	};
+	GetHitPosition(){
+		return {
+			x: this.#x + this.#w/2,
+			y: this.#y + this.#h/2
+		};
+	}
 
 	CalcOffsetPixel(){
 		if(this.#move_direction == MOVE_DIRECTION.UPWARD){
@@ -148,21 +147,38 @@ class DrawBeat extends DrawObject{
 			return;
 		}
 
-		console.log('HitByTouchPosition ' + this.#order);
+		// console.log('HitByTouchPosition ' + this.#order);
 
 		// var y_diff = Math.abs(this.#hit_y - touch_position.y);
 		var x_diff = Math.abs(this.#x_base - touch_position.x)
 
-		if(x_diff < 50){
-			var hit_result = {
+		if(x_diff <= 50){
+			var res = {
 				hit:true,
 				score: 10,
 				text: 'Perfect'
 			};
 
+			if(x_diff < 15){
+				res.score = 10;
+				res.text = 'Perfect';	
+			}else if(15 < x_diff && x_diff <= 20){
+				res.score = 9;
+				res.text = 'Excellent';	
+			}else if(20 < x_diff && x_diff <= 25){
+				res.score = 8;
+				res.text = 'Very Good';
+			}else if(25 < x_diff && x_diff <= 35){
+				res.score = 7;
+				res.text = 'Good';
+			}else if(35 < x_diff && x_diff <= 50){
+				res.score = 6;
+				res.text = 'Not Bad';
+			}
+
 			this.#is_hit = true;
-			console.log('HIT ' + this.#order);
-			return hit_result;
+			// console.log('HIT ' + this.#order);
+			return res;
 		}
 		return null;
 	}
