@@ -1,4 +1,4 @@
-function GameData(direction, is_show_beat_order, game_type){
+function GameData(is_show_beat_order, game_type){
 	var self = this;
 	this._speed = 150;//pixel per second
 	this._base_line = 100;
@@ -65,13 +65,21 @@ function GameData(direction, is_show_beat_order, game_type){
 		}
 	};
 
-	this._move_direction = direction;
+	this._move_direction;
 	this._note_order = 0;
 	this._is_show_beat_order = is_show_beat_order;
 	//움직이는 Beat 객체
 	this._draw_beat_list = [];
 
 	this.Init = function(){
+		if(self._game_type == GAME_TYPE.DDR){
+			self._move_direction = MOVE_DIRECTION.UPWARD;
+			self._base_line = 100;
+		}else if(self._game_type == GAME_TYPE.GUN_FIRE){
+			self._move_direction = MOVE_DIRECTION.DOWNWARD;
+			self._base_line = 600;
+		}
+
 		var beat_count = BEAT_TYPE_COUNT[self._game_type];
 		for(var i=0 ; i<beat_count ; i++){
 			self._particle_list[i] = null;
@@ -234,9 +242,13 @@ function GameData(direction, is_show_beat_order, game_type){
 				self._speed = 200;
 				break;
 			case 7:
-				self._speed = 210;
+				self._speed = 400;
 				break;
 		}
+
+		console.log('\n\n\n\n\n\n ');
+		console.log('self._speed ' + self._speed);
+		console.log('\n\n\n\n\n\n ');
 
 		// console.log('self._is_show_beat_order ' + self._is_show_beat_order);
 		self._note_order = 0;
@@ -334,7 +346,7 @@ function GameData(direction, is_show_beat_order, game_type){
 		}
 
 		if(beat_info != null){
-			self.AddBall(beat_info);
+			self.AddBeat(beat_info);
 		}
 	};
 

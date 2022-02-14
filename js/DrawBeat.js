@@ -75,9 +75,15 @@ class DrawBeat extends DrawObject{
 	};
 
 	CalcOffsetPixel(){
-		this.#offset_px_init = (this.#offset_ms/1000) * this.#speed;
-		this.#offset_px_init = this.#base_line_px + this.#offset_px_init;
-		this.#offset_px_init = this.#offset_px_init - (this.#h/2);
+		if(this.#move_direction == MOVE_DIRECTION.UPWARD){
+			this.#offset_px_init = (this.#offset_ms/1000) * this.#speed;
+			this.#offset_px_init = this.#base_line_px + this.#offset_px_init;
+			this.#offset_px_init = this.#offset_px_init - (this.#h/2);
+		}else if(this.#move_direction == MOVE_DIRECTION.DOWNWARD){
+			this.#offset_px_init = (this.#offset_ms/1000) * this.#speed;
+			this.#offset_px_init = this.#base_line_px - this.#offset_px_init;
+			this.#offset_px_init = this.#offset_px_init - (this.#h/2);				
+		}
 	};
 
 	ChangeOffset(offset_ms){
@@ -102,9 +108,9 @@ class DrawBeat extends DrawObject{
 				this.#passed = true;
 			}
 		}else if(this.#move_direction == MOVE_DIRECTION.DOWNWARD){
-			// if(this.#base_line_px + 200 < this.#hit_y){
-			// 	this.#passed = true;
-			// }	
+			if(this.#base_line_px + 50 < this.#hit_y){
+				this.#passed = true;
+			}
 		}
 
 		return true;
@@ -120,7 +126,7 @@ class DrawBeat extends DrawObject{
 		this.#hit_y = this.#y + (this.#h/2);
 	};
 
-	HitNote(arrow, time){
+	HitBeat(arrow, time){
 		var res = {
 			hit:false,
 			score:0,
@@ -134,6 +140,32 @@ class DrawBeat extends DrawObject{
 		res = this.CheckHitByTime(time);
 		return res;
 	};
+
+	HitByTouchPosition(touch_position){
+		// console.log(this.#order + ' this.#hit_y ' + this.#hit_y + ' this.#base_line_px ' + this.#base_line_px);
+		//아직 다 내려오지 않았으면 return
+		if(this.#hit_y < this.#base_line_px -15){
+			return;
+		}
+
+		console.log('HitByTouchPosition ' + this.#order);
+
+		// var y_diff = Math.abs(this.#hit_y - touch_position.y);
+		var x_diff = Math.abs(this.#x_base - touch_position.x)
+
+		if(x_diff < 50){
+			var hit_result = {
+				hit:true,
+				score: 10,
+				text: 'Perfect'
+			};
+
+			this.#is_hit = true;
+			console.log('HIT ' + this.#order);
+			return hit_result;
+		}
+		return null;
+	}
 
 	CheckHitByTime(time){
 		var res = {

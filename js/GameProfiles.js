@@ -77,8 +77,7 @@ class GameProfiles{
 		return new DrawProgressBar(this.#ctx, 0, 0, this.#width, 0, 20, 'RED');
 	}
 
-	GetComboText(){
-		
+	GetComboText(){		
 		return new DrawText(this.#ctx, '', 200, 220, 25, 
 		this.#font_info.combo.fill_color, 
 		this.#font_info.combo.use_stroke, 

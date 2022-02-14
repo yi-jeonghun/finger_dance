@@ -242,26 +242,27 @@ function PlayGameControl(){
 		}
 	};
 
+	this._game_width = 400;
+	this._game_height = 700;
+	this._screen_width = 400;
+	this._screen_height = 700;
 	this.InitGameModules = function(){
-		var game_width = 400;
-		var game_height = 700;
-		var screen_width = game_width;
-		var screen_height = game_height;
-
 		if(self._is_mobile_device){
 			screen_width = window.innerWidth;
 			screen_height = self._ddr_player_height;
 		}
 
 		window._yt_player = new YoutubePlayer().Init();
-		window._renderer = new Renderer(game_width, game_height, screen_width, screen_height).Init();
-		window._background_renderer = new BackgroundRenderer().Init('bg_layer', game_width, game_height, screen_width, screen_height);
-		var is_show_beat_order = false;
-		window._game_control = new GameControl(game_width, game_height, is_show_beat_order).Init();
-		// window._game_control._is_excercise_mode = true;
+		window._renderer = new Renderer(self._game_width, self._game_height, self._screen_width, self._screen_height).Init();
+		window._background_renderer = new BackgroundRenderer().Init('bg_layer', self._game_width, self._game_height, self._screen_width, self._screen_height);
+		window._touch_control = new TouchControl().Init('ddr_player_layer1');
 	};
 
 	this.DisplayGameData = function(game_data){
+		var is_show_beat_order = false;
+		window._game_control = new GameControl(self._game_width, self._game_height, is_show_beat_order, game_data.game_type).Init();
+		// window._game_control._is_excercise_mode = true;
+
 		self._video_id = game_data.video_id;
 		// console.log('self._video_id ' + self._video_id);
 

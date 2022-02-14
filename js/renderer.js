@@ -47,7 +47,7 @@ function Renderer(game_width, game_height, screen_width, screen_height){
 				self._draw_object_list_1.splice(i, 1);
 				continue;
 			}
-			if(self._draw_object_list_1[i].IsVisible){
+			if(self._draw_object_list_1[i].IsVisible()){
 				self._draw_object_list_1[i].Update();
 			}
 		}

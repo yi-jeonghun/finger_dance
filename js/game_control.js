@@ -1,8 +1,9 @@
-function GameControl(width, height, is_show_beat_order){
+function GameControl(width, height, is_show_beat_order, game_type){
 	var self = this;
 	this._width = width;
 	this._height = height;
-	this._base_line = 100;
+	// this._base_line = 100;
+	this._game_type = game_type;
 	this._timelapse = 0;
 	this._timelapse_youtube = 0;
 	this._game_started = false;
@@ -38,7 +39,7 @@ function GameControl(width, height, is_show_beat_order){
 		
 		_yt_player.SetEventListener(self.YT_OnYoutubeReady, self.YT_OnFlowEvent, self.YT_OnPlayerReady, self.YT_OnPlayerStateChange);
 
-		self._game_data = new GameData(MOVE_DIRECTION.UPWARD, self._is_show_beat_order);
+		self._game_data = new GameData(self._is_show_beat_order, self._game_type).Init();
 		self.InitKeyHandle();
 		self.Update();
 		return this;
@@ -254,7 +255,7 @@ function GameControl(width, height, is_show_beat_order){
 							hit_result: hit_result
 						});
 					}else{		
-						var hit_result = draw_beat_to_hit.HitNote(arrow, timelapse);
+						var hit_result = draw_beat_to_hit.HitBeat(arrow, timelapse);
 						self._score += hit_result.score;
 		
 						if(hit_result.text == 'Perfect'){
@@ -281,6 +282,32 @@ function GameControl(width, height, is_show_beat_order){
 		});
 	};
 
+	this.TouchDetect = function(){
+		var touch_position = window._touch_control._position;
+		var count = 0;
+		for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
+			var db = self._game_data._draw_beat_list[k];
+			if(db.IsHit() || db.Passed()){
+				continue;
+			}
+
+			//약간 지나쳐 버린 Beat에 대해서도 처리를 하기 위해
+			//총 4개의 Beat에 대해 Hit 처리를 시도한다.
+			count++;
+			if(count <= 4){
+				var hit_result = db.HitByTouchPosition(touch_position);
+				if(hit_result != null){
+					self._score += hit_result.score;
+					self._combo = 0;
+					self._hit_queue.push({
+						arrow: db.GetArrowOrNum(),
+						hit_result: hit_result
+					});
+				}		
+			}
+		}
+	};
+
 	this.SetGameData = function(game_data){
 		self._game_data.SetGameData(game_data);
 	};
@@ -293,7 +320,7 @@ function GameControl(width, height, is_show_beat_order){
 		self._atlas = new Atlas(self._game_data._beat_atlas_image_path).Init();
 		// console.log('self._atlas._img.src ' + self._atlas._img.src);
 
-		var profile = new GameProfiles(window._renderer._ctx, self._atlas, self._width, self._height, self._base_line, self._game_data._font_info);
+		var profile = new GameProfiles(window._renderer._ctx, self._atlas, self._width, self._height, self._game_data._base_line, self._game_data._font_info);
 		{
 			profile.PLAY_LoadStaticAssets();
 			{//progress bar
@@ -310,6 +337,11 @@ function GameControl(width, height, is_show_beat_order){
 				self._draw_text_score.Update();
 				window._renderer.AddDrawObject(7, self._draw_text_score);
 			}
+		}
+
+		if(self._game_type == GAME_TYPE.GUN_FIRE){
+			window._touch_control.InitHandle(200, self._game_data._base_line);
+			self._game_level = 7;
 		}
 
 		self._game_data.CreateDrawBeatList(self._game_level);
@@ -335,7 +367,7 @@ function GameControl(width, height, is_show_beat_order){
 			console.log('_renderer._render_mode  ' + _renderer._render_mode);
 		}
 
-		self._game_data._base_line = self._base_line;
+		// self._game_data._base_line = self._base_line;
 
 		self._timelapse = 0;
 		self._timelapse_youtube = 0;
@@ -395,6 +427,8 @@ function GameControl(width, height, is_show_beat_order){
 					self._timelapse += diff / 20;
 				}
 			}
+
+			self.TouchDetect();
 
 			for(var i=self._gameobj_begin_idx ; i<self._game_data._draw_beat_list.length ; i++){
 				var draw_beat = self._game_data._draw_beat_list[i];
@@ -506,7 +540,7 @@ function GameControl(width, height, is_show_beat_order){
 
 	this._particles_list = [];
 	this.CreateHitEffect = function(hit){
-		var text_y = self._base_line;
+		var text_y = self._game_data._base_line;
 		var one_width = 400 / 5;
 		var text_x = 0;
 		var quarter_x = self._width / 4;
@@ -520,11 +554,11 @@ function GameControl(width, height, is_show_beat_order){
 				if(self._particles_list[0] == undefined){
 					if(self._game_data._particle_list[0] != null){
 						var img_path = self._game_data._particle_list[0].image_path;
-						self._particles_list[0] = new Particles(window._renderer._ctx, particle_x, self._base_line, img_path);
+						self._particles_list[0] = new Particles(window._renderer._ctx, particle_x, self._game_data._base_line, img_path);
 						window._renderer.AddDrawObject(5, self._particles_list[0]);
 					}
 				}
-				self._particles_list[0].Reset(particle_x, self._base_line);
+				self._particles_list[0].Reset(particle_x, self._game_data._base_line);
 				break;
 			case ARROW.DOWN:
 				text_x = one_width * 2;
@@ -532,11 +566,11 @@ function GameControl(width, height, is_show_beat_order){
 				if(self._particles_list[1] == undefined){
 					if(self._game_data._particle_list[1] != null){
 						var img_path = self._game_data._particle_list[1].image_path;
-						self._particles_list[1] = new Particles(window._renderer._ctx, particle_x, self._base_line, img_path);
+						self._particles_list[1] = new Particles(window._renderer._ctx, particle_x, self._game_data._base_line, img_path);
 						window._renderer.AddDrawObject(5, self._particles_list[1]);
 					}
 				}
-				self._particles_list[1].Reset(particle_x, self._base_line);
+				self._particles_list[1].Reset(particle_x, self._game_data._base_line);
 				break;
 			case ARROW.UP:
 				text_x = one_width * 3;
@@ -544,11 +578,11 @@ function GameControl(width, height, is_show_beat_order){
 				if(self._particles_list[2] == undefined){
 					if(self._game_data._particle_list[2] != null){
 						var img_path = self._game_data._particle_list[2].image_path;
-						self._particles_list[2] = new Particles(window._renderer._ctx, particle_x, self._base_line, img_path);
+						self._particles_list[2] = new Particles(window._renderer._ctx, particle_x, self._game_data._base_line, img_path);
 						window._renderer.AddDrawObject(5, self._particles_list[2]);
 					}
 				}
-				self._particles_list[2].Reset(particle_x, self._base_line);
+				self._particles_list[2].Reset(particle_x, self._game_data._base_line);
 				break;
 			case ARROW.RIGHT:
 				text_x = one_width * 4;
@@ -556,11 +590,11 @@ function GameControl(width, height, is_show_beat_order){
 				if(self._particles_list[3] == undefined){
 					if(self._game_data._particle_list[3] != null){
 						var img_path = self._game_data._particle_list[3].image_path;
-						self._particles_list[3] = new Particles(window._renderer._ctx, particle_x, self._base_line, img_path);
+						self._particles_list[3] = new Particles(window._renderer._ctx, particle_x, self._game_data._base_line, img_path);
 						window._renderer.AddDrawObject(5, self._particles_list[3]);
 					}
 				}
-				self._particles_list[3].Reset(particle_x, self._base_line);
+				self._particles_list[3].Reset(particle_x, self._game_data._base_line);
 				break;
 		}
 		
