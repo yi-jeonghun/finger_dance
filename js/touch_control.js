@@ -10,6 +10,8 @@ function TouchControl(){
 		self._screen_width = screen_width;
 		self._offset = $('#'+layer_id).offset();
 		document.onmousemove = self.HandleMouseMove;
+
+		$('#'+layer_id).on('touchmove', self.HandleTouchMove)
 		return this;
 	};
 
@@ -47,6 +49,22 @@ function TouchControl(){
 		if(self._position.x >= 0 && self._position.x <= self._screen_width){
 			if(self._handle != null){
 				self._handle.Move(self._position.x);
+			}
+		}
+	};
+
+	this.HandleTouchMove = function(e){
+		e.preventDefault();
+		for(var i=0 ; i<e.originalEvent.touches.length ; i++){
+			self._position = {
+				x: e.originalEvent.touches[i].pageX,
+				y: e.originalEvent.touches[i].pageY
+			};
+
+			if(self._position.x >= 0 && self._position.x <= self._screen_width){
+				if(self._handle != null){
+					self._handle.Move(self._position.x);
+				}
 			}
 		}
 	};

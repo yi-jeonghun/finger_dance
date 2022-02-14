@@ -310,7 +310,6 @@ function GameData(is_show_beat_order, game_type){
 			self._draw_beat_list.push(obj);
 		}
 		if(ball_info.m & UP_BIT){
-			console.log('UP BIT ');
 			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);

@@ -40,7 +40,10 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		_yt_player.SetEventListener(self.YT_OnYoutubeReady, self.YT_OnFlowEvent, self.YT_OnPlayerReady, self.YT_OnPlayerStateChange);
 
 		self._game_data = new GameData(self._is_show_beat_order, self._game_type).Init();
-		self.InitKeyHandle();
+
+		if(self._game_type == GAME_TYPE.DDR){
+			self.InitKeyHandle();
+		}
 		self.Update();
 		return this;
 	};
@@ -484,8 +487,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				self.CreateHitEffect(hit);
 				if(self._combo > 1){
 					var txt = self._combo-1 + " COMBO";
-					console.log('\n\n\n\n ');
-					console.log('combo ');
+					// console.log('\n\n\n\n ');
+					// console.log('combo ');
 					txt += "\n +" + (10 * (self._combo-1));
 					self._draw_text_combo.SetText(txt);
 				}else{

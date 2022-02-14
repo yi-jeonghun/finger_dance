@@ -255,7 +255,7 @@ function PlayGameControl(){
 		window._yt_player = new YoutubePlayer().Init();
 		window._renderer = new Renderer(self._game_width, self._game_height, self._screen_width, self._screen_height).Init();
 		window._background_renderer = new BackgroundRenderer().Init('bg_layer', self._game_width, self._game_height, self._screen_width, self._screen_height);
-		window._touch_control = new TouchControl().Init('ddr_player_layer1');
+		window._touch_control = new TouchControl().Init('ddr_player_layer1', self._screen_width);
 	};
 
 	this.DisplayGameData = function(game_data){
