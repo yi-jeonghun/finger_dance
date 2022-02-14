@@ -322,7 +322,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 
 		var profile = new GameProfiles(window._renderer._ctx, self._atlas, self._width, self._height, self._game_data._base_line, self._game_data._font_info);
 		{
-			profile.PLAY_LoadStaticAssets();
+			profile.LoadStaticAssets(self._game_type);
 			{//progress bar
 				self._draw_progress_bar = profile.GetProgressBar();
 				window._renderer.AddDrawObject(3, self._draw_progress_bar);

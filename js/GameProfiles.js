@@ -15,7 +15,15 @@ class GameProfiles{
 		this.#font_info = font_info;
 	}
 
-	PLAY_LoadStaticAssets(){
+	LoadStaticAssets(game_type){
+		if(game_type == GAME_TYPE.DDR){
+			this.LoadStaticAssets_DDR();
+		}else if(game_type == GAME_TYPE.GUN_FIRE){
+			this.LoadStaticAssets_GUN_FIRE();
+		}
+	}
+
+	LoadStaticAssets_DDR(){
 		var quarter_x = this.#width / 4;
 		var first_x = quarter_x / 2;
 		var life_ms = -1;
@@ -69,8 +77,12 @@ class GameProfiles{
 		}
 	}
 
-	RECORD_LoadStaticAssets(){
-		this.PLAY_LoadStaticAssets();
+	LoadStaticAssets_GUN_FIRE(){
+		var line_width = 1;
+		var life_ms = -1;
+		var base_line_draw_obj = new DrawLine(this.#ctx, 0, this.#base_line, this.#width, this.#base_line, line_width, 'RED', life_ms);
+		base_line_draw_obj.Update();
+		window._renderer.AddDrawObject(1, base_line_draw_obj);
 	}
 
 	GetProgressBar(){
