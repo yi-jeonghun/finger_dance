@@ -323,6 +323,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 						hit_result: hit_result,
 						hit_position: db.GetHitPosition()
 					});
+					self._total_hit_count++;
 				}		
 			}
 		}
