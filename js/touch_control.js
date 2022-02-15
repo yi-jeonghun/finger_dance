@@ -16,10 +16,6 @@ function TouchControl(){
 	};
 
 	this.InitHandle = function(center, base_line){
-		if(this._handle != null){
-			return;
-		}
-
 		self._handle = new DrawTouchHandle(window._renderer._ctx, center, base_line, 30, -1);
 		window._renderer.AddDrawObject(9, self._handle);
 		self._is_initialized = true;
