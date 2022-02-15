@@ -16,7 +16,7 @@ class GameProfiles{
 	}
 
 	LoadStaticAssets(game_type){
-		if(game_type == GAME_TYPE.DDR){
+		if(game_type == GAME_TYPE.DDR || game_type == GAME_TYPE.PIANO_TILE){
 			this.LoadStaticAssets_DDR();
 		}else if(game_type == GAME_TYPE.GUN_FIRE){
 			this.LoadStaticAssets_GUN_FIRE();

@@ -75,7 +75,7 @@ function GameData(is_show_beat_order, game_type){
 		if(self._game_type == GAME_TYPE.DDR){
 			self._move_direction = MOVE_DIRECTION.UPWARD;
 			self._base_line = 100;
-		}else if(self._game_type == GAME_TYPE.GUN_FIRE){
+		}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.PIANO_TILE){
 			self._move_direction = MOVE_DIRECTION.DOWNWARD;
 			self._base_line = 600;
 		}
@@ -289,7 +289,7 @@ function GameData(is_show_beat_order, game_type){
 				obj.UpdatePos(default_time_offset);
 			}
 
-			if(self._game_type == GAME_TYPE.DDR){
+			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
 				obj.SetXBase(first_x);
 			}else if(self._game_type == GAME_TYPE.GUN_FIRE){
 				obj.SetXBase(self.GetXRandom());
@@ -302,7 +302,7 @@ function GameData(is_show_beat_order, game_type){
 				obj.UpdatePos(default_time_offset);
 			}
 
-			if(self._game_type == GAME_TYPE.DDR){
+			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
 				obj.SetXBase(first_x + quarter_x);
 			}else if(self._game_type == GAME_TYPE.GUN_FIRE){
 				obj.SetXBase(self.GetXRandom());
@@ -315,8 +315,7 @@ function GameData(is_show_beat_order, game_type){
 				obj.UpdatePos(default_time_offset);
 			}
 
-			if(self._game_type == GAME_TYPE.DDR){
-				// console.log('first_x + quarter_x * 2 ' + first_x + quarter_x * 2);
+			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
 				obj.SetXBase(new Number(first_x) + new Number(quarter_x * 2));
 			}else if(self._game_type == GAME_TYPE.GUN_FIRE){
 				obj.SetXBase(self.GetXRandom());
@@ -329,7 +328,7 @@ function GameData(is_show_beat_order, game_type){
 				obj.UpdatePos(default_time_offset);
 			}
 
-			if(self._game_type == GAME_TYPE.DDR){
+			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
 				obj.SetXBase(new Number(first_x) + new Number(quarter_x * 3));
 			}else if(self._game_type == GAME_TYPE.GUN_FIRE){
 				obj.SetXBase(self.GetXRandom());

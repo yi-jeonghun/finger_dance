@@ -41,7 +41,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 
 		self._game_data = new GameData(self._is_show_beat_order, self._game_type).Init();
 
-		if(self._game_type == GAME_TYPE.DDR){
+		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
 			self.InitKeyHandle();
 		}
 		self.Update();
@@ -618,7 +618,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		if(self._game_type == GAME_TYPE.DDR){
 			text_y_text = text_y + 50;
 			text_y_score = text_y + 80;
-		}else if(self._game_type == GAME_TYPE.GUN_FIRE){
+		}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.PIANO_TILE){
 			text_y_text = text_y - 80;
 			text_y_score = text_y - 50;
 		}
