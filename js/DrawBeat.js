@@ -155,7 +155,7 @@ class DrawBeat extends DrawObject{
 		var x_beat = this.#x + this.#w/2;
 		var diff = Math.abs(x_beat - x_tap);
 
-		if(diff > 30){
+		if(diff > 50){
 			res.hit = false;
 			res.score = -10;
 			res.text = 'Miss';
