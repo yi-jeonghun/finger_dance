@@ -36,14 +36,11 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	this.Init = function(){
 		// console.log('GameControl Init');
 		self._id_debug_ele = $('#id_debug');
-		
-		_yt_player.SetEventListener(self.YT_OnYoutubeReady, self.YT_OnFlowEvent, self.YT_OnPlayerReady, self.YT_OnPlayerStateChange);
+		window._input_control = new InputControl('ddr_player_layer1', self._game_type, self._width).Init();
 
+		_yt_player.SetEventListener(self.YT_OnYoutubeReady, self.YT_OnFlowEvent, self.YT_OnPlayerReady, self.YT_OnPlayerStateChange);
 		self._game_data = new GameData(self._is_show_beat_order, self._game_type).Init();
 
-		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
-			self.InitKeyHandle();
-		}
 		self.Update();
 		return this;
 	};
@@ -104,78 +101,6 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		self._timelapse_youtube = ms;
 	};
 
-	this._touch_count = 0;
-	this._prev_left_touch_ts = 0;
-	this._prev_down_touch_ts = 0;
-	this._prev_up_touch_ts = 0;
-	this._prev_right_touch_ts = 0;
-	
-	this.InitKeyHandle = function(){
-		$('#ddr_player_layer1').on('touchmove', function(e){
-			e.preventDefault();
-		});
-
-		$('#ddr_player_layer1').on('touchstart', function(e){
-			if(self._is_playing == false){
-				return;
-			}
-			var one_area_width = window.innerWidth / 4;
-			var arrow_list = [];
-			for(var i=0 ; i<e.originalEvent.touches.length ; i++){
-				for(var a=1 ; a<=4 ; a++){
-					if(e.originalEvent.touches[i].pageX < (one_area_width * a)){
-						switch(a){
-							case 1:
-								if( (Date.now() - self._prev_left_touch_ts) > 100){
-									arrow_list.push(ARROW.LEFT);
-								}
-								self._prev_left_touch_ts = Date.now();
-								break;
-							case 2:
-								if( (Date.now() - self._prev_down_touch_ts) > 100){
-									arrow_list.push(ARROW.DOWN);
-								}
-								self._prev_down_touch_ts = Date.now();
-								break;
-							case 3:
-								if( (Date.now() - self._prev_up_touch_ts) > 100){
-									arrow_list.push(ARROW.UP);
-								}
-								self._prev_up_touch_ts = Date.now();
-								break;
-							case 4:
-								if( (Date.now() - self._prev_right_touch_ts) > 100){
-									arrow_list.push(ARROW.RIGHT);
-								}
-								self._prev_right_touch_ts = Date.now();
-								break;
-						}
-						break;
-					}
-				}
-			}
-			
-			self._touch_count += arrow_list.length;
-			if(arrow_list.length > 0){
-				self.Hit(arrow_list, self._timelapse);
-			}
-		});
-
-		document.addEventListener('keydown', function(e){
-			// console.log(e.keyCode);
-			switch(e.keyCode){
-				case ARROW.LEFT:
-				case ARROW.UP:
-				case ARROW.RIGHT:
-				case ARROW.DOWN:
-					e.preventDefault();
-					var arrows = [e.keyCode];
-					self.Hit(arrows, self._timelapse);
-					break;
-			}
-		});
-	};
-
 	this._hit_queue = [
 		//{
 		// 	arrow:0,
@@ -190,11 +115,56 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		//}
 	];
 
-	this.Hit = async function(arrow_list, timelapse){
+	this.HitByXAndTime = async function(x_position){
 		if(self._is_playing == false){
 			return;
 		}
-		timelapse += self._base_offset_ms;
+		var timelapse = self._timelapse + self._base_offset_ms;
+		// console.log('x_position ' + x_position + ' timelapse ' + timelapse);
+
+		return new Promise(function(resolve, reject){
+			var draw_beat_to_hit = null;
+			for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
+				var draw_beat = self._game_data._draw_beat_list[k];
+				if(draw_beat.IsHit() || draw_beat.Passed()){
+					continue;
+				}
+				draw_beat_to_hit = draw_beat;
+				break;
+			}
+			var hit_result = draw_beat_to_hit.HitByXAndTime(x_position, timelapse);
+
+			{
+				self._score += hit_result.score;
+		
+				if(hit_result.text == 'Perfect'){
+					self._combo++;
+					if(self._combo > 1){
+						var combo_score = 10 * (self._combo-1);
+						self._score += combo_score;
+					}
+				}else{
+					self._combo = 0;
+				}
+
+				self._hit_queue.push({
+					arrow: draw_beat_to_hit.GetArrowOrNum(),
+					hit_result: hit_result,
+					hit_position: draw_beat_to_hit.GetHitPosition()
+				});
+
+				if(hit_result.hit == true){
+					self._total_hit_count++;
+				}
+			}
+		});
+	};
+
+	this.HitByLaneAndTime = async function(arrow_list){
+		if(self._is_playing == false){
+			return;
+		}
+		var timelapse = self._timelapse + self._base_offset_ms;
 
 		return new Promise(function(resolve, reject){
 			var draw_beat_to_hit_list = [];
@@ -221,7 +191,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			}
 
 			if(is_multi_hit){
-				var hit_result = draw_beat_to_hit_list[0].HitNote(arrow_list[0], timelapse);
+				var hit_result = draw_beat_to_hit_list[0].HitByArrowAndTime(arrow_list[0], timelapse);
 				for(var i=0 ; i<arrow_list.length ; i++){
 					self._score += hit_result.score;
 	
@@ -250,7 +220,6 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					var arrow = arrow_list[i];
 					var draw_beat_to_hit = draw_beat_to_hit_list[i];
 					if(draw_beat_to_hit == null || draw_beat_to_hit == undefined){
-
 						var hit_result = {
 							hit:false,
 							score: -10,
@@ -263,8 +232,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 							hit_result: hit_result,
 							hit_position: draw_beat_to_hit.GetHitPosition()
 						});
-					}else{		
-						var hit_result = draw_beat_to_hit.HitBeat(arrow, timelapse);
+					}else{
+						var hit_result = draw_beat_to_hit.HitByArrowAndTime(arrow, timelapse);
 						self._score += hit_result.score;
 		
 						if(hit_result.text == 'Perfect'){
@@ -292,8 +261,9 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		});
 	};
 
+	//TODO : promose를 사용하는 게 더 나을수도 있을 듯. 검토해볼것.
 	this.TouchDetect = function(){
-		var touch_position = window._touch_control._position;
+		var touch_position = window._input_control._position;
 		var count = 0;
 		for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
 			var db = self._game_data._draw_beat_list[k];
@@ -361,7 +331,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		}
 
 		if(self._game_type == GAME_TYPE.GUN_FIRE){
-			window._touch_control.InitHandle(200, self._game_data._base_line);
+			window._input_control.InitHandle(200, self._game_data._base_line);
 			self._game_level = 7;
 		}
 
@@ -618,7 +588,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		if(self._game_type == GAME_TYPE.DDR){
 			text_y_text = text_y + 50;
 			text_y_score = text_y + 80;
-		}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.PIANO_TILE){
+		}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.CRASH_NUTS){
 			text_y_text = text_y - 80;
 			text_y_score = text_y - 50;
 		}

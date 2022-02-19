@@ -125,7 +125,12 @@ class DrawBeat extends DrawObject{
 		this.#hit_y = this.#y + (this.#h/2);
 	};
 
-	HitBeat(arrow, time){
+	/**
+	 * DDR, PIANO_TILE
+	 * 레인을 따라 움직이는 비트를
+	 * 시간 기준으로 HIT 처리하는 함수.
+	 */
+	HitByArrowAndTime(arrow, time){
 		var res = {
 			hit:false,
 			score:0,
@@ -136,10 +141,36 @@ class DrawBeat extends DrawObject{
 			return res;
 		}
 
-		res = this.CheckHitByTime(time);
+		res = this._CheckHitByTime(time);
 		return res;
 	};
 
+	HitByXAndTime(x_tap, time){
+		var res = {
+			hit:false,
+			score:0,
+			text:''
+		};
+
+		var x_beat = this.#x + this.#w/2;
+		var diff = Math.abs(x_beat - x_tap);
+
+		if(diff > 30){
+			res.hit = false;
+			res.score = -10;
+			res.text = 'Miss';
+			return res;
+		}
+
+		res = this._CheckHitByTime(time);
+		return res;
+	};
+
+	/**
+	 * GUN_FIRE
+	 * Random 위치로 움직이는 비트를
+	 * X 좌표만으로 HIT 처리하는 함수
+	 */
 	HitByTouchPosition(touch_position){
 		// console.log(this.#order + ' this.#hit_y ' + this.#hit_y + ' this.#base_line_px ' + this.#base_line_px);
 		//아직 다 내려오지 않았으면 return
@@ -183,7 +214,7 @@ class DrawBeat extends DrawObject{
 		return null;
 	}
 
-	CheckHitByTime(time){
+	_CheckHitByTime(time){
 		var res = {
 			hit:false,
 			score:0,
@@ -224,7 +255,8 @@ class DrawBeat extends DrawObject{
 		return res;
 	};
 
-	CheckHitByPixel(){
+	/*
+	_CheckHitByPixel(){
 		var res = {
 			hit:false,
 			score:0,
@@ -276,6 +308,7 @@ class DrawBeat extends DrawObject{
 
 		return res;
 	};
+	*/
 
 	Update(){
 		this._ctx.drawImage(this.#atlas_img,
