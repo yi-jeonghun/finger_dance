@@ -2,7 +2,8 @@ const ARROW = {
 	LEFT: 37,
 	UP: 38,
 	RIGHT: 39,
-	DOWN: 40
+	DOWN: 40,
+	CENTER: 32//space key
 };
 
 const DIMENSION = {
@@ -14,6 +15,7 @@ const LEFT_BIT = 1;
 const UP_BIT = 2;
 const RIGHT_BIT = 4;
 const DOWN_BIT = 8;
+const CENTER_BIT = 16;//PUMP용도
 
 const DEFAULT_SOUND_KEY = '12844_0_Chaos_sf2_file.js';
 
@@ -37,7 +39,8 @@ const GAME_TYPE = {
 	DDR:0,
 	PIANO_TILE:1,//
 	GUN_FIRE:2,
-	CRASH_NUTS:3
+	CRASH_NUTS:3,
+	PUMP:4
 };
 
 const GAME_TYPE_STR = {
@@ -45,10 +48,15 @@ const GAME_TYPE_STR = {
 	[GAME_TYPE.PIANO_TILE]: 'PIANO TILE',
 	[GAME_TYPE.GUN_FIRE]: 'GUN FIRE',
 	[GAME_TYPE.CRASH_NUTS]: 'CRASH NUTS',
+	[GAME_TYPE.PUMP]: 'PUMP',
 }
 
 const BEAT_TYPE_COUNT = {
 	[GAME_TYPE.DDR]:4,
+	[GAME_TYPE.PIANO_TILE]: 4,
+	[GAME_TYPE.GUN_FIRE]: 4,
+	[GAME_TYPE.CRASH_NUTS]: 4,
+	[GAME_TYPE.PUMP]: 5,
 };
 
 const BG_TYPE = {

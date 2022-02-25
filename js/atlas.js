@@ -7,16 +7,19 @@ function Atlas(image_path){
 	this._img_d = null;
 	this._img_u = null;
 	this._img_r = null;
+	this._img_c = null;
 
 	this._img_l_hit = null;
 	this._img_d_hit = null;
 	this._img_u_hit = null;
 	this._img_r_hit = null;
+	this._img_c_hit = null;
 
 	this._img_l_empty = null;
 	this._img_d_empty = null;
 	this._img_u_empty = null;
 	this._img_r_empty = null;
+	this._img_c_empty = null;
 
 	this.Init = function(){
 		self._img = new Image();
@@ -32,15 +35,19 @@ function Atlas(image_path){
 		self._img_d = {x:u,  y:0,w:u,h:u};
 		self._img_u = {x:u*2,y:0,w:u,h:u};
 		self._img_r = {x:u*3,y:0,w:u,h:u};
+		//FIXME_LEEJH
+		self._img_c = {x:u*3,y:0,w:u,h:u};
 
 		self._img_l_hit = {x:0,  y:u,w:u,h:u};
 		self._img_d_hit = {x:u,  y:u,w:u,h:u};
 		self._img_u_hit = {x:u*2,y:u,w:u,h:u};
 		self._img_r_hit = {x:u*3,y:u,w:u,h:u};
+		self._img_c_hit = {x:u*3,y:u,w:u,h:u};
 
 		self._img_l_empty = {x:0,  y:u*2,w:u,h:u};
 		self._img_d_empty = {x:u,  y:u*2,w:u,h:u};
 		self._img_u_empty = {x:u*2,y:u*2,w:u,h:u};
 		self._img_r_empty = {x:u*3,y:u*2,w:u,h:u};
+		self._img_c_empty = {x:u*3,y:u*2,w:u,h:u};
 	};
 }

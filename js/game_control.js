@@ -124,6 +124,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 
 		return new Promise(function(resolve, reject){
 			var draw_beat_to_hit = null;
+
 			for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
 				var draw_beat = self._game_data._draw_beat_list[k];
 				if(draw_beat.IsHit() || draw_beat.Passed()){
@@ -578,14 +579,24 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				}
 				self._particles_list[3].Reset(hp.x, hp.y);
 				break;
-		}
+			case ARROW.CENTER:
+				if(self._particles_list[4] == undefined){
+					if(self._game_data._particle_list[4] != null){
+						var img_path = self._game_data._particle_list[4].image_path;
+						self._particles_list[4] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
+						window._renderer.AddDrawObject(5, self._particles_list[4]);
+					}
+				}
+				self._particles_list[4].Reset(hp.x, hp.y);
+				break;	
+			}
 		
 		var text_x = hp.x;
 		var text_y = hp.y;
 		var text_y_text;
 		var text_y_score;
 
-		if(self._game_type == GAME_TYPE.DDR){
+		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PUMP){
 			text_y_text = text_y + 50;
 			text_y_score = text_y + 80;
 		}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.CRASH_NUTS){

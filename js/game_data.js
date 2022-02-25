@@ -72,7 +72,7 @@ function GameData(is_show_beat_order, game_type){
 	this._draw_beat_list = [];
 
 	this.Init = function(){
-		if(self._game_type == GAME_TYPE.DDR){
+		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PUMP){
 			self._move_direction = MOVE_DIRECTION.UPWARD;
 			self._base_line = 100;
 		}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.CRASH_NUTS){
@@ -170,6 +170,9 @@ function GameData(is_show_beat_order, game_type){
 		if(beat_info.m & DOWN_BIT){
 			cnt++;
 		}
+		if(beat_info.m & CENTER_BIT){
+			cnt++;
+		}
 
 		switch(arrow){
 			case 1:
@@ -208,6 +211,15 @@ function GameData(is_show_beat_order, game_type){
 					}					
 				}
 				break;
+			case 5:
+				if(beat_info.m & CENTER_BIT){
+					beat_info.m ^= CENTER_BIT;
+				}else{
+					if(cnt < 2){
+						beat_info.m |= CENTER_BIT;
+					}					
+				}
+				break;	
 		}
 		self.UpdateGameObject(beat_info);
 	};
@@ -279,57 +291,113 @@ function GameData(is_show_beat_order, game_type){
 		return r;
 	};
 
-	this.CreateDrawBeat = function(ball_info, default_time_offset){
+	this.GetBaseX = function(arrow){
+		var x = 0;
+		if(self._game_type == GAME_TYPE.PUMP){
+			var five_x = 400 / 5;
+			var first_x = five_x / 2;
+			switch(arrow){
+				case ARROW.LEFT:
+					x = first_x;
+					break;
+				case ARROW.DOWN:
+					x = first_x + five_x;
+					break;
+				case ARROW.CENTER:
+					x = new Number(first_x) + new Number(five_x * 2);
+					break;
+				case ARROW.UP:
+					x = new Number(first_x) + new Number(five_x * 3);
+					break;
+				case ARROW.RIGHT:
+					x = new Number(first_x) + new Number(five_x * 4);
+					break;
+				}
+		}else{
+			var quarter_x = 400 / 4;
+			var first_x = quarter_x / 2;
+			switch(arrow){
+				case ARROW.LEFT:
+					x = first_x;
+					break;
+				case ARROW.DOWN:
+					x = first_x + quarter_x;
+					break;
+				case ARROW.UP:
+					x = new Number(first_x) + new Number(quarter_x * 2);
+					break;
+				case ARROW.RIGHT:
+					x = new Number(first_x) + new Number(quarter_x * 3);
+					break;
+			}
+		}
+		return x;
+	};
+
+	this.CreateDrawBeat = function(beat_info, default_time_offset){
 		var quarter_x = 400 / 4;
 		var first_x = quarter_x / 2;
 
-		if(ball_info.m & LEFT_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.LEFT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+		if(beat_info.m & LEFT_BIT){
+			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.LEFT, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 
-			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
-				obj.SetXBase(first_x);
+			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.PUMP){
+				obj.SetXBase(self.GetBaseX(ARROW.LEFT));
 			}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.CRASH_NUTS){
 				obj.SetXBase(self.GetXRandom());
 			}
 			self._draw_beat_list.push(obj);
 		}
-		if(ball_info.m & DOWN_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.DOWN, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+		if(beat_info.m & DOWN_BIT){
+			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.DOWN, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 
-			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
-				obj.SetXBase(first_x + quarter_x);
+			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.PUMP){
+				obj.SetXBase(self.GetBaseX(ARROW.DOWN));
 			}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.CRASH_NUTS){
 				obj.SetXBase(self.GetXRandom());
 			}
 			self._draw_beat_list.push(obj);
 		}
-		if(ball_info.m & UP_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.UP, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+		if(beat_info.m & UP_BIT){
+			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.UP, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 
-			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
-				obj.SetXBase(new Number(first_x) + new Number(quarter_x * 2));
+			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.PUMP){
+				obj.SetXBase(self.GetBaseX(ARROW.UP));
 			}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.CRASH_NUTS){
 				obj.SetXBase(self.GetXRandom());
 			}
 			self._draw_beat_list.push(obj);
 		}
-		if(ball_info.m & RIGHT_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.RIGHT, ball_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+		if(beat_info.m & RIGHT_BIT){
+			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.RIGHT, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
 
-			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
-				obj.SetXBase(new Number(first_x) + new Number(quarter_x * 3));
+			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.PUMP){
+				obj.SetXBase(self.GetBaseX(ARROW.RIGHT));
+			}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.CRASH_NUTS){
+				obj.SetXBase(self.GetXRandom());
+			}
+			self._draw_beat_list.push(obj);
+		}
+		if(beat_info.m & CENTER_BIT){
+			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.CENTER, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			if(default_time_offset != undefined){
+				obj.UpdatePos(default_time_offset);
+			}
+
+			if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.PUMP){
+				obj.SetXBase(self.GetBaseX(ARROW.CENTER));
 			}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.CRASH_NUTS){
 				obj.SetXBase(self.GetXRandom());
 			}

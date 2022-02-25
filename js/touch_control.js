@@ -11,7 +11,7 @@ function InputControl(layer_id, game_type, screen_width){
 		var layer = $('#'+self._layer_id);
 		self._offset = layer.offset();
 
-		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
+		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.PUMP){
 			document.addEventListener('keydown', self.PCKeyDown);
 			layer.on('touchmove', function(e){
 				e.preventDefault();
@@ -38,6 +38,7 @@ function InputControl(layer_id, game_type, screen_width){
 			case ARROW.UP:
 			case ARROW.RIGHT:
 			case ARROW.DOWN:
+			case ARROW.CENTER:
 				e.preventDefault();
 				var arrows = [e.keyCode];
 				window._game_control.HitByLaneAndTime(arrows);
@@ -49,41 +50,87 @@ function InputControl(layer_id, game_type, screen_width){
 	this._prev_down_touch_ts = 0;
 	this._prev_up_touch_ts = 0;
 	this._prev_right_touch_ts = 0;
+	this._prev_center_touch_ts = 0;
+
 	this.SmartDeviceTouchStart = function(e){
-		var one_area_width = window.innerWidth / 4;
+		var beat_count = BEAT_TYPE_COUNT[self._game_type];
+		var one_area_width = window.innerWidth / beat_count;
 		var arrow_list = [];
-		for(var i=0 ; i<e.originalEvent.touches.length ; i++){
-			for(var a=1 ; a<=4 ; a++){
-				if(e.originalEvent.touches[i].pageX < (one_area_width * a)){
-					switch(a){
-						case 1:
-							if( (Date.now() - self._prev_left_touch_ts) > 100){
-								arrow_list.push(ARROW.LEFT);
-							}
-							self._prev_left_touch_ts = Date.now();
-							break;
-						case 2:
-							if( (Date.now() - self._prev_down_touch_ts) > 100){
-								arrow_list.push(ARROW.DOWN);
-							}
-							self._prev_down_touch_ts = Date.now();
-							break;
-						case 3:
-							if( (Date.now() - self._prev_up_touch_ts) > 100){
-								arrow_list.push(ARROW.UP);
-							}
-							self._prev_up_touch_ts = Date.now();
-							break;
-						case 4:
-							if( (Date.now() - self._prev_right_touch_ts) > 100){
-								arrow_list.push(ARROW.RIGHT);
-							}
-							self._prev_right_touch_ts = Date.now();
-							break;
+
+		if(self._game_type == GAME_TYPE.PUMP){
+			for(var i=0 ; i<e.originalEvent.touches.length ; i++){
+				for(var a=1 ; a<=5 ; a++){
+					if(e.originalEvent.touches[i].pageX < (one_area_width * a)){
+						switch(a){
+							case 1:
+								if( (Date.now() - self._prev_left_touch_ts) > 100){
+									arrow_list.push(ARROW.LEFT);
+								}
+								self._prev_left_touch_ts = Date.now();
+								break;
+							case 2:
+								if( (Date.now() - self._prev_down_touch_ts) > 100){
+									arrow_list.push(ARROW.DOWN);
+								}
+								self._prev_down_touch_ts = Date.now();
+								break;
+							case 3:
+								if( (Date.now() - self._prev_center_touch_ts) > 100){
+									arrow_list.push(ARROW.CENTER);
+								}
+								self._prev_center_touch_ts = Date.now();
+								break;
+							case 4:
+								if( (Date.now() - self._prev_up_touch_ts) > 100){
+									arrow_list.push(ARROW.UP);
+								}
+								self._prev_up_touch_ts = Date.now();
+								break;
+							case 5:
+								if( (Date.now() - self._prev_right_touch_ts) > 100){
+									arrow_list.push(ARROW.RIGHT);
+								}
+								self._prev_right_touch_ts = Date.now();
+								break;
+						}
+						break;
 					}
-					break;
 				}
-			}
+			}	
+		}else{
+			for(var i=0 ; i<e.originalEvent.touches.length ; i++){
+				for(var a=1 ; a<=4 ; a++){
+					if(e.originalEvent.touches[i].pageX < (one_area_width * a)){
+						switch(a){
+							case 1:
+								if( (Date.now() - self._prev_left_touch_ts) > 100){
+									arrow_list.push(ARROW.LEFT);
+								}
+								self._prev_left_touch_ts = Date.now();
+								break;
+							case 2:
+								if( (Date.now() - self._prev_down_touch_ts) > 100){
+									arrow_list.push(ARROW.DOWN);
+								}
+								self._prev_down_touch_ts = Date.now();
+								break;
+							case 3:
+								if( (Date.now() - self._prev_up_touch_ts) > 100){
+									arrow_list.push(ARROW.UP);
+								}
+								self._prev_up_touch_ts = Date.now();
+								break;
+							case 4:
+								if( (Date.now() - self._prev_right_touch_ts) > 100){
+									arrow_list.push(ARROW.RIGHT);
+								}
+								self._prev_right_touch_ts = Date.now();
+								break;
+						}
+						break;
+					}
+				}
+			}	
 		}
 		
 		if(arrow_list.length > 0){

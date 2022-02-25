@@ -50,6 +50,8 @@ class DrawBeat extends DrawObject{
 				img = this._atlas._img_u;
 			}else if(this.#arrow_or_num == ARROW.RIGHT){
 				img = this._atlas._img_r;
+			}else if(this.#arrow_or_num == ARROW.CENTER){
+				img = this._atlas._img_c;
 			}
 
 			this.#sx = img.x;
