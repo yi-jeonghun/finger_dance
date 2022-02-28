@@ -265,6 +265,8 @@ function PlayGameControl(){
 		self._video_id = game_data.video_id;
 		// console.log('self._video_id ' + self._video_id);
 
+		$('title').html(game_data.title + ' - ' + game_data.artist + ' | Beat Monster');
+
 		$('#id_label_title').html(game_data.title);
 		$('#id_label_artist').html(game_data.artist);
 
