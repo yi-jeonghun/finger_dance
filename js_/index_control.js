@@ -50,17 +50,42 @@ function IndexControl(){
 				complete_visibility = 'complete-show';
 			}
 		}
+
+		var img = '';
+		switch(game.game_type){
+			case GAME_TYPE.DDR:
+				img = `<img src="../img/icon_game_type_ddr.png" style="width:50px; height:auto">`;
+				break;
+			case GAME_TYPE.PUMP:
+				img = `<img src="../img/icon_game_type_pump.png" style="width:50px; height:auto">`;
+				break;
+			case GAME_TYPE.PIANO_TILE:
+				img = `<img src="../img/icon_game_type_tile.png" style="width:50px; height:auto">`;
+				break;
+			case GAME_TYPE.GUN_FIRE:
+				img = `<img src="../img/icon_game_type_fire.png" style="width:50px; height:auto">`;
+				break;
+			}
+
+
 		var h = `
-		<div class="col-3" onclick="${on_click}" style="margin-bottom:3em; cursor:pointer">
+		<div class="col-3" onclick="${on_click}" style="margin-bottom:4em; cursor:pointer">
 			<div>
 				<image style="width:100%; height:auto" src="https://img.youtube.com/vi/${game.video_id}/0.jpg"></image>
 				<div id="id_game_complete-${game.game_id}" class="${complete_visibility}" style="position:absolute; top:10%; left:10%; width:100%; height:100%; color:red;">
 					<i class="fas fa-check" style="font-size:5em;"></i>
 				</div>
 			</div>
-			<div>
-				<div class="" style="margin-left:5px; margin-top:5px; font-size:1.1em">${game.title}</div>
-				<div class="" style="margin-left:5px; margin-top:5px; font-size:0.9em">${game.artist}</div>
+			<div class="" style="margin-top: 5px">
+				<div class="d-flex">
+					<div>
+						${img}
+					</div>
+					<div class="w-100">
+						<div class="text-right" style="margin-left:5px; margin-top:5px; font-size:1.1em">${game.title}</div>
+						<div class="text-right" style="margin-left:5px; margin-top:5px; font-size:0.9em">${game.artist}</div>
+					</div>
+				</div>
 				<div class="container" style="margin-top:5px">
 					<div class="row" style="">
 						<div class="col-6" style="padding-left:5px; font-size:0.7em">
