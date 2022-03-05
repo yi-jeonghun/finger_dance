@@ -15,7 +15,6 @@ function PlayGameControl(){
 	this._is_fullscreen = false;
 	this._is_mobile_device = false;
 	this._is_embedded = false;
-	this._level_allowed_to_play = true;
 
 	this.Init = function(){
 		var md = new MobileDetect(window.navigator.userAgent);
@@ -151,9 +150,7 @@ function PlayGameControl(){
 	this.ShowHidePlayStopButton = function(show_play, show_stop){
 		console.log('ShowHidePlayStopButton play[' + show_play + '] stop[' + show_stop + ']');
 		if(show_play){
-			if(self._level_allowed_to_play == true){
-				$('#id_btn_play').css('display', '');
-			}
+			$('#id_btn_play').css('display', '');
 		}else{
 			$('#id_btn_play').css('display', 'none');
 		}
@@ -283,7 +280,6 @@ function PlayGameControl(){
 		var wave_n_beat = JSON.parse(game_data.wave_n_beat);
 		var background_list = JSON.parse(game_data.background_list);
 		var particle_list = JSON.parse(game_data.particle_list);
-		_game_control._game_level = game_data.level;
 
 		{//Update Image Path
 			for(var i=0 ; i<background_list.length ; i++){
@@ -354,8 +350,6 @@ function PlayGameControl(){
 
 		_game_control.SetGameData(converted_data);
 		_game_control.PrepareGame();
-
-		$('#id_text_level').html(game_data.level);
 	};
 
 	this.OnYoutubeVideoReadyToPlay = function(){

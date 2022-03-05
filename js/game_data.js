@@ -11,6 +11,9 @@ function GameData(is_show_beat_order, game_type){
 		m: mask
 	}*/
 	this._beat_list = [];
+	this._beat_list_1 = [];//easy
+	this._beat_list_2 = [];//normal
+	this._beat_list_3 = [];//hard
 
 	//play 중에 사용되는 background rule
 	/*{
@@ -19,6 +22,9 @@ function GameData(is_show_beat_order, game_type){
 		background_uid: ''
 	}*/
 	this._wave_list = [];
+	this._wave_list_1 = [];//easy
+	this._wave_list_2 = [];//normal
+	this._wave_list_3 = [];//hard
 
 	// 이 게임에서 사용하는 전체의 background
 	/*{
@@ -78,6 +84,12 @@ function GameData(is_show_beat_order, game_type){
 		}else if(self._game_type == GAME_TYPE.GUN_FIRE || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.CRASH_NUTS){
 			self._move_direction = MOVE_DIRECTION.DOWNWARD;
 			self._base_line = 600;
+		}
+
+		if(self._game_type == GAME_TYPE.GUN_FIRE){
+			self._speed = 300;
+		}else{
+			self._speed = 150;
 		}
 
 		var beat_count = BEAT_TYPE_COUNT[self._game_type];
@@ -233,31 +245,7 @@ function GameData(is_show_beat_order, game_type){
 		}
 	};
 
-	this.CreateDrawBeatList = function(game_level){
-		switch(game_level){
-			case 1:
-				self._speed = 150;
-				break;
-			case 2:
-				self._speed = 160;
-				break;
-			case 3:
-				self._speed = 170;
-				break;
-			case 4:
-				self._speed = 180;
-				break;
-			case 5:
-				self._speed = 190;
-				break;
-			case 6:
-				self._speed = 200;
-				break;
-			case 7:
-				self._speed = 300;
-				break;
-		}
-
+	this.CreateDrawBeatList = function(){
 		// console.log('self._is_show_beat_order ' + self._is_show_beat_order);
 		self._note_order = 0;
 		self._draw_beat_list = [];

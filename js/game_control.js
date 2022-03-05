@@ -22,7 +22,6 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	this._id_debug_ele = null;
 	this._vibration_on_off = false;
 	this._base_offset_ms = 0;
-	this._game_level = 1;
 	this._is_complete = false;
 	this._is_excercise_mode = false;
 	this._total_hit_count = 0;
@@ -333,10 +332,9 @@ function GameControl(width, height, is_show_beat_order, game_type){
 
 		if(self._game_type == GAME_TYPE.GUN_FIRE){
 			window._input_control.InitHandle(200, self._game_data._base_line);
-			self._game_level = 7;
 		}
 
-		self._game_data.CreateDrawBeatList(self._game_level);
+		self._game_data.CreateDrawBeatList();
 		for(var i=0 ; i<self._game_data._draw_beat_list.length ; i++){
 			window._renderer.AddDrawObject(6, self._game_data._draw_beat_list[i]);
 		}
