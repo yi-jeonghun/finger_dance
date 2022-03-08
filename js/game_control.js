@@ -621,13 +621,14 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	this._cur_wave_idx = 0;
 	this._wave_sequence_idx = 0;
 	this.UpdateWave = function(){
-		if(self._cur_wave_idx >= self._game_data._wave_list.length - 1){
+		var wave_list_len = self._game_data.GetWaveListLength();
+		if(self._cur_wave_idx >= wave_list_len - 1){
 			return;
 		}
 
 		var next_wave_idx = self._cur_wave_idx + 1;
-
-		if(self._timelapse < self._game_data._wave_list[next_wave_idx].t){
+		var wave_info = self._game_data.GetWaveInfo(next_wave_idx);
+		if(self._timelapse < wave_info.t){
 			return;
 		}
 		self._cur_wave_idx++;
@@ -635,13 +636,12 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	};
 
 	this.ShowBackground = function(idx){
-		// console.log('ShowBackground ' + idx);
-		// console.log('self._game_data._wave_list.length ' + self._game_data._wave_list.length);
-		if(idx > self._game_data._wave_list.length -1){
+		var wave_list_len = self._game_data.GetWaveListLength();
+		if(idx > wave_list_len -1){
 			return;
 		}
 
-		var wave = self._game_data._wave_list[idx];
+		var wave = self._game_data.GetWaveInfo(idx);
 		var background = null;
 		// console.log('wave.type ' + wave.type);
 		switch(wave.type){

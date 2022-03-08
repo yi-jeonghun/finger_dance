@@ -17,6 +17,7 @@ function PlayGameControl(){
 	this._is_embedded = false;
 
 	this.Init = function(){
+		$('#id_div_difficulty').hide();
 		var md = new MobileDetect(window.navigator.userAgent);
 		if(md.mobile()) {
 			self._is_mobile_device = true;
@@ -115,6 +116,29 @@ function PlayGameControl(){
 		$('#id_img_vibration').on('click', self.OnVibrationClick);
 		$('#id_btn_stop').on('click', self.OnStopBtnClick);
 		$('#id_btn_retry').on('click', self.RetryGame);
+		$('#id_span_difficulty_easy').on('click', self.OnClick_ChangeDifficulty);
+		$('#id_span_difficulty_normal').on('click', self.OnClick_ChangeDifficulty);
+		$('#id_span_difficulty_hard').on('click', self.OnClick_ChangeDifficulty);
+	};
+
+	this.OnClick_ChangeDifficulty = function(){
+		$('#id_span_difficulty_easy').removeClass('badge-primary');
+		$('#id_span_difficulty_normal').removeClass('badge-primary');
+		$('#id_span_difficulty_hard').removeClass('badge-primary');
+		switch(this.id){
+			case 'id_span_difficulty_easy':
+				$('#id_span_difficulty_easy').addClass('badge-primary');
+				window._game_control._game_data.SwitchDifficulty(DIFFICULTY.EASY);
+				break;
+			case 'id_span_difficulty_normal':
+				$('#id_span_difficulty_normal').addClass('badge-primary');
+				window._game_control._game_data.SwitchDifficulty(DIFFICULTY.NORMAL);
+				break;
+			case 'id_span_difficulty_hard':
+				$('#id_span_difficulty_hard').addClass('badge-primary');
+				window._game_control._game_data.SwitchDifficulty(DIFFICULTY.HARD);
+				break;
+		}
 	};
 
 	this.OnResourceLoaded = function(percent){
@@ -125,6 +149,7 @@ function PlayGameControl(){
 		// console.log('pstr ' + pstr);
 		if(percent == 1){
 			$('#id_loading').css('display', 'none');
+			$('#id_div_difficulty').show();
 			self.ShowHidePlayStopButton(true, false);
 		}
 	};
@@ -194,6 +219,7 @@ function PlayGameControl(){
 		self.ShowHidePlayStopButton(false, true);
 		$('#id_retry_area').css('display', 'none');
 
+		_game_control.PrepareGame();
 		window._game_control.PlayGame();
 	};
 
@@ -277,7 +303,9 @@ function PlayGameControl(){
 		_game_control._cb_on_game_finished = self.OnGameFinished;
 		_game_control._cb_on_youtube_video_ready_to_play = self.OnYoutubeVideoReadyToPlay;
 
-		var wave_n_beat = JSON.parse(game_data.wave_n_beat);
+		var wave_n_beat_1 = JSON.parse(game_data.wave_n_beat_1);
+		var wave_n_beat_2 = JSON.parse(game_data.wave_n_beat_2);
+		var wave_n_beat_3 = JSON.parse(game_data.wave_n_beat_3);
 		var background_list = JSON.parse(game_data.background_list);
 		var particle_list = JSON.parse(game_data.particle_list);
 
@@ -314,8 +342,12 @@ function PlayGameControl(){
 		}
 
 		var converted_data = {
-			beat_list: wave_n_beat.beat_list,
-			wave_list: wave_n_beat.wave_list,
+			beat_list_1: wave_n_beat_1.beat_list,
+			wave_list_1: wave_n_beat_1.wave_list,
+			beat_list_2: wave_n_beat_2.beat_list,
+			wave_list_2: wave_n_beat_2.wave_list,
+			beat_list_3: wave_n_beat_3.beat_list,
+			wave_list_3: wave_n_beat_3.wave_list,
 			background_list: background_list,
 			particle_list: particle_list,
 			beat_atlas_uid: game_data.beat_atlas_uid,
@@ -349,15 +381,11 @@ function PlayGameControl(){
 		};
 
 		_game_control.SetGameData(converted_data);
-		_game_control.PrepareGame();
 	};
 
 	this.OnYoutubeVideoReadyToPlay = function(){
 		console.log('OnYoutubeVideoReadyToPlay ');
 		window._resource_loader.OnYoutubeLoaded();
-		// return;
-		// $('#id_loading').css('display', 'none');
-		// self.ShowHidePlayStopButton(true, false);
 	};
 
 	this.Like = function(){

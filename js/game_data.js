@@ -10,7 +10,6 @@ function GameData(is_show_beat_order, game_type){
 		t: timelapse_ms,
 		m: mask
 	}*/
-	this._beat_list = [];
 	this._beat_list_1 = [];//easy
 	this._beat_list_2 = [];//normal
 	this._beat_list_3 = [];//hard
@@ -76,6 +75,7 @@ function GameData(is_show_beat_order, game_type){
 	this._is_show_beat_order = is_show_beat_order;
 	//움직이는 Beat 객체
 	this._draw_beat_list = [];
+	this._difficulty = DIFFICULTY.EASY;
 
 	this.Init = function(){
 		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PUMP){
@@ -103,8 +103,12 @@ function GameData(is_show_beat_order, game_type){
 	 * Database로 부터 game data를 읽은 경우
 	 */
 	this.SetGameData = function(data){
-		self._beat_list = data.beat_list;
-		self._wave_list = data.wave_list;
+		self._beat_list_1 = data.beat_list_1;
+		self._wave_list_1 = data.wave_list_1;
+		self._beat_list_2 = data.beat_list_2;
+		self._wave_list_2 = data.wave_list_2;
+		self._beat_list_3 = data.beat_list_3;
+		self._wave_list_3 = data.wave_list_3;
 		self._background_list = data.background_list;
 		self._particle_list = data.particle_list;
 		self._beat_atlas_uid = data.beat_atlas_uid;
@@ -115,8 +119,12 @@ function GameData(is_show_beat_order, game_type){
 
 	this.GetGameData = function(){
 		var data = {
-			beat_list: self._beat_list,
-			wave_list: self._wave_list,
+			beat_list_1: self._beat_list_1,
+			wave_list_1: self._wave_list_1,
+			beat_list_2: self._beat_list_2,
+			wave_list_2: self._wave_list_2,
+			beat_list_3: self._beat_list_3,
+			wave_list_3: self._wave_list_3,
 			particle_list: self._particle_list,
 			background_list: self._background_list,
 			beat_atlas_uid: self._beat_atlas_uid,
@@ -126,28 +134,215 @@ function GameData(is_show_beat_order, game_type){
 		return data;
 	};
 
+	this.GetBeatList = function(){
+		var beat_list = [];
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				beat_list = self._beat_list_1;
+				break;
+			case DIFFICULTY.NORMAL:
+				beat_list = self._beat_list_2;
+				break;
+			case DIFFICULTY.HARD:
+				beat_list = self._beat_list_3;
+				break;
+		}
+		return beat_list;
+	};
+
+	this.UpdateBeatInfoTime = function(idx, new_ms){
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._beat_list_1[idx].t = new_ms;
+				break;
+			case DIFFICULTY.NORMAL:
+				self._beat_list_2[idx].t = new_ms;
+				break;
+			case DIFFICULTY.HARD:
+				self._beat_list_3[idx].t = new_ms;
+				break;
+		}
+	};
+
+	this.GetBeatListLength = function(){
+		var length = 0;
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				length = self._beat_list_1.length;
+				break;
+			case DIFFICULTY.NORMAL:
+				length = self._beat_list_2.length;
+				break;
+			case DIFFICULTY.HARD:
+				length = self._beat_list_3.length;
+				break;
+		}
+		return length;
+	};
+
+	this.GetBeatInfo = function(idx){
+		var beat_info = null;
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				beat_info = self._beat_list_1[idx];
+				break;
+			case DIFFICULTY.NORMAL:
+				beat_info = self._beat_list_2[idx];
+				break;
+			case DIFFICULTY.HARD:
+				beat_info = self._beat_list_3[idx];
+				break;
+		}
+		return beat_info;
+	};
+
+	this.GetWaveListLength = function(){
+		var length = 0;
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				length = self._wave_list_1.length;
+				break;
+			case DIFFICULTY.NORMAL:
+				length = self._wave_list_2.length;
+				break;
+			case DIFFICULTY.HARD:
+				length = self._wave_list_3.length;
+				break;
+		}
+		return length;
+	};
+
+	this.GetWaveInfo = function(idx){
+		var wave_info = null;
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				wave_info = self._wave_list_1[idx];
+				break;
+			case DIFFICULTY.NORMAL:
+				wave_info = self._wave_list_2[idx];
+				break;
+			case DIFFICULTY.HARD:
+				wave_info = self._wave_list_3[idx];
+				break;
+		}
+		return wave_info;
+	};
+
+	this.UpdateWaveInfoTime = function(idx, new_ms){
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._wave_list_1[idx].t = new_ms;
+				break;
+			case DIFFICULTY.NORMAL:
+				self._wave_list_2[idx].t = new_ms;
+				break;
+			case DIFFICULTY.HARD:
+				self._wave_list_3[idx].t = new_ms;
+				break;
+		}
+	};
+
+	this.UpdateWaveInfo = function(idx, type){
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._wave_list_1[idx].type = type;
+				break;
+			case DIFFICULTY.NORMAL:
+				self._wave_list_2[idx].type = type;
+				break;
+			case DIFFICULTY.HARD:
+				self._wave_list_3[idx].type = type;
+				break;
+		}
+	};
+
+	this.GetWaveList = function(){
+		var wave_list = [];
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				wave_list = self._wave_list_1;
+				break;
+			case DIFFICULTY.NORMAL:
+				wave_list = self._wave_list_2;
+				break;
+			case DIFFICULTY.HARD:
+				wave_list = self._wave_list_3;
+				break;
+		}
+		return wave_list;
+	};
+
+	this.SwitchDifficulty = function(difficulty){
+		self._difficulty = difficulty;
+		console.log('self._difficulty ' + self._difficulty);
+	};
+
 	this.AddWave = function(time){
 		var wave = {
 			t: time,
 			type: BG_SELECT_TYPE.RANDOM,
 			background_uid: null
 		};
-		self._wave_list.push(wave);
+
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._wave_list_1.push(wave);
+				break;
+			case DIFFICULTY.NORMAL:
+				self._wave_list_2.push(wave);
+				break;
+			case DIFFICULTY.HARD:
+				self._wave_list_3.push(wave);
+				break;
+		}
+		
 		self.SortWaveList();
 	};
 
 	this.AddBeat = function(beat_info){
-		self._beat_list.push(beat_info);
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._beat_list_1.push(beat_info);
+				break;
+			case DIFFICULTY.NORMAL:
+				self._beat_list_2.push(beat_info);
+				break;
+			case DIFFICULTY.HARD:
+				self._beat_list_3.push(beat_info);
+				break;
+		}
+
 		self.SortBeatList();
 		self.CreateDrawBeat(beat_info);
 	};
 
 	this.SortBeatList = function(){
-		self._beat_list.sort(function(a, b){return a.t - b.t});
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._beat_list_1.sort(function(a, b){return a.t - b.t});
+				break;
+			case DIFFICULTY.NORMAL:
+				self._beat_list_2.sort(function(a, b){return a.t - b.t});
+				break;
+			case DIFFICULTY.HARD:
+				self._beat_list_3.sort(function(a, b){return a.t - b.t});
+				break;
+		}
 	};
 
 	this.SortWaveList = function(){
-		self._wave_list.sort(function(a, b){return a.t - b.t});
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._wave_list_1.sort(function(a, b){return a.t - b.t});
+				break;
+			case DIFFICULTY.NORMAL:
+				self._wave_list_2.sort(function(a, b){return a.t - b.t});
+				break;
+			case DIFFICULTY.HARD:
+				self._wave_list_3.sort(function(a, b){return a.t - b.t});
+				break;
+		}
+
 	};
 
 	this.SortBackgroundList = function(){
@@ -167,7 +362,18 @@ function GameData(is_show_beat_order, game_type){
 	//DDR용으로만 사용되는 함수임.
 	//FIXME : Dash용으로 사용되는 함수 추가로 만들어야 함.
 	this.AddOrRemoveBeat = function(idx, arrow){
-		var beat_info = self._beat_list[idx];
+		var beat_info = null;
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				beat_info = self._beat_list_1[idx];
+				break;
+			case DIFFICULTY.NORMAL:
+				beat_info = self._beat_list_2[idx];
+				break;
+			case DIFFICULTY.HARD:
+				beat_info = self._beat_list_3[idx];
+				break;
+		}
 		
 		var cnt = 0;
 		if(beat_info.m & LEFT_BIT){
@@ -249,11 +455,12 @@ function GameData(is_show_beat_order, game_type){
 		// console.log('self._is_show_beat_order ' + self._is_show_beat_order);
 		self._note_order = 0;
 		self._draw_beat_list = [];
-		for(var i=0 ; i<self._beat_list.length ; i++){
+		var tmp_beat_list = self.GetBeatList();
+		for(var i=0 ; i<tmp_beat_list.length ; i++){
 			if(self._is_show_beat_order){
 				self._note_order++;
 			}
-			self.CreateDrawBeat(self._beat_list[i]);
+			self.CreateDrawBeat(tmp_beat_list[i]);
 		}
 	};
 
@@ -264,11 +471,12 @@ function GameData(is_show_beat_order, game_type){
 	this.CreateDrawBeatListWithGivenTime = function(given_ms){
 		self._note_order = 0;
 		self._draw_beat_list = [];
-		for(var i=0 ; i<self._beat_list.length ; i++){
+		var tmp_beat_list = self.GetBeatList();
+		for(var i=0 ; i<tmp_beat_list.length ; i++){
 			if(self._is_show_beat_order){
 				self._note_order++;
 			}
-			self.CreateDrawBeat(self._beat_list[i], given_ms);
+			self.CreateDrawBeat(tmp_beat_list[i], given_ms);
 		}
 	};
 
@@ -394,12 +602,36 @@ function GameData(is_show_beat_order, game_type){
 	};
 
 	this.DeleteWave = function(idx){
-		self._wave_list.splice(idx, 1);
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._wave_list_1.splice(idx, 1);
+				break;
+			case DIFFICULTY.EASY:
+				self._wave_list_2.splice(idx, 1);
+				break;
+			case DIFFICULTY.EASY:
+				self._wave_list_3.splice(idx, 1);
+				break;
+		}
 	}
 
 	this.DeleteBeat = function(idx){
-		var beat_info = self._beat_list[idx];
-		self._beat_list.splice(idx, 1);
+		var beat_info = null;
+
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				beat_info = self._beat_list_1[idx];
+				self._beat_list_1.splice(idx, 1);
+				break;
+			case DIFFICULTY.EASY:
+				beat_info = self._beat_list_2[idx];
+				self._beat_list_2.splice(idx, 1);
+				break;
+			case DIFFICULTY.EASY:
+				beat_info = self._beat_list_3[idx];
+				self._beat_list_3.splice(idx, 1);
+				break;
+		}
 
 		for(var i=self._draw_beat_list.length-1 ; i>=0 ; i--){
 			if(beat_info.t == self._draw_beat_list[i]._offset_ms){
@@ -409,24 +641,25 @@ function GameData(is_show_beat_order, game_type){
 	};
 
 	this.PrependBeat = function(idx){
-		if(idx >= self._beat_list.length || idx < 0){
+		var tmp_beat_list = self.GetBeatList();
+		if(idx >= tmp_beat_list.length || idx < 0){
 			console.log(idx + ' out of range');
 			return;
 		}
 
 		var beat_info = null;
 		if(idx == 0){
-			var diff = self._beat_list[idx+1].t - self._beat_list[idx].t;
+			var diff = tmp_beat_list[idx+1].t - tmp_beat_list[idx].t;
 			beat_info = {
-				t: self._beat_list[idx].t-diff,
+				t: tmp_beat_list[idx].t-diff,
 				m: LEFT_BIT
 			};
 		}else{
-			var half = (self._beat_list[idx-1].t - self._beat_list[idx].t)/2;
+			var half = (tmp_beat_list[idx-1].t - tmp_beat_list[idx].t)/2;
 			half = Math.abs(half);
 			half = Math.floor(half);
 			beat_info = {
-				t: self._beat_list[idx].t - half,
+				t: tmp_beat_list[idx].t - half,
 				m: LEFT_BIT
 			};
 		}
@@ -437,7 +670,8 @@ function GameData(is_show_beat_order, game_type){
 	};
 
 	this.PrependWave = function(beat_idx){
-		if(beat_idx >= self._beat_list.length || beat_idx < 0){
+		var tmp_beat_list = self.GetBeatList();
+		if(beat_idx >= tmp_beat_list.length || beat_idx < 0){
 			console.log(beat_idx + ' out of range');
 			return;
 		}
@@ -445,7 +679,7 @@ function GameData(is_show_beat_order, game_type){
 		//첫번째 비트로 선택하여 Wave를 추가하는 경우에는
 		//time을 항상 0으로 함.
 		//게임 시작과 함께 백그라운드가 나오게 하기 위함.
-		var time_ms = self._beat_list[beat_idx].t;
+		var time_ms = tmp_beat_list[beat_idx].t;
 		if(beat_idx == 0){
 			time_ms = 0;
 		}
@@ -453,18 +687,54 @@ function GameData(is_show_beat_order, game_type){
 	}
 
 	this.Shift = function(offset){
-		for(var i=0 ; i<self._beat_list.length ; i++){
-			self._beat_list[i].t += offset;
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				for(var i=0 ; i<self._beat_list_1.length ; i++){
+					self._beat_list_1[i].t += offset;
+				}
+				break;
+			case DIFFICULTY.NORMAL:
+				for(var i=0 ; i<self._beat_list_2.length ; i++){
+					self._beat_list_2[i].t += offset;
+				}
+				break;
+			case DIFFICULTY.HARD:
+				for(var i=0 ; i<self._beat_list_3.length ; i++){
+					self._beat_list_3[i].t += offset;
+				}
+				break;
 		}
 	};
 
 	this.DeleteFrom = function(idx){
-		self._beat_list.splice(idx, self._beat_list.length);
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._beat_list_1.splice(idx, self._beat_list_1.length);
+				break;
+			case DIFFICULTY.NORMAL:
+				self._beat_list_2.splice(idx, self._beat_list_2.length);
+				break;
+			case DIFFICULTY.HARD:
+				self._beat_list_3.splice(idx, self._beat_list_3.length);
+				break;
+		}
 	};
 
 	this.ClearNoteList = function(){
-		self._wave_list = [];
-		self._beat_list = [];
+		switch(self._difficulty){
+			case DIFFICULTY.EASY:
+				self._wave_list_1 = [];
+				self._beat_list_1 = [];
+				break;
+			case DIFFICULTY.NORMAL:
+				self._wave_list_2 = [];
+				self._beat_list_2 = [];
+				break;
+			case DIFFICULTY.HARD:
+				self._wave_list_3 = [];
+				self._beat_list_3 = [];
+				break;
+		}
 	};
 
 	// BACKGROUND =============================================

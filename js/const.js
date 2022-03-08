@@ -49,7 +49,7 @@ const GAME_TYPE_STR = {
 	[GAME_TYPE.GUN_FIRE]: 'GUN FIRE',
 	[GAME_TYPE.CRASH_NUTS]: 'CRASH NUTS',
 	[GAME_TYPE.PUMP]: 'PUMP',
-}
+};
 
 const BEAT_TYPE_COUNT = {
 	[GAME_TYPE.DDR]:4,
@@ -68,4 +68,10 @@ const BG_SELECT_TYPE = {
 	FIXED: 'FIXED',
 	RANDOM: 'RANDOM',
 	SEQUENCE: 'SEQUENCE'
+};
+
+const DIFFICULTY = {
+	EASY: 'easy',
+	NORMAL: 'normal',
+	HARD: 'hard'
 };
