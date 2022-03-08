@@ -441,7 +441,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 							//실패의 원인을 표시하기 위해
 							//passed가 아닌 것으로 한다.
 							if(self._cb_on_game_finished){
-								self._cb_on_game_finished(self._is_complete, self._progress_percent, self._score);
+								var difficulty = self._game_data._difficulty;
+								self._cb_on_game_finished(difficulty, self._is_complete, self._progress_percent, self._score);
 							}
 							break;
 						}
@@ -472,7 +473,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 						self._failed_gameobj_list = [];
 						self._failed_gameobj_list = self._game_data._draw_beat_list;
 						if(self._cb_on_game_finished){
-							self._cb_on_game_finished(self._is_complete, self._progress_percent, self._score);
+							var difficulty = self._game_data._difficulty;
+							self._cb_on_game_finished(difficulty, self._is_complete, self._progress_percent, self._score);
 						}
 						console.log('FAILED GAME ' );
 					}

@@ -233,13 +233,13 @@ function PlayGameControl(){
 		$('#id_retry_area').css('display', '');
 	};
 
-	this.OnGameFinished = function(is_complete, progress_percent, score){
+	this.OnGameFinished = function(difficulty, is_complete, progress_percent, score){
 		console.log('OnGameFinished ' + is_complete);
 		console.log('progress_percent ' + progress_percent);
 		console.log('score ' + score);
 
 		if(_game_control._is_playing){
-			self.SaveGameResult(is_complete, progress_percent, score);
+			self.SaveGameResult(difficulty, is_complete, progress_percent, score);
 			if(is_complete == true){
 			}else{
 				setTimeout(self.ShowRetryButton, 500);
@@ -248,11 +248,12 @@ function PlayGameControl(){
 		}
 	};
 
-	this.SaveGameResult = function(is_complete, progress_percent, score){
+	this.SaveGameResult = function(difficulty, is_complete, progress_percent, score){
 		var message = {
 			command: "game_result",
 			game_result: {
 				game_id: self._game_id,
+				difficulty: difficulty,
 				is_complete: is_complete,
 				progress_percent: progress_percent,
 				score: score
