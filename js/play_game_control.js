@@ -293,6 +293,25 @@ function PlayGameControl(){
 		$('#id_label_title').html(game_data.title);
 		$('#id_label_artist').html(game_data.artist);
 
+		{
+			var img = '';
+			switch(game_data.game_type){
+				case GAME_TYPE.DDR:
+					img = `<img class="border" src="../img/icon_game_type_ddr.png" style="width:50px; height:auto">`;
+					break;
+				case GAME_TYPE.PUMP:
+					img = `<img class="border" src="../img/icon_game_type_pump.png" style="width:50px; height:auto">`;
+					break;
+				case GAME_TYPE.PIANO_TILE:
+					img = `<img class="border" src="../img/icon_game_type_tile.png" style="width:50px; height:auto">`;
+					break;
+				case GAME_TYPE.GUN_FIRE:
+					img = `<img class="border" src="../img/icon_game_type_fire.png" style="width:50px; height:auto">`;
+					break;
+			}
+			$('#id_div_game_type_img').html(img);
+		}
+
 		// console.log('self._video_id ' + self._video_id);
 		_game_control._video_id = self._video_id;
 
