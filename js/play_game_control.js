@@ -142,8 +142,7 @@ function PlayGameControl(){
 	};
 
 	this.OnResourceLoaded = function(percent){
-		// console.log('percent ' + percent);
-		var pstr = percent * 100;
+		var pstr = Math.floor(percent * 100);
 		pstr += "%";
 		$('#id_span_percent').html(pstr);
 		// console.log('pstr ' + pstr);
