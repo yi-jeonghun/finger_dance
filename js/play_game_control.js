@@ -262,6 +262,8 @@ function PlayGameControl(){
 
 		if(typeof webkit !== 'undefined'){
 			webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
+		}else{
+			window._db_control.SaveGameResult(message.game_result);
 		}
 	};
 

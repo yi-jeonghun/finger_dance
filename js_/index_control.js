@@ -6,11 +6,9 @@ $('document').ready(function(){
 function IndexControl(){
 	var self = this;
 	this._game_list = [];
-	this._db_control = null;
 
 	this.Init = function(){
-		self._db_control = new DBControl();
-		self._db_control.LoadGames(self.OnLoadGameList);
+		window._db_control.LoadGames(self.OnLoadGameList);
 		return this;
 	};
 
@@ -102,11 +100,11 @@ function IndexControl(){
 					</div>
 					<div class="container" style="margin-top:5px">
 						<div class="row" style="">
-							<div class="col-6" style="padding-left:5px; font-size:0.7em">
+							<div class="col-6" style="padding:0px; font-size:0.7em">
 								Score 
 								<span id="id_game_score-${game.game_id}">${score_str}</span>
 							</div>
-							<div class="col-6 text-right" style="font-size:0.7em">
+							<div class="col-6 text-right" style="padding:0px; font-size:0.7em">
 								<span id="id_game_percent-${game.game_id}">${percent_str}<span>
 								<span id="id_game_difficulty-${game.game_id}">${difficulty_str}</span>
 							</div>
