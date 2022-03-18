@@ -606,10 +606,10 @@ function GameData(is_show_beat_order, game_type){
 			case DIFFICULTY.EASY:
 				self._wave_list_1.splice(idx, 1);
 				break;
-			case DIFFICULTY.EASY:
+			case DIFFICULTY.NORMAL:
 				self._wave_list_2.splice(idx, 1);
 				break;
-			case DIFFICULTY.EASY:
+			case DIFFICULTY.HARD:
 				self._wave_list_3.splice(idx, 1);
 				break;
 		}
@@ -623,11 +623,11 @@ function GameData(is_show_beat_order, game_type){
 				beat_info = self._beat_list_1[idx];
 				self._beat_list_1.splice(idx, 1);
 				break;
-			case DIFFICULTY.EASY:
+			case DIFFICULTY.NORMAL:
 				beat_info = self._beat_list_2[idx];
 				self._beat_list_2.splice(idx, 1);
 				break;
-			case DIFFICULTY.EASY:
+			case DIFFICULTY.HARD:
 				beat_info = self._beat_list_3[idx];
 				self._beat_list_3.splice(idx, 1);
 				break;
