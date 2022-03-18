@@ -27,7 +27,7 @@ function GameData(is_show_beat_order, game_type){
 
 	// 이 게임에서 사용하는 전체의 background
 	/*{
-		background:uid: '',
+		background_uid: '',
 		name:'',
 		type: BG_TYPE[IMG, STYLE],
 		image_path: '',
