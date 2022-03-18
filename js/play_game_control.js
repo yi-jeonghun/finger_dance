@@ -481,7 +481,9 @@ function PlayGameControl(){
 		window._db_control.LoadGameResultList();
 		var game_result = window._db_control.GetGameResult(self._game_id);	
 		if(game_result != null){
-			var h = `${game_result.score} (${game_result.progress_percent}%) [${game_result.difficulty}]`;
+			var percent = game_result.progress_percent * 100;
+			var percent_str = Math.round(percent, 1) + '%';
+			var h = `${game_result.score} (${percent_str}) [${game_result.difficulty}]`;
 			$('#id_text_my_score').html(h);
 		}
 	};
