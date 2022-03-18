@@ -11,7 +11,7 @@ function BackgroundRenderer(){
 	this._layer1 = null;
 	this._layer2 = null;
 	this._layer3 = null;
-	this._SPEED = 0.02;
+	this._SPEED = 0.005;
 
 	this.Init = function(layer_id, game_width, game_height, screen_width, screen_height){
 		self._layer_id = layer_id;
