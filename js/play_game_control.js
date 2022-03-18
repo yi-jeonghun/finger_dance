@@ -42,6 +42,7 @@ function PlayGameControl(){
 				window._game_data = json;
 				// console.log(json); // this will show the info it in firebug console
 				self.DisplayGameData(window._game_data);
+				self.DISP_PrevGameResult();
 			});
 	
 			// self.GetRanking();
@@ -473,5 +474,14 @@ function PlayGameControl(){
 				ele_table_ranking.append($(txt));
 			}
 		});
+	};
+
+	this.DISP_PrevGameResult = function(){
+		window._db_control.LoadGameResultList();
+		var game_result = window._db_control.GetGameResult(self._game_id);	
+		if(game_result != null){
+			var h = `${game_result.score} (${game_result.progress_percent}%) [${game_result.difficulty}]`;
+			$('#id_text_my_score').html(h);
+		}
 	};
 }
