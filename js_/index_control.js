@@ -81,38 +81,44 @@ function IndexControl(){
 		}
 
 		var h = `
-			<div class="col-3" onclick="${on_click}" style="margin-bottom:4em; cursor:pointer">
-				<div>
-					<image style="width:100%; height:auto" src="https://img.youtube.com/vi/${game.video_id}/0.jpg"></image>
-					<div id="id_game_complete-${game.game_id}" class="${complete_visibility}" style="position:absolute; top:10%; left:10%; width:100%; height:100%; color:red;">
-						<i class="fas fa-check" style="font-size:5em;"></i>
-					</div>
-				</div>
-				<div class="" style="margin-top: 5px">
-					<div class="d-flex">
-						<div>
-							${img}
-						</div>
-						<div class="w-100">
-							<div class="text-right" style="margin-left:5px; margin-top:5px; font-size:1.1em">${game.title}</div>
-							<div class="text-right" style="margin-left:5px; margin-top:5px; font-size:0.9em">${game.artist}</div>
-						</div>
-					</div>
-					<div class="container" style="margin-top:5px">
-						<div class="row" style="">
-							<div class="col-6" style="padding:0px; font-size:0.7em">
-								Score 
-								<span id="id_game_score-${game.game_id}">${score_str}</span>
-							</div>
-							<div class="col-6 text-right" style="padding:0px; font-size:0.7em">
-								<span id="id_game_percent-${game.game_id}">${percent_str}<span>
-								<span id="id_game_difficulty-${game.game_id}">${difficulty_str}</span>
+			<div class="col-12 col-md-3" onclick="${on_click}" style="margin-bottom:1em; cursor:pointer">
+				<div class="container-fluid" style="padding:0">
+					<div class="row">
+						<div class="col-4 col-md-12 border" style="padding:0">
+							<image style="width:100%; height:auto" src="https://img.youtube.com/vi/${game.video_id}/0.jpg"></image>
+							<div id="id_game_complete-${game.game_id}" class="${complete_visibility}" style="position:absolute; top:10%; left:10%; width:100%; height:100%; color:red;">
+								<i class="fas fa-check" style="font-size:5em;"></i>
 							</div>
 						</div>
-					</div>
-					<div id="id_game_percent_bar-${game.game_id}" 
-						style="position:absolute; bottom:0px; width:${percent}%; height:2px; background-color:blue"></div>
-					</div>
+						<div class="col-8 col-md-12 border" style="">
+							<div class="container-fluid" style="padding:0">
+								<div class="row">
+									<div class="col-8">
+										<div class="" style=" margin-top:5px; font-size:1em">${game.title}</div>
+										<div class="" style=" margin-top:5px; font-size:1em">${game.artist}</div>
+									</div>
+									<div class="col-4">
+										<div>${img}</div>
+									</div>
+								</div>
+							</div>
+							<div class="container" style="margin-top:5px">
+								<div class="row" style="">
+									<div class="col-6" style="padding:0px; font-size:0.7em">
+										Score 
+										<span id="id_game_score-${game.game_id}">${score_str}</span>
+									</div>
+									<div class="col-6 text-right" style="padding:0px; font-size:0.7em">
+										<span id="id_game_percent-${game.game_id}">${percent_str}<span>
+										<span id="id_game_difficulty-${game.game_id}">${difficulty_str}</span>
+									</div>
+								</div>
+							</div>
+							<div id="id_game_percent_bar-${game.game_id}" 
+								style="position:absolute; bottom:0px; width:${percent}%; height:2px; background-color:blue"></div>
+							</div>
+						</div>
+					</div><!--row-->
 				</div>
 			</div>
 		`;
