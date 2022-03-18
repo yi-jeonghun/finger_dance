@@ -81,30 +81,30 @@ function IndexControl(){
 		}
 
 		var h = `
-			<div class="col-12 col-md-3" onclick="${on_click}" style="margin-bottom:1em; cursor:pointer">
-				<div class="container-fluid" style="padding:0">
+			<div class="col-12 col-md-3 border" onclick="${on_click}" style="margin-bottom:1em; cursor:pointer">
+				<div class="container-fluid" style="padding:2px">
 					<div class="row">
-						<div class="col-4 col-md-12 border" style="padding:0">
+						<div class="col-4 col-md-12" style="padding:0">
 							<image style="width:100%; height:auto" src="https://img.youtube.com/vi/${game.video_id}/0.jpg"></image>
 							<div id="id_game_complete-${game.game_id}" class="${complete_visibility}" style="position:absolute; top:10%; left:10%; width:100%; height:100%; color:red;">
 								<i class="fas fa-check" style="font-size:5em;"></i>
 							</div>
 						</div>
-						<div class="col-8 col-md-12 border" style="">
+						<div class="col-8 col-md-12" style="padding:0">
 							<div class="container-fluid" style="padding:0">
 								<div class="row">
 									<div class="col-8">
-										<div class="" style=" margin-top:5px; font-size:1em">${game.title}</div>
-										<div class="" style=" margin-top:5px; font-size:1em">${game.artist}</div>
+										<div class="" style="padding-left:3px; padding-right:3px; margin-top:5px; font-size:1em">${game.title}</div>
+										<div class="" style="padding-left:3px; padding-right:3px; margin-top:5px; font-size:0.8em">${game.artist}</div>
 									</div>
-									<div class="col-4">
-										<div>${img}</div>
+									<div class="col-4 text-right">
+										<div style="padding-top:1px">${img}</div>
 									</div>
 								</div>
 							</div>
-							<div class="container" style="margin-top:5px">
+							<div class="container-fluid" style="margin-top:5px">
 								<div class="row" style="">
-									<div class="col-6" style="padding:0px; font-size:0.7em">
+									<div class="col-6" style="padding:3px; font-size:0.7em">
 										Score 
 										<span id="id_game_score-${game.game_id}">${score_str}</span>
 									</div>
@@ -113,9 +113,13 @@ function IndexControl(){
 										<span id="id_game_difficulty-${game.game_id}">${difficulty_str}</span>
 									</div>
 								</div>
-							</div>
-							<div id="id_game_percent_bar-${game.game_id}" 
-								style="position:absolute; bottom:0px; width:${percent}%; height:2px; background-color:blue"></div>
+								<div class="row" style="height:3px">
+									<div class="col-12" style="padding:0px">
+										<span id="id_game_percent_bar-${game.game_id}" 
+											style="position:absolute; bottom:0px; width:${percent}%; height:2px; background-color:blue;"></div>
+										</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div><!--row-->
