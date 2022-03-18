@@ -406,6 +406,31 @@ function PlayGameControl(){
 			}
 		};
 
+		//wave list가 0이면 background_list의 첫번째 것 기본 사용하도록함.
+		if(background_list.length > 0){
+			if(converted_data.wave_list_1.length == 0){
+				converted_data.wave_list_1.push({
+					t:0,
+					type:BG_SELECT_TYPE.FIXED,
+					background_uid:background_list[0].background_uid
+				});
+			}	
+			if(converted_data.wave_list_2.length == 0){
+				converted_data.wave_list_2.push({
+					t:0,
+					type:BG_SELECT_TYPE.FIXED,
+					background_uid:background_list[0].background_uid
+				});
+			}	
+			if(converted_data.wave_list_3.length == 0){
+				converted_data.wave_list_3.push({
+					t:0,
+					type:BG_SELECT_TYPE.FIXED,
+					background_uid:background_list[0].background_uid
+				});
+			}	
+		}
+
 		_game_control.SetGameData(converted_data);
 	};
 
