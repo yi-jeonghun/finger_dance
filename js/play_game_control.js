@@ -103,13 +103,16 @@ function PlayGameControl(){
 		$('#id_btn_play').on('click', self.PlayGame);
 
 		$('#id_btn_like').on('click', self.Like);
-		// $('#id_btn_back').on('click', function(){ window.history.back(); });
 		$('#id_btn_back').on('click', function(){ 
 			console.log('back button clicked ');
-			var message = {
-				command: "close_iab"
-			};
-			webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
+			if(typeof webkit !== 'undefined'){
+				var message = {
+					command: "close_iab"
+				};
+				webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));	
+			}else{
+				window.history.back();
+			}
 		});
 		$('#id_btn_home').on('click', function(){ document.location.href = 'https://beatmaster.me'; });
 		$('#id_btn_stop_small').on('click', self.OnStopBtnClick);
