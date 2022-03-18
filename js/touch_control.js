@@ -33,7 +33,7 @@ function InputControl(layer_id, game_type, screen_width){
 	};
 
 	this.PCKeyDown = function(e){
-		console.log('e.keyCode ' + e.keyCode);
+		// console.log('e.keyCode ' + e.keyCode);
 		var key_code = -1;
 
 		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
