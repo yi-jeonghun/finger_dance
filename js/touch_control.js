@@ -33,16 +33,70 @@ function InputControl(layer_id, game_type, screen_width){
 	};
 
 	this.PCKeyDown = function(e){
-		switch(e.keyCode){
-			case ARROW.LEFT:
-			case ARROW.UP:
-			case ARROW.RIGHT:
-			case ARROW.DOWN:
-			case ARROW.CENTER:
-				e.preventDefault();
-				var arrows = [e.keyCode];
-				window._game_control.HitByLaneAndTime(arrows);
-				break;
+		console.log('e.keyCode ' + e.keyCode);
+		var key_code = -1;
+
+		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
+			switch(e.keyCode){
+				case 49://숫자1
+				case 68://d
+					key_code = ARROW.LEFT;
+					break;
+				case 50://숫자2
+				case 70://f
+					key_code = ARROW.DOWN;
+					break;
+				case 51://숫자3
+				case 74://j
+					key_code = ARROW.UP;
+					break;
+				case 52://숫자4
+				case 75://k
+					key_code = ARROW.RIGHT;
+					break;
+				case ARROW.LEFT:
+				case ARROW.UP:
+				case ARROW.RIGHT:
+				case ARROW.DOWN:
+					key_code = e.keyCode;
+					break;
+			}	
+		}else if(self._game_type == GAME_TYPE.PUMP){
+			switch(e.keyCode){
+				case 49://숫자1
+				case 71://g
+					key_code = ARROW.LEFT;
+					break;
+				case 50://숫자2
+				case 72://h
+					key_code = ARROW.DOWN;
+					break;
+				case 51://숫자3
+				case 74://j
+					key_code = ARROW.CENTER;
+					break;
+				case 52://숫자4
+				case 75://k
+					key_code = ARROW.UP;
+					break;
+				case 53://숫자5
+				case 76://l
+					key_code = ARROW.RIGHT;
+					break;
+				case ARROW.LEFT:
+				case ARROW.UP:
+				case ARROW.RIGHT:
+				case ARROW.DOWN:
+				case ARROW.CENTER:
+					key_code = e.keyCode;
+					break;
+			}	
+		}
+
+		if(key_code != -1){
+			e.preventDefault();
+			var arrows = [key_code];
+			window._game_control.HitByLaneAndTime(arrows);
 		}
 	};
 

@@ -42,6 +42,7 @@ function PlayGameControl(){
 				window._game_data = json;
 				// console.log(json); // this will show the info it in firebug console
 				self.DisplayGameData(window._game_data);
+				self.DISP_HowTo(window._game_data.game_type);
 				self.DISP_PrevGameResult();
 			});
 	
@@ -482,6 +483,18 @@ function PlayGameControl(){
 		if(game_result != null){
 			var h = `${game_result.score} (${game_result.progress_percent}%) [${game_result.difficulty}]`;
 			$('#id_text_my_score').html(h);
+		}
+	};
+
+	this.DISP_HowTo = function(game_type){
+		if(game_type == GAME_TYPE.DDR || game_type == GAME_TYPE.PIANO_TILE){
+			$('#id_div_how_to_ddr').show();
+		}else if(game_type == GAME_TYPE.PUMP){
+			$('#id_div_how_to_pump').show();
+		}else if(game_type == GAME_TYPE.GUN_FIRE){
+			$('#id_div_how_to_gun').show();
+		}else if(game_type == GAME_TYPE.CRASH_NUTS){
+			
 		}
 	};
 }
