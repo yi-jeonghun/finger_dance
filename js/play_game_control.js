@@ -428,7 +428,9 @@ function PlayGameControl(){
 					type:BG_SELECT_TYPE.FIXED,
 					background_uid:background_list[0].background_uid
 				});
-			}	
+			}
+
+			window._background_renderer.SetBackground(background_list[0]);
 		}
 
 		_game_control.SetGameData(converted_data);
