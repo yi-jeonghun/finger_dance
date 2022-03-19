@@ -105,11 +105,11 @@ class DrawBeat extends DrawObject{
 		this.UpdatePos(ms);
 
 		if(this.#move_direction == MOVE_DIRECTION.UPWARD){
-			if(this.#hit_y < 40){
+			if(this.#hit_y < 0){
 				this.#passed = true;
 			}
 		}else if(this.#move_direction == MOVE_DIRECTION.DOWNWARD){
-			if(this.#base_line_px + 50 < this.#hit_y){
+			if(700 < this.#hit_y){
 				this.#passed = true;
 			}
 		}
