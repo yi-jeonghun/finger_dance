@@ -282,13 +282,16 @@ function PlayGameControl(){
 			screen_height = self._ddr_player_height;
 		}
 
-		window._yt_player = new YoutubePlayer().Init();
+		// window._yt_player = new YoutubePlayer().Init();
 		window._renderer = new Renderer(self._game_width, self._game_height, self._screen_width, self._screen_height).Init();
 		window._background_renderer = new BackgroundRenderer().Init('bg_layer', self._game_width, self._game_height, self._screen_width, self._screen_height);
 	};
 
 	this.DisplayGameData = function(game_data){
+		console.log('DisplayGameData ');
 		var is_show_beat_order = false;
+
+		window._yt_player = new YoutubePlayer().Init();
 		window._game_control = new GameControl(self._game_width, self._game_height, is_show_beat_order, game_data.game_type).Init();
 		// window._game_control._is_excercise_mode = true;
 

@@ -33,7 +33,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	this._atlas = null;
 
 	this.Init = function(){
-		// console.log('GameControl Init');
+		console.log('GameControl Init');
 		self._id_debug_ele = $('#id_debug');
 		window._input_control = new InputControl('ddr_player_layer1', self._game_type, self._width).Init();
 
