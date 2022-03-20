@@ -2,7 +2,7 @@ $('document').ready(function(){
 });
 
 function onYouTubeIframeAPIReady(){
-	// console.log('onYouTubeIframeAPIReady');
+	console.log('onYouTubeIframeAPIReady');
 	_yt_player.Ready();
 }
 
@@ -40,8 +40,10 @@ function YoutubePlayer(){
 	};
 
 	this.Ready = function(){
-		// console.log('Ready');
+		console.log('Ready');
 		if(self._cb_on_youtube_ready) self._cb_on_youtube_ready();
+
+		console.log('self._video_id ' + self._video_id);
 		if(self._video_id != null){
 			self.LoadVideo(self._video_id);
 		}

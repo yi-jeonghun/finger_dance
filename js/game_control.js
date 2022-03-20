@@ -49,12 +49,12 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	};
 
 	this.YT_OnYoutubeReady = function(){
-		// console.log('YT_OnYoutubeReady');
+		console.log('YT_OnYoutubeReady');
 		
 		//https://www.youtube.com/watch?v=-tJYN-eG1zk
 		// _yt_player.LoadVideo('V1bFr2SWP1I');
 		// _yt_player.LoadVideo('MhURDZVpnZ8');
-		// console.log('self._video_id ' + self._video_id);
+		console.log('self._video_id ' + self._video_id);
 		if(self._video_id != ''){
 			_yt_player.LoadVideo(self._video_id);
 		}
