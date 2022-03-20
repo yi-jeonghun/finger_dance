@@ -20,7 +20,7 @@ function IndexControl(){
 
 	this.OpenGame = function(game_id){
 		console.log('game_id ' + game_id);
-		window.location.href = `./player_ddr.html?id=${game_id}`;
+		window.location.href = `./player.html?id=${game_id}`;
 	};
 
 	this.DISP_GameList = function(){
