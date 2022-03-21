@@ -129,8 +129,10 @@ class ParticleImage extends DrawObject {
 
 	constructor(context, x, y, img_path){
 		super(context);
-		this.#img = new Image();
-		this.#img.src = img_path;
+
+		this.#img = window._resource_loader.GetImage(img_path);
+		// this.#img = new Image();
+		// this.#img.src = img_path;
 		this.Reset(x, y);
 	}
 
