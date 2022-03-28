@@ -32,9 +32,19 @@ function InputControl(layer_id, game_type, screen_width){
 		window._renderer.AddDrawObject(9, self._handle);
 	};
 
+	this._prev_pc_key = 0;
+	this._prev_pc_key_time = 0;
 	this.PCKeyDown = function(e){
 		// console.log('e.keyCode ' + e.keyCode);
 		var key_code = -1;
+
+		if(e.keyCode == self._prev_pc_key){
+			if((Date.now() - self._prev_pc_key_time) < 100){
+				return;
+			}
+			self._prev_pc_key_time = Date.now();
+		}
+		self._prev_pc_key = e.keyCode;
 
 		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
 			switch(e.keyCode){

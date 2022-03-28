@@ -535,7 +535,12 @@ function GameData(is_show_beat_order, game_type){
 		var first_x = quarter_x / 2;
 
 		if(beat_info.m & LEFT_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.LEFT, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			var obj = null;
+			if(beat_info.d == 0){
+				obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.LEFT, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}else{
+				obj = new DrawBeatDuration(window._renderer._ctx, self._atlas, ARROW.LEFT, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
@@ -548,7 +553,12 @@ function GameData(is_show_beat_order, game_type){
 			self._draw_beat_list.push(obj);
 		}
 		if(beat_info.m & DOWN_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.DOWN, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			var obj = null;
+			if(beat_info.d == 0){
+				obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.DOWN, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}else{
+				obj = new DrawBeatDuration(window._renderer._ctx, self._atlas, ARROW.DOWN, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
@@ -561,7 +571,12 @@ function GameData(is_show_beat_order, game_type){
 			self._draw_beat_list.push(obj);
 		}
 		if(beat_info.m & UP_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.UP, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			var obj = null;
+			if(beat_info.d == 0){
+				obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.UP, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}else{
+				obj = new DrawBeatDuration(window._renderer._ctx, self._atlas, ARROW.UP, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
@@ -574,7 +589,12 @@ function GameData(is_show_beat_order, game_type){
 			self._draw_beat_list.push(obj);
 		}
 		if(beat_info.m & RIGHT_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.RIGHT, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			var obj = null;
+			if(beat_info.d == 0){
+				obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.RIGHT, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}else{
+				obj = new DrawBeatDuration(window._renderer._ctx, self._atlas, ARROW.RIGHT, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}
@@ -587,7 +607,12 @@ function GameData(is_show_beat_order, game_type){
 			self._draw_beat_list.push(obj);
 		}
 		if(beat_info.m & CENTER_BIT){
-			var obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.CENTER, beat_info.t, self._speed, self._base_line, self._move_direction, self._note_order);
+			var obj = null;
+			if(beat_info.d == 0){
+				obj = new DrawBeat(window._renderer._ctx, self._atlas, ARROW.CENTER, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}else{
+				obj = new DrawBeatDuration(window._renderer._ctx, self._atlas, ARROW.CENTER, beat_info, self._speed, self._base_line, self._move_direction, self._note_order);
+			}
 			if(default_time_offset != undefined){
 				obj.UpdatePos(default_time_offset);
 			}

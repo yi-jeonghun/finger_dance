@@ -21,6 +21,8 @@ function Atlas(image_path){
 	this._img_r_empty = null;
 	this._img_c_empty = null;
 
+	this._img_duration = null;
+
 	this.Init = function(){
 		self._img = new Image();
 		self._img.src = self._image_path;//'img/atlas.png';
@@ -49,5 +51,7 @@ function Atlas(image_path){
 		self._img_u_empty = {x:u*2,y:u*2,w:u,h:u};
 		self._img_r_empty = {x:u*3,y:u*2,w:u,h:u};
 		self._img_c_empty = {x:u*3,y:u*2,w:u,h:u};
+
+		self._img_duration = {x:u*5, y:0, w:u, h:u*4};
 	};
 }

@@ -24,6 +24,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	this._base_offset_ms = 0;
 	this._is_complete = false;
 	this._is_excercise_mode = false;
+	this._total_beat_count = 0;
 	this._total_hit_count = 0;
 	this._progress_percent = 0;
 	this._draw_progress_bar = null;
@@ -85,6 +86,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			self._is_playing = true;
 			self._is_complete = false;
 			self._total_hit_count = 0;
+			self._total_beat_count = self._game_data._draw_beat_list.length;
 		}else{
 			// console.log('self._cb_on_youtube_stopped ' + self._cb_on_youtube_stopped);
 			if(self._cb_on_youtube_stopped){
@@ -126,8 +128,14 @@ function GameControl(width, height, is_show_beat_order, game_type){
 
 			for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
 				var draw_beat = self._game_data._draw_beat_list[k];
-				if(draw_beat.IsHit() || draw_beat.Passed()){
-					continue;
+				if(draw_beat.IsDuration()){
+					if(draw_beat.IsDurationFinished()){
+						continue;
+					}
+				}else{
+					if(draw_beat.IsHit() || draw_beat.Passed()){
+						continue;
+					}	
 				}
 				draw_beat_to_hit = draw_beat;
 				break;
@@ -153,7 +161,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					hit_position: draw_beat_to_hit.GetHitPosition()
 				});
 
-				if(hit_result.hit == true){
+				if(hit_result.hit == true && hit_result.is_duration == false){
 					self._total_hit_count++;
 				}
 			}
@@ -171,8 +179,14 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			for(var i=0 ; i<arrow_list.length ; i++){
 				for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
 					var draw_beat = self._game_data._draw_beat_list[k];
-					if(draw_beat.IsHit() || draw_beat.Passed()){
-						continue;
+					if(draw_beat.IsDuration()){
+						if(draw_beat.IsDurationFinished()){
+							continue;
+						}
+					}else{
+						if(draw_beat.IsHit() || draw_beat.Passed()){
+							continue;
+						}
 					}
 					if(draw_beat.GetArrowOrNum() == arrow_list[i]){
 						draw_beat_to_hit_list[i] = draw_beat;
@@ -211,7 +225,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 						hit_position: draw_beat_to_hit_list[0].GetHitPosition()
 					});
 
-					if(hit_result.hit == true){
+					if(hit_result.hit == true && hit_result.is_duration == false){
 						self._total_hit_count += 2;
 					}
 				}
@@ -252,7 +266,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 							hit_position: draw_beat_to_hit_list[0].GetHitPosition()
 						});
 
-						if(hit_result.hit == true){
+						if(hit_result.hit == true && hit_result.is_duration == false){
 							self._total_hit_count++;
 						}
 					}
@@ -261,7 +275,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		});
 	};
 
-	//TODO : promose를 사용하는 게 더 나을수도 있을 듯. 검토해볼것.
+	//TODO : promise를 사용하는 게 더 나을수도 있을 듯. 검토해볼것.
 	this.TouchDetect = function(){
 		var touch_position = window._input_control._position;
 		var count = 0;
@@ -293,7 +307,9 @@ function GameControl(width, height, is_show_beat_order, game_type){
 						hit_result: hit_result,
 						hit_position: db.GetHitPosition()
 					});
-					self._total_hit_count++;
+					if(hit_result.hit == true && hit_result.is_duration == false){
+						self._total_hit_count++;
+					}
 				}		
 			}
 		}
@@ -321,12 +337,12 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			{//combo text
 				self._draw_text_combo = profile.GetComboText();
 				self._draw_text_combo.Update();
-				window._renderer.AddDrawObject(7, self._draw_text_combo);
+				window._renderer.AddDrawObject(8, self._draw_text_combo);
 			}
 			{//score text
 				self._draw_text_score = profile.GetScoreText();
 				self._draw_text_score.Update();
-				window._renderer.AddDrawObject(7, self._draw_text_score);
+				window._renderer.AddDrawObject(8, self._draw_text_score);
 			}
 		}
 
@@ -422,14 +438,15 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				self.TouchDetect();
 			}
 
-			for(var i=self._gameobj_begin_idx ; i<self._game_data._draw_beat_list.length ; i++){
+			var delete_beat_list = [];
+			for(var i=0 ; i<self._game_data._draw_beat_list.length ; i++){
 				var draw_beat = self._game_data._draw_beat_list[i];
 				if(draw_beat.Passed()){
-					self._gameobj_begin_idx = i+1;
-
+					console.log('Passed ');
 					if(self._is_excercise_mode == false){
 						//놓치면 게임 종료
 						if(draw_beat.IsHit() == false){
+							console.log('isHit ');
 							{
 								draw_beat.SetIsFailCause();
 								draw_beat.SetPassed(false);
@@ -450,6 +467,19 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				}
 				if(draw_beat.Move(self._timelapse + self._base_offset_ms) == false){
 					break;
+				}
+				if(draw_beat.IsVisible() == false){
+					console.log('not visible ');
+					delete_beat_list.push(draw_beat);
+				}
+			}
+			
+			for(var i=0 ; i<delete_beat_list.length ; i++){
+				for(var j=0 ; j<self._game_data._draw_beat_list.length ; j++){
+					if(delete_beat_list[i] == self._game_data._draw_beat_list[j]){
+						self._game_data._draw_beat_list.splice(j, 1);
+						break;
+					}
 				}
 			}
 
@@ -489,7 +519,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			}
 
 			{
-				self._progress_percent = self._total_hit_count / self._game_data._draw_beat_list.length;
+				self._progress_percent = self._total_hit_count / self._total_beat_count;
 				self._draw_progress_bar.SetProgress(self._progress_percent);
 			}
 
@@ -497,7 +527,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			_renderer.Update();
 			_background_renderer.Update();
 
-			if(self._game_data._draw_beat_list.length == self._total_hit_count){
+			if(self._total_beat_count == self._total_hit_count){
 				if(self._finish_notified == false){
 					self._finish_notified = true;
 					self._is_complete = true;
@@ -545,7 +575,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					if(self._game_data._particle_list[0] != null){
 						var img_path = self._game_data._particle_list[0].image_path;
 						self._particles_list[0] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(5, self._particles_list[0]);
+						window._renderer.AddDrawObject(7, self._particles_list[0]);
 					}
 				}
 				self._particles_list[0].Reset(hp.x, hp.y);
@@ -555,7 +585,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					if(self._game_data._particle_list[1] != null){
 						var img_path = self._game_data._particle_list[1].image_path;
 						self._particles_list[1] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(5, self._particles_list[1]);
+						window._renderer.AddDrawObject(7, self._particles_list[1]);
 					}
 				}
 				self._particles_list[1].Reset(hp.x, hp.y);
@@ -565,7 +595,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					if(self._game_data._particle_list[2] != null){
 						var img_path = self._game_data._particle_list[2].image_path;
 						self._particles_list[2] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(5, self._particles_list[2]);
+						window._renderer.AddDrawObject(7, self._particles_list[2]);
 					}
 				}
 				self._particles_list[2].Reset(hp.x, hp.y);
@@ -575,7 +605,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					if(self._game_data._particle_list[3] != null){
 						var img_path = self._game_data._particle_list[3].image_path;
 						self._particles_list[3] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(5, self._particles_list[3]);
+						window._renderer.AddDrawObject(7, self._particles_list[3]);
 					}
 				}
 				self._particles_list[3].Reset(hp.x, hp.y);
@@ -585,7 +615,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					if(self._game_data._particle_list[4] != null){
 						var img_path = self._game_data._particle_list[4].image_path;
 						self._particles_list[4] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(5, self._particles_list[4]);
+						window._renderer.AddDrawObject(7, self._particles_list[4]);
 					}
 				}
 				self._particles_list[4].Reset(hp.x, hp.y);
@@ -617,8 +647,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			self._game_data._font_info.hit.stroke_color, 
 			self._game_data._font_info.hit.line_width, 
 			300);
-		window._renderer.AddDrawObject(2, draw_text_obj);
-		window._renderer.AddDrawObject(2, draw_score_obj);
+		window._renderer.AddDrawObject(8, draw_text_obj);
+		window._renderer.AddDrawObject(8, draw_score_obj);
 	};
 
 	this._cur_wave_idx = 0;
