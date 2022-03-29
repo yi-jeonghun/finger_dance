@@ -79,7 +79,9 @@ function BackgroundRenderer(){
 			move_x: 0,
 			move_y: 0,
 			move_x2: 0,
-			move_y2: 0
+			move_y2: 0,
+			left_right: 'left',
+			up_down: 'up'
 		};
 		self._layer2 = {
 			color: background.layer2_color,
@@ -93,7 +95,9 @@ function BackgroundRenderer(){
 			move_x: 0,
 			move_y: 0,
 			move_x2: 0,
-			move_y2: 0
+			move_y2: 0,
+			left_right: 'left',
+			up_down: 'up'
 		};
 		self._layer3 = {
 			color: background.layer3_color,
@@ -107,7 +111,9 @@ function BackgroundRenderer(){
 			move_x: 0,
 			move_y: 0,
 			move_x2: 0,
-			move_y2: 0
+			move_y2: 0,
+			left_right: 'left',
+			up_down: 'up'
 		};
 		// console.log('layer1 ' + JSON.stringify(self._layer1));
 		// console.log('layer2 ' + JSON.stringify(self._layer2));
@@ -190,6 +196,38 @@ function BackgroundRenderer(){
 				l.move_y = l.move_y - l.image_h;
 			}
 			l.move_y2 = l.move_y - l.image_h;
+		}else if(l.action == 'left_right'){
+			if(l.left_right == 'left'){
+				l.move_x -= (window._timer._delta * self._SPEED * l.speed);
+				if(l.move_x < -(l.image_w)){
+					l.move_x = l.move_x + l.image_w;
+					l.left_right = 'right';
+				}
+				l.move_x2 = l.move_x + l.image_w;	
+			}else if(l.left_right == 'right'){
+				l.move_x += (window._timer._delta * self._SPEED * l.speed);
+				if(l.move_x > l.image_w){
+					l.move_x = l.move_x - l.image_w;
+					l.left_right = 'left';
+				}
+				l.move_x2 = l.move_x - l.image_w;
+			}
+		}else if(l.action == 'up_down'){
+			if(l.up_down == 'up'){
+				l.move_y -= (window._timer._delta * self._SPEED * l.speed);
+				if(l.move_y < -(l.image_h)){
+					l.move_y = l.move_y + l.image_h;
+					l.up_down = 'down';
+				}
+				l.move_y2 = l.move_y + l.image_h;	
+			}else if(l.up_down == 'down'){
+				l.move_y += (window._timer._delta * self._SPEED * l.speed);
+				if(l.move_y > l.image_h){
+					l.move_y = l.move_y - l.image_h;
+					l.up_down = 'up';
+				}
+				l.move_y2 = l.move_y - l.image_h;	
+			}
 		}
 
 		c.clearRect(0, 0, self._game_width, self._game_height);
