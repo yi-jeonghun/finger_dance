@@ -6,6 +6,7 @@ function InputControl(layer_id, game_type, screen_width){
 	this._position;
 	this._offset;
 	this._handle = null;
+	this._key_down_array = [];
 
 	this.Init = function(){
 		var layer = $('#'+self._layer_id);
@@ -13,10 +14,12 @@ function InputControl(layer_id, game_type, screen_width){
 
 		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE || self._game_type == GAME_TYPE.PUMP){
 			document.addEventListener('keydown', self.PCKeyDown);
+			document.addEventListener('keyup', self.PCKeyUp);
 			layer.on('touchmove', function(e){
 				e.preventDefault();
 			});
 			layer.on('touchstart', self.SmartDeviceTouchStart);
+			layer.on('touchend', self.SmartDeviceTouchEnd);
 		}else if(self._game_type == GAME_TYPE.GUN_FIRE){
 			document.onmousemove = self.PCMouseMove;
 			layer.on('touchmove', self.SmartDeviceTouchMove)
@@ -35,7 +38,6 @@ function InputControl(layer_id, game_type, screen_width){
 	this._prev_pc_key = 0;
 	this._prev_pc_key_time = 0;
 	this.PCKeyDown = function(e){
-		// console.log('e.keyCode ' + e.keyCode);
 		var key_code = -1;
 
 		if(e.keyCode == self._prev_pc_key){
@@ -46,59 +48,52 @@ function InputControl(layer_id, game_type, screen_width){
 		}
 		self._prev_pc_key = e.keyCode;
 
+		if(self._key_down_array[e.key] == true){
+			return;
+		}else{
+			self._key_down_array[e.key] = true;
+		}
+
 		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
-			switch(e.keyCode){
-				case 49://숫자1
-				case 68://d
+			switch(e.key){
+				case '1'://숫자1
+				case 'd'://d
 					key_code = ARROW.LEFT;
 					break;
-				case 50://숫자2
-				case 70://f
+				case '2'://숫자2
+				case 'f'://f
 					key_code = ARROW.DOWN;
 					break;
-				case 51://숫자3
-				case 74://j
+				case '3'://숫자3
+				case 'j'://j
 					key_code = ARROW.UP;
 					break;
-				case 52://숫자4
-				case 75://k
+				case '4'://숫자4
+				case 'k'://k
 					key_code = ARROW.RIGHT;
-					break;
-				case ARROW.LEFT:
-				case ARROW.UP:
-				case ARROW.RIGHT:
-				case ARROW.DOWN:
-					key_code = e.keyCode;
 					break;
 			}	
 		}else if(self._game_type == GAME_TYPE.PUMP){
-			switch(e.keyCode){
-				case 49://숫자1
-				case 71://g
+			switch(e.key){
+				case '1'://숫자1
+				case 'g'://g
 					key_code = ARROW.LEFT;
 					break;
-				case 50://숫자2
-				case 72://h
+				case '2'://숫자2
+				case 'h'://h
 					key_code = ARROW.DOWN;
 					break;
-				case 51://숫자3
-				case 74://j
+				case '3'://숫자3
+				case 'j'://j
 					key_code = ARROW.CENTER;
 					break;
-				case 52://숫자4
-				case 75://k
+				case '4'://숫자4
+				case 'k'://k
 					key_code = ARROW.UP;
 					break;
-				case 53://숫자5
-				case 76://l
+				case '5'://숫자5
+				case 'l'://l
 					key_code = ARROW.RIGHT;
-					break;
-				case ARROW.LEFT:
-				case ARROW.UP:
-				case ARROW.RIGHT:
-				case ARROW.DOWN:
-				case ARROW.CENTER:
-					key_code = e.keyCode;
 					break;
 			}	
 		}
@@ -107,6 +102,62 @@ function InputControl(layer_id, game_type, screen_width){
 			e.preventDefault();
 			var arrows = [key_code];
 			window._game_control.HitByLaneAndTime(arrows);
+		}
+	};
+
+	this.PCKeyUp = function(e){
+		var key_code = -1;
+		self._key_down_array[e.key] = false;
+
+		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
+			switch(e.key){
+				case '1'://숫자1
+				case 'd'://d
+					key_code = ARROW.LEFT;
+					break;
+				case '2'://숫자2
+				case 'f'://f
+					key_code = ARROW.DOWN;
+					break;
+				case '3'://숫자3
+				case 'j'://j
+					key_code = ARROW.UP;
+					break;
+				case '4'://숫자4
+				case 'k'://k
+					key_code = ARROW.RIGHT;
+					break;
+			}	
+		}else if(self._game_type == GAME_TYPE.PUMP){
+			switch(e.key){
+				case '1'://숫자1
+				case 'g'://g
+					key_code = ARROW.LEFT;
+					break;
+				case '2'://숫자2
+				case 'h'://h
+					key_code = ARROW.DOWN;
+					break;
+				case '3'://숫자3
+				case 'j'://j
+					key_code = ARROW.CENTER;
+					break;
+				case '4'://숫자4
+				case 'k'://k
+					key_code = ARROW.UP;
+					break;
+				case '5'://숫자5
+				case 'l'://l
+					key_code = ARROW.RIGHT;
+					break;
+			}	
+		}
+		if(key_code != -1){
+			e.preventDefault();
+			console.log('key up code ' + key_code);
+			var key_code_arr = [];
+			key_code_arr.push(key_code);
+			window._game_control.KeyUpProcess(key_code_arr);
 		}
 	};
 
@@ -194,11 +245,97 @@ function InputControl(layer_id, game_type, screen_width){
 						break;
 					}
 				}
-			}	
+			}
 		}
 		
 		if(arrow_list.length > 0){
 			window._game_control.HitByLaneAndTime(arrow_list);
+		}
+	};
+
+	this.SmartDeviceTouchEnd = function(e){
+		var beat_count = BEAT_TYPE_COUNT[self._game_type];
+		var one_area_width = window.innerWidth / beat_count;
+		var arrow_list = [];
+
+		if(self._game_type == GAME_TYPE.PUMP){
+			for(var i=0 ; i<e.originalEvent.touches.length ; i++){
+				for(var a=1 ; a<=5 ; a++){
+					if(e.originalEvent.touches[i].pageX < (one_area_width * a)){
+						switch(a){
+							case 1:
+								// if( (Date.now() - self._prev_left_touch_ts) > 100){
+									arrow_list.push(ARROW.LEFT);
+								// }
+								// self._prev_left_touch_ts = Date.now();
+								break;
+							case 2:
+								// if( (Date.now() - self._prev_down_touch_ts) > 100){
+									arrow_list.push(ARROW.DOWN);
+								// }
+								// self._prev_down_touch_ts = Date.now();
+								break;
+							case 3:
+								// if( (Date.now() - self._prev_center_touch_ts) > 100){
+									arrow_list.push(ARROW.CENTER);
+								// }
+								// self._prev_center_touch_ts = Date.now();
+								break;
+							case 4:
+								// if( (Date.now() - self._prev_up_touch_ts) > 100){
+									arrow_list.push(ARROW.UP);
+								// }
+								// self._prev_up_touch_ts = Date.now();
+								break;
+							case 5:
+								// if( (Date.now() - self._prev_right_touch_ts) > 100){
+									arrow_list.push(ARROW.RIGHT);
+								// }
+								// self._prev_right_touch_ts = Date.now();
+								break;
+						}
+						break;
+					}
+				}
+			}	
+		}else{
+			for(var i=0 ; i<e.originalEvent.touches.length ; i++){
+				for(var a=1 ; a<=4 ; a++){
+					if(e.originalEvent.touches[i].pageX < (one_area_width * a)){
+						switch(a){
+							case 1:
+								// if( (Date.now() - self._prev_left_touch_ts) > 100){
+									arrow_list.push(ARROW.LEFT);
+								// }
+								// self._prev_left_touch_ts = Date.now();
+								break;
+							case 2:
+								// if( (Date.now() - self._prev_down_touch_ts) > 100){
+									arrow_list.push(ARROW.DOWN);
+								// }
+								// self._prev_down_touch_ts = Date.now();
+								break;
+							case 3:
+								// if( (Date.now() - self._prev_up_touch_ts) > 100){
+									arrow_list.push(ARROW.UP);
+								// }
+								// self._prev_up_touch_ts = Date.now();
+								break;
+							case 4:
+								// if( (Date.now() - self._prev_right_touch_ts) > 100){
+									arrow_list.push(ARROW.RIGHT);
+								// }
+								// self._prev_right_touch_ts = Date.now();
+								break;
+						}
+						break;
+					}
+				}
+			}
+		}
+		
+		if(arrow_list.length > 0){
+			window._game_control.KeyUpProcess(arrow_list);
 		}
 	};
 

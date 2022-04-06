@@ -29,15 +29,17 @@ class DrawBeatDuration extends DrawObject{
 	#order;
 	#draw_text = null;
 	#duration = 0;
-	#is_duration = false;
 	#is_duration_finished = false;
 	#duration_height = 0;
 	#prev_dur_hit_ms = 0;
 	#move_started = false;
+	_duration_time = 0;
+	self;
 
 	constructor(context, atlas, arrow_or_num, beat_info, speed_pps, base_line, move_direction, order){
 		super(context);
 
+		this.self = this;
 		this._atlas = atlas;
 		this.#atlas_img = atlas._img;
 		this.#arrow_or_num = arrow_or_num;
@@ -51,8 +53,7 @@ class DrawBeatDuration extends DrawObject{
 			this.#draw_text = new DrawText(context, this.#order, this.#x, this.#y, 25, 'RED', true, 'white', 3, -1);
 		}
 
-		if(this.#duration > 0){
-			this.#is_duration = true;
+		{
 			this.#is_duration_finished = false;
 			this.#duration_height = (this.#duration/1000) * this.#speed;
 			if(this.#move_direction == MOVE_DIRECTION.UPWARD){
@@ -90,11 +91,17 @@ class DrawBeatDuration extends DrawObject{
 	};
 
 	IsDuration(){
-		return this.#is_duration;
+		return true;
 	}
 
 	IsDurationFinished(){
 		return this.#is_duration_finished;
+	}
+
+	FinishDuration(){
+		console.log('duration finish ');
+		this.#is_duration_finished = true;
+		window._game_control.DurationHitFinish();
 	}
 
 	SetXBase(x_base){
@@ -180,34 +187,21 @@ class DrawBeatDuration extends DrawObject{
 	 * 시간 기준으로 HIT 처리하는 함수.
 	 */
 	HitByArrowAndTime(arrow, time){
-		if(this.#is_hit == false){
-			var res = {
-				hit:false,
-				score:0,
-				text:'',
-				is_duration:false
-			};
+		if(this.#arrow_or_num != arrow){
+			return null;
+		}
 	
-			if(this.#arrow_or_num != arrow){
-				return res;
+		if(this.#is_hit){
+			return null;
+		}
+
+		if(this.#is_hit == false){	
+			var res = this._CheckHitByTime(time);
+			if(res.hit == true){
+				window._game_control.DurationHit(arrow, res, this.GetHitPosition());
+				this._DurationLoop();
 			}
-	
-			res = this._CheckHitByTime(time);
-			return res;
-		}else{
-			if(this.#is_duration_finished == false){
-				if((Date.now() - this.#prev_dur_hit_ms) < 100){
-					return;
-				}
-				this.#prev_dur_hit_ms = Date.now();
-				var res = {
-					hit: true,
-					score: 3,
-					text: '',
-					is_duration:true
-				};
-				return res;
-			}
+			return null;
 		}
 	};
 
@@ -217,8 +211,7 @@ class DrawBeatDuration extends DrawObject{
 			var res = {
 				hit:false,
 				score:0,
-				text:'',
-				is_duration:false
+				text:''
 			};
 	
 			var x_beat = this.#x + this.#w/2;
@@ -242,8 +235,7 @@ class DrawBeatDuration extends DrawObject{
 				var res = {
 					hit: true,
 					score: 3,
-					text: '',
-					is_duration:true
+					text: ''
 				};
 				return res;
 			}
@@ -271,8 +263,7 @@ class DrawBeatDuration extends DrawObject{
 			var res = {
 				hit:true,
 				score: 10,
-				text: 'Perfect',
-				is_duration:false
+				text: 'Perfect'
 			};
 
 			if(x_diff < 15){
@@ -303,8 +294,7 @@ class DrawBeatDuration extends DrawObject{
 		var res = {
 			hit:false,
 			score:0,
-			text:'',
-			is_duration:false
+			text:''
 		};
 		var time_diff_ms = Math.abs(time - this.#offset_ms);
 
@@ -343,22 +333,32 @@ class DrawBeatDuration extends DrawObject{
 	};
 
 	Update(){
-		console.log('DrawBeatDuration Update ');
+		// console.log('DrawBeatDuration Update ');
 		//꼬리 그리기
 		//Hit 이면 baseline에서 
 		//Hit 아니면 머리에서 꼬리가 시작된다.
-		if(this.#is_duration){
+		{
 			var dur_height = this.#duration_height;
 			var y = this.#hit_y;
+
+			if(this.#move_direction == MOVE_DIRECTION.UPWARD){
+			}else if(this.#move_direction == MOVE_DIRECTION.DOWNWARD){
+				dur_height = dur_height * -1;
+			}
 
 			if(this.#is_hit){
 				// console.log('is hit y_end ' + this.#y_end);
 				if(this.#move_direction == MOVE_DIRECTION.UPWARD){
 					if(this.#hit_y < this.#base_line_px){
 						y = this.#base_line_px;
-						dur_height = this.#y_end - this.#base_line_px;
+						dur_height = this.#y_end - this.#base_line_px + this.#sh/2;
 					}
 				}else if(this.#move_direction == MOVE_DIRECTION.DOWNWARD){
+					if(this.#hit_y > this.#base_line_px){
+						y = this.#base_line_px;
+						dur_height = this.#y_end - this.#base_line_px + this.#sh/2;
+						// dur_height = dur_height * -1;
+					}
 				}
 			}
 			// console.log('y ' + y + ' dur_height ' + dur_height);
@@ -384,14 +384,8 @@ class DrawBeatDuration extends DrawObject{
 	}
 
 	NeedDelete(){
-		if(this.#is_duration){
-			if(this.#is_duration_finished){
-				return true;
-			}
-		}else{
-			if(this.#is_hit){
-				return true;			
-			}	
+		if(this.#is_duration_finished){
+			return true;
 		}
 		return false;
 	}
@@ -429,5 +423,25 @@ class DrawBeatDuration extends DrawObject{
 			return false;
 		}
 		return true;
+	}
+
+	_DurationLoop(){
+		this._duration_time += window._timer._delta;
+		if(this._duration_time >= 100){
+			this._duration_time = 0;
+			console.log('dur effect ');
+			var res = {
+				hit:true,
+				score:3,
+				text:''
+			};
+			window._game_control.DurationHit(this.#arrow_or_num, res, this.GetHitPosition());
+		}
+
+		if(this.IsDurationFinished()){
+			return;
+		}
+
+		requestAnimationFrame(() => this._DurationLoop());
 	}
 }

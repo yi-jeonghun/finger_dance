@@ -161,11 +161,65 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					hit_position: draw_beat_to_hit.GetHitPosition()
 				});
 
-				if(hit_result.hit == true && hit_result.is_duration == false){
+				if(hit_result.hit == true){
 					self._total_hit_count++;
 				}
 			}
 		});
+	};
+
+	this.KeyUpProcess = async function(arrow_arr){
+		if(self._is_playing == false){
+			return;
+		}
+
+		return new Promise(function(resolve, reject){
+			var draw_beat_to_hit_list = [];
+
+			for(var a=0; a<arrow_arr.length ; a++){
+				var arrow = arrow_arr[a];
+				for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
+					var draw_beat = self._game_data._draw_beat_list[k];
+					console.log('k ' + k + ' draw_beat.IsDuration() ' + draw_beat.IsDuration());
+	
+					if(draw_beat.GetArrowOrNum() != arrow){
+						console.log('draw_beat.GetArrowOrNum() ' + draw_beat.GetArrowOrNum());
+						continue;
+					}
+	
+					if(draw_beat.IsDuration()){
+						console.log('draw_beat.IsHit() ' + draw_beat.IsHit());
+						if(draw_beat.IsHit()){
+							console.log('k ' + k + ' draw_beat.IsDurationFinished() ' + draw_beat.IsDurationFinished());
+							if(draw_beat.IsDurationFinished() == false){
+								console.log('draw_beat.GetArrowOrNum() ' + draw_beat.GetArrowOrNum());
+								draw_beat_to_hit_list.push(draw_beat);
+								break;
+							}	
+						}
+					}
+				}
+			}
+
+			console.log('draw_beat_to_hit_list.length ' + draw_beat_to_hit_list.length);
+			for(var i=0 ; i<draw_beat_to_hit_list.length ; i++){
+				draw_beat_to_hit_list[i].FinishDuration();
+			}
+			resolve();
+		});
+	};
+
+	this.DurationHit = function(arrow, hit_result, hit_position){
+		self._hit_queue.push({
+			arrow: arrow,
+			hit_result: hit_result,
+			hit_position: hit_position
+		});
+		self._score += hit_result.score;
+	};
+
+	this.DurationHitFinish = function(){
+		self._total_hit_count++;
 	};
 
 	this.HitByLaneAndTime = async function(arrow_list){
@@ -206,28 +260,30 @@ function GameControl(width, height, is_show_beat_order, game_type){
 
 			if(is_multi_hit){
 				var hit_result = draw_beat_to_hit_list[0].HitByArrowAndTime(arrow_list[0], timelapse);
-				for(var i=0 ; i<arrow_list.length ; i++){
-					self._score += hit_result.score;
-	
-					if(hit_result.text == 'Perfect'){
-						self._combo++;
-						if(self._combo > 1){
-							var combo_score = 10 * (self._combo-1);
-							self._score += combo_score;
+				if(hit_result != null){
+					for(var i=0 ; i<arrow_list.length ; i++){
+						self._score += hit_result.score;
+		
+						if(hit_result.text == 'Perfect'){
+							self._combo++;
+							if(self._combo > 1){
+								var combo_score = 10 * (self._combo-1);
+								self._score += combo_score;
+							}
+						}else{
+							self._combo = 0;
 						}
-					}else{
-						self._combo = 0;
-					}
+		
+						self._hit_queue.push({
+							arrow: arrow,
+							hit_result: hit_result,
+							hit_position: draw_beat_to_hit_list[0].GetHitPosition()
+						});
 	
-					self._hit_queue.push({
-						arrow: arrow,
-						hit_result: hit_result,
-						hit_position: draw_beat_to_hit_list[0].GetHitPosition()
-					});
-
-					if(hit_result.hit == true && hit_result.is_duration == false){
-						self._total_hit_count += 2;
-					}
+						if(hit_result.hit == true){
+							self._total_hit_count += 2;
+						}
+					}	
 				}
 			}else{
 				for(var i=0 ; i<arrow_list.length ; i++){
@@ -248,26 +304,28 @@ function GameControl(width, height, is_show_beat_order, game_type){
 						});
 					}else{
 						var hit_result = draw_beat_to_hit.HitByArrowAndTime(arrow, timelapse);
-						self._score += hit_result.score;
+						if(hit_result != null){
+							self._score += hit_result.score;
 		
-						if(hit_result.text == 'Perfect'){
-							self._combo++;
-							if(self._combo > 1){
-								var combo_score = 10 * (self._combo-1);
-								self._score += combo_score;
+							if(hit_result.text == 'Perfect'){
+								self._combo++;
+								if(self._combo > 1){
+									var combo_score = 10 * (self._combo-1);
+									self._score += combo_score;
+								}
+							}else{
+								self._combo = 0;
 							}
-						}else{
-							self._combo = 0;
-						}
-		
-						self._hit_queue.push({
-							arrow: arrow,
-							hit_result: hit_result,
-							hit_position: draw_beat_to_hit_list[0].GetHitPosition()
-						});
-
-						if(hit_result.hit == true && hit_result.is_duration == false){
-							self._total_hit_count++;
+			
+							self._hit_queue.push({
+								arrow: arrow,
+								hit_result: hit_result,
+								hit_position: draw_beat_to_hit_list[0].GetHitPosition()
+							});
+	
+							if(hit_result.hit == true){
+								self._total_hit_count++;
+							}	
 						}
 					}
 				}
@@ -307,7 +365,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 						hit_result: hit_result,
 						hit_position: db.GetHitPosition()
 					});
-					if(hit_result.hit == true && hit_result.is_duration == false){
+					if(hit_result.hit == true){
 						self._total_hit_count++;
 					}
 				}		
@@ -442,11 +500,11 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			for(var i=0 ; i<self._game_data._draw_beat_list.length ; i++){
 				var draw_beat = self._game_data._draw_beat_list[i];
 				if(draw_beat.Passed()){
-					console.log('Passed ');
+					// console.log('Passed ');
 					if(self._is_excercise_mode == false){
 						//놓치면 게임 종료
 						if(draw_beat.IsHit() == false){
-							console.log('isHit ');
+							// console.log('isHit ');
 							{
 								draw_beat.SetIsFailCause();
 								draw_beat.SetPassed(false);
@@ -469,7 +527,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					break;
 				}
 				if(draw_beat.IsVisible() == false){
-					console.log('not visible ');
+					// console.log('not visible ');
 					delete_beat_list.push(draw_beat);
 				}
 			}

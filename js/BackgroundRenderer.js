@@ -12,6 +12,25 @@ function BackgroundRenderer(){
 	this._layer2 = null;
 	this._layer3 = null;
 	this._SPEED = 0.005;
+	this._effected = false;
+	this._effect_time = 0;
+	this._effect_size = 1;
+
+	this._effect1 = {
+		active: false,
+		time: 0,
+		size: 1100
+	};
+	this._effect2 = {
+		active: false,
+		time: 0,
+		size: 1100
+	};
+	this._effect3 = {
+		active: false,
+		time: 0,
+		size: 1100
+	};
 
 	this.Init = function(layer_id, game_width, game_height, screen_width, screen_height){
 		self._layer_id = layer_id;
@@ -20,7 +39,23 @@ function BackgroundRenderer(){
 		self._screen_width = screen_width;
 		self._screen_height = screen_height;
 		self._InitCanvas();
+		self.InitKeyInput();
 		return this;
+	};
+
+	this.InitKeyInput = function(){
+		document.addEventListener('keydown', function(e){
+			self.Effect();
+		});
+	};
+
+	this.Effect = function(){
+		self._effect1.active = true;
+		self._effect1.size = 1100;
+		self._effect2.active = true;
+		self._effect2.size = 1100;
+		self._effect3.active = true;
+		self._effect3.size = 1100;
 	};
 
 	this._InitCanvas = function(){
@@ -161,7 +196,8 @@ function BackgroundRenderer(){
 
 	this.Update = function(){
 		if(self._layer1 && self._layer1.action != 'fixed' && self._layer1.image_ready){
-			self.LayerAction(self._layer1, self._ctx1);
+			// self.LayerAction(self._layer1, self._ctx1);
+			self.LayerEffect(self._layer1, self._effect1, self._ctx1);
 		}
 		if(self._layer2 && self._layer2.action != 'fixed' && self._layer2.image_ready){
 			self.LayerAction(self._layer2, self._ctx2);
@@ -169,6 +205,30 @@ function BackgroundRenderer(){
 		if(self._layer3 && self._layer3.action != 'fixed' && self._layer3.image_ready){
 			self.LayerAction(self._layer3, self._ctx3);
 		}
+	};
+
+	this.LayerEffect = function(l, e, c){
+		if(e.active == false){
+			return;
+		}
+
+		e.time += window._timer._delta;
+		e.size -= window._timer._delta;
+		if(e.time > 100){
+			e.active = false;
+			e.time = 0;
+			e.size = 1000;
+		}
+
+		var w = l.image_w * (e.size/1000);
+		var h = l.image_h * (e.size/1000);
+		var x = (w - l.image_w) / -2;
+		var y = (h - l.image_h) / -2;
+
+		c.clearRect(0, 0, self._game_width, self._game_height);
+		c.drawImage(l.image, 
+			0, 0, l.image_w, l.image_h,
+			x, y, w, h);
 	};
 
 	this.LayerAction = function(l, c){
