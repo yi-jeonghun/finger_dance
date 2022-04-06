@@ -155,6 +155,7 @@ class DrawBeatDuration extends DrawObject{
 			}
 			if(this.#y_end < this.#base_line_px){
 				this.#is_duration_finished = true;
+				window._game_control.DurationHitFinish();
 			}
 		}else if(this.#move_direction == MOVE_DIRECTION.DOWNWARD){
 			if((this.#base_line_px + 50) < this.#hit_y){
@@ -162,6 +163,7 @@ class DrawBeatDuration extends DrawObject{
 			}
 			if(this.#base_line_px < this.#y_end){
 				this.#is_duration_finished = true;
+				window._game_control.DurationHitFinish();
 			}
 		}
 
