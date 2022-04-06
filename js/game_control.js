@@ -210,6 +210,9 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	};
 
 	this.DurationHit = function(arrow, hit_result, hit_position){
+		if(self._is_playing == false){
+			return;
+		}
 		self._hit_queue.push({
 			arrow: arrow,
 			hit_result: hit_result,

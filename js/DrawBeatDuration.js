@@ -427,11 +427,20 @@ class DrawBeatDuration extends DrawObject{
 		return true;
 	}
 
+	#loop_id = null;
 	_DurationLoop(){
+		if(this.IsDurationFinished() || window._game_control._is_playing == false){
+			if(this.#loop_id){
+				window.cancelAnimationFrame(this.#loop_id);
+				console.log('cancel loop ');
+				this.#loop_id = undefined;
+			}
+			return;
+		}
+
 		this._duration_time += window._timer._delta;
 		if(this._duration_time >= 100){
 			this._duration_time = 0;
-			console.log('dur effect ');
 			var res = {
 				hit:true,
 				score:3,
@@ -440,10 +449,6 @@ class DrawBeatDuration extends DrawObject{
 			window._game_control.DurationHit(this.#arrow_or_num, res, this.GetHitPosition());
 		}
 
-		if(this.IsDurationFinished()){
-			return;
-		}
-
-		requestAnimationFrame(() => this._DurationLoop());
+		this.#loop_id = window.requestAnimationFrame(() => this._DurationLoop());
 	}
 }
