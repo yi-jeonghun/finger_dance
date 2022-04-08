@@ -19,17 +19,17 @@ function BackgroundRenderer(){
 	this._effect1 = {
 		active: false,
 		time: 0,
-		size: 1100
+		size: 1050
 	};
 	this._effect2 = {
 		active: false,
 		time: 0,
-		size: 1100
+		size: 1050
 	};
 	this._effect3 = {
 		active: false,
 		time: 0,
-		size: 1100
+		size: 1050
 	};
 
 	this.Init = function(layer_id, game_width, game_height, screen_width, screen_height){
@@ -39,23 +39,25 @@ function BackgroundRenderer(){
 		self._screen_width = screen_width;
 		self._screen_height = screen_height;
 		self._InitCanvas();
-		self.InitKeyInput();
 		return this;
 	};
 
-	this.InitKeyInput = function(){
-		document.addEventListener('keydown', function(e){
-			self.Effect();
-		});
-	};
-
 	this.Effect = function(){
-		self._effect1.active = true;
-		self._effect1.size = 1100;
-		self._effect2.active = true;
-		self._effect2.size = 1100;
-		self._effect3.active = true;
-		self._effect3.size = 1100;
+		var size = 1050;
+		if(self._layer1.hit != 'none'){
+			self._effect1.active = true;
+			self._effect1.size = size;
+		}
+
+		if(self._layer2.hit != 'none'){
+			self._effect2.active = true;
+			self._effect2.size = size;
+		}
+
+		if(self._layer3.hit != 'none'){
+			self._effect3.active = true;
+			self._effect3.size = size;
+		}
 	};
 
 	this._InitCanvas = function(){
@@ -107,6 +109,7 @@ function BackgroundRenderer(){
 			image_path: background.layer1_image_path,
 			action: background.layer1_action,
 			speed: background.layer1_speed,
+			hit: background.layer1_hit,
 			image: null,
 			image_w: 0,
 			image_h: 0,
@@ -123,6 +126,7 @@ function BackgroundRenderer(){
 			image_path: background.layer2_image_path,
 			action: background.layer2_action,
 			speed: background.layer2_speed,
+			hit: background.layer2_hit,
 			image: null,
 			image_w: 0,
 			image_h: 0,
@@ -139,6 +143,7 @@ function BackgroundRenderer(){
 			image_path: background.layer3_image_path,
 			action: background.layer3_action,
 			speed: background.layer3_speed,
+			hit: background.layer3_hit,
 			image: null,
 			image_w: 0,
 			image_h: 0,
@@ -153,6 +158,10 @@ function BackgroundRenderer(){
 		// console.log('layer1 ' + JSON.stringify(self._layer1));
 		// console.log('layer2 ' + JSON.stringify(self._layer2));
 		// console.log('layer3 ' + JSON.stringify(self._layer3));
+
+		// console.log('layer1.hit ' + self._layer1.hit);
+		// console.log('layer2.hit ' + self._layer2.hit);
+		// console.log('layer3.hit ' + self._layer3.hit);
 
 		if(self._layer1.image_path != ''){
 			self._layer1.image = new Image();
@@ -195,15 +204,34 @@ function BackgroundRenderer(){
 	};
 
 	this.Update = function(){
-		if(self._layer1 && self._layer1.action != 'fixed' && self._layer1.image_ready){
-			// self.LayerAction(self._layer1, self._ctx1);
-			self.LayerEffect(self._layer1, self._effect1, self._ctx1);
+		if(self._layer1 && self._layer1.image_ready){
+			if(self._layer1.action == 'fixed'){
+				if(self._layer1.hit != 'none'){
+					self.LayerEffect(self._layer1, self._effect1, self._ctx1);
+				}
+			}else{
+				self.LayerAction(self._layer1, self._ctx1);
+			}
 		}
-		if(self._layer2 && self._layer2.action != 'fixed' && self._layer2.image_ready){
-			self.LayerAction(self._layer2, self._ctx2);
+
+		if(self._layer2 && self._layer2.image_ready){
+			if(self._layer2.action == 'fixed'){
+				if(self._layer2.hit != 'none'){
+					self.LayerEffect(self._layer2, self._effect2, self._ctx2);
+				}
+			}else{
+				self.LayerAction(self._layer2, self._ctx2);
+			}
 		}
-		if(self._layer3 && self._layer3.action != 'fixed' && self._layer3.image_ready){
-			self.LayerAction(self._layer3, self._ctx3);
+
+		if(self._layer3 && self._layer3.image_ready){
+			if(self._layer3.action == 'fixed'){
+				if(self._layer3.hit != 'none'){
+					self.LayerEffect(self._layer3, self._effect2, self._ctx2);
+				}
+			}else{
+				self.LayerAction(self._layer3, self._ctx2);
+			}
 		}
 	};
 
@@ -214,7 +242,7 @@ function BackgroundRenderer(){
 
 		e.time += window._timer._delta;
 		e.size -= window._timer._delta;
-		if(e.time > 100){
+		if(e.size < 1000){
 			e.active = false;
 			e.time = 0;
 			e.size = 1000;
@@ -222,8 +250,19 @@ function BackgroundRenderer(){
 
 		var w = l.image_w * (e.size/1000);
 		var h = l.image_h * (e.size/1000);
-		var x = (w - l.image_w) / -2;
-		var y = (h - l.image_h) / -2;
+		var x = 0;
+		var y = 0;
+
+		if(l.hit == 'center'){
+			x = (w - l.image_w) / -2;
+			y = (h - l.image_h) / -2;	
+		}else if(l.hit == 'top'){
+			x = (w - l.image_w) / -2;
+			y = 0;
+		}else if(l.hit == 'bottom'){
+			x = (w - l.image_w) / -2;
+			y = l.image_h - h;	
+		}
 
 		c.clearRect(0, 0, self._game_width, self._game_height);
 		c.drawImage(l.image, 
