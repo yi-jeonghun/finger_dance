@@ -162,6 +162,11 @@ function InputControl(layer_id, game_type, screen_width){
 		}
 	};
 
+	this._prev_left_time = 0;
+	this._prev_down_time = 0;
+	this._prev_center_time = 0;
+	this._prev_up_time = 0;
+	this._prev_right_time = 0;
 	this.SmartDeviceTouchStart = function(e){
 		// console.log('SmartDeviceTouchStart ');
 		var beat_count = BEAT_TYPE_COUNT[self._game_type];
@@ -174,14 +179,34 @@ function InputControl(layer_id, game_type, screen_width){
 				var key = null;
 
 				if(0 < x && x <= one_area_width){
+					if((Date.now() - self._prev_left_time) < 100){
+						continue;
+					}
+					self._pref_left_time = Date.now();
 					key = ARROW.LEFT;
 				}else if(one_area_width < x && x <= one_area_width*2){
+					if((Date.now() - self._prev_down_time) < 100){
+						continue;
+					}
+					self._pref_down_time = Date.now();
 					key = ARROW.DOWN;
 				}else if(one_area_width*2 < x && x <= one_area_width*3){
+					if((Date.now() - self._prev_center_time) < 100){
+						continue;
+					}
+					self._pref_center_time = Date.now();
 					key = ARROW.CENTER;
 				}else if(one_area_width*3 < x && x <= one_area_width*4){
+					if((Date.now() - self._prev_up_time) < 100){
+						continue;
+					}
+					self._pref_up_time = Date.now();
 					key = ARROW.UP;
 				}else if(one_area_width*4 < x && x <= one_area_width*5){
+					if((Date.now() - self._prev_right_time) < 100){
+						continue;
+					}
+					self._pref_right_time = Date.now();
 					key = ARROW.RIGHT;
 				}
 
@@ -200,12 +225,28 @@ function InputControl(layer_id, game_type, screen_width){
 				var key = null;
 
 				if(0 < x && x <= one_area_width){
+					if((Date.now() - self._prev_left_time) < 100){
+						continue;
+					}
+					self._pref_left_time = Date.now();
 					key = ARROW.LEFT;
 				}else if(one_area_width < x && x <= one_area_width*2){
+					if((Date.now() - self._prev_down_time) < 100){
+						continue;
+					}
+					self._pref_down_time = Date.now();
 					key = ARROW.DOWN;
 				}else if(one_area_width*2 < x && x <= one_area_width*3){
+					if((Date.now() - self._prev_up_time) < 100){
+						continue;
+					}
+					self._pref_up_time = Date.now();
 					key = ARROW.UP;
 				}else if(one_area_width*3 < x && x <= one_area_width*4){
+					if((Date.now() - self._prev_right_time) < 100){
+						continue;
+					}
+					self._pref_right_time = Date.now();
 					key = ARROW.RIGHT;
 				}
 
@@ -221,20 +262,14 @@ function InputControl(layer_id, game_type, screen_width){
 		}
 		
 		if(arrow_list.length > 0){
-			// for(var i=0 ; i<arrow_list.length ; i++){
-				// console.log('touch start ' + arrow_list[i]);
-			// }
 			window._game_control.HitByLaneAndTime(arrow_list);
 		}
 	};
 
 	this.SmartDeviceTouchEnd = function(e){
-		// console.log('SmartDeviceTouchEnd ');
 		var beat_count = BEAT_TYPE_COUNT[self._game_type];
 		var one_area_width = window.innerWidth / beat_count;
 		var arrow_list = [];
-
-		// console.log('e.originalEvent.touches.length ' + e.originalEvent.changedTouches.length);
 
 		if(self._game_type == GAME_TYPE.PUMP){
 			for(var i=0 ; i<e.originalEvent.changedTouches.length ; i++){
@@ -281,9 +316,6 @@ function InputControl(layer_id, game_type, screen_width){
 		}
 		
 		if(arrow_list.length > 0){
-			// for(var i=0 ; i<arrow_list.length ; i++){
-			// 	console.log('touch end ' + arrow_list[i]);
-			// }
 			window._game_control.KeyUpProcess(arrow_list);
 		}
 	};
