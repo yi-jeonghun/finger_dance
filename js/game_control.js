@@ -180,19 +180,19 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				var arrow = arrow_arr[a];
 				for(var k=0 ; k<self._game_data._draw_beat_list.length ; k++){
 					var draw_beat = self._game_data._draw_beat_list[k];
-					console.log('k ' + k + ' draw_beat.IsDuration() ' + draw_beat.IsDuration());
+					// console.log('k ' + k + ' draw_beat.IsDuration() ' + draw_beat.IsDuration());
 	
 					if(draw_beat.GetArrowOrNum() != arrow){
-						console.log('draw_beat.GetArrowOrNum() ' + draw_beat.GetArrowOrNum());
+						// console.log('draw_beat.GetArrowOrNum() ' + draw_beat.GetArrowOrNum());
 						continue;
 					}
 	
 					if(draw_beat.IsDuration()){
-						console.log('draw_beat.IsHit() ' + draw_beat.IsHit());
+						// console.log('draw_beat.IsHit() ' + draw_beat.IsHit());
 						if(draw_beat.IsHit()){
-							console.log('k ' + k + ' draw_beat.IsDurationFinished() ' + draw_beat.IsDurationFinished());
+							// console.log('k ' + k + ' draw_beat.IsDurationFinished() ' + draw_beat.IsDurationFinished());
 							if(draw_beat.IsDurationFinished() == false){
-								console.log('draw_beat.GetArrowOrNum() ' + draw_beat.GetArrowOrNum());
+								// console.log('draw_beat.GetArrowOrNum() ' + draw_beat.GetArrowOrNum());
 								draw_beat_to_hit_list.push(draw_beat);
 								break;
 							}	
@@ -201,7 +201,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				}
 			}
 
-			console.log('draw_beat_to_hit_list.length ' + draw_beat_to_hit_list.length);
+			// console.log('draw_beat_to_hit_list.length ' + draw_beat_to_hit_list.length);
 			for(var i=0 ; i<draw_beat_to_hit_list.length ; i++){
 				draw_beat_to_hit_list[i].FinishDuration();
 			}
