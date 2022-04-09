@@ -428,6 +428,7 @@ class DrawBeatDuration extends DrawObject{
 	}
 
 	#loop_id = null;
+	#duration_score = 20;
 	_DurationLoop(){
 		if(this.IsDurationFinished() || window._game_control._is_playing == false){
 			if(this.#loop_id){
@@ -443,9 +444,10 @@ class DrawBeatDuration extends DrawObject{
 			this._duration_time = 0;
 			var res = {
 				hit:true,
-				score:3,
+				score: this.#duration_score,
 				text:''
 			};
+			this.#duration_score = this.#duration_score + 5;
 			window._game_control.DurationHit(this.#arrow_or_num, res, this.GetHitPosition());
 		}
 

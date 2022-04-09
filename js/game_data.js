@@ -275,6 +275,23 @@ function GameData(is_show_beat_order, game_type){
 	this.SwitchDifficulty = function(difficulty){
 		self._difficulty = difficulty;
 		console.log('self._difficulty ' + self._difficulty);
+
+		if(self._game_type == GAME_TYPE.GUN_FIRE){
+			self._speed = 300;
+		}else{
+			switch(self._difficulty){
+				case DIFFICULTY.EASY:
+					self._speed = 150;
+					break;
+				case DIFFICULTY.NORMAL:
+					self._speed = 200;
+					break;
+				case DIFFICULTY.HARD:
+					self._speed = 250;
+					break;
+			}
+	
+		}
 	};
 
 	this.AddWave = function(time){
