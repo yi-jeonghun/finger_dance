@@ -56,6 +56,7 @@ function InputControl(layer_id, game_type, screen_width){
 		}
 
 		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
+			// console.log('e.key ' + e.key);
 			switch(e.key){
 				case '1'://숫자1
 				case 'd'://d
@@ -101,6 +102,7 @@ function InputControl(layer_id, game_type, screen_width){
 
 		if(key_code != -1){
 			e.preventDefault();
+			// console.log('key_code ' + key_code);
 			var arrows = [key_code];
 			window._game_control.HitByLaneAndTime(arrows);
 		}

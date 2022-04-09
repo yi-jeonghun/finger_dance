@@ -629,6 +629,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	this._particles_list = [];
 	this.CreateHitEffect = function(hit){
 		var hp = hit.hit_position;
+		window._background_renderer.Effect();
 
 		switch(hit.arrow){
 			case ARROW.LEFT:
@@ -681,7 +682,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				}
 				self._particles_list[4].Reset(hp.x, hp.y);
 				break;	
-			}
+		}
 		
 		var text_x = hp.x;
 		var text_y = hp.y;
