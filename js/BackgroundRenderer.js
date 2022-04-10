@@ -19,17 +19,17 @@ function BackgroundRenderer(){
 	this._effect1 = {
 		active: false,
 		time: 0,
-		size: 1050
+		size: 1100
 	};
 	this._effect2 = {
 		active: false,
 		time: 0,
-		size: 1050
+		size: 1100
 	};
 	this._effect3 = {
 		active: false,
 		time: 0,
-		size: 1050
+		size: 1100
 	};
 
 	this.Init = function(layer_id, game_width, game_height, screen_width, screen_height){
@@ -43,7 +43,7 @@ function BackgroundRenderer(){
 	};
 
 	this.Effect = function(){
-		var size = 1050;
+		var size = 1100;
 		if(self._layer1.hit != 'none'){
 			self._effect1.active = true;
 			self._effect1.size = size;
