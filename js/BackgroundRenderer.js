@@ -227,10 +227,10 @@ function BackgroundRenderer(){
 		if(self._layer3 && self._layer3.image_ready){
 			if(self._layer3.action == 'fixed'){
 				if(self._layer3.hit != 'none'){
-					self.LayerEffect(self._layer3, self._effect2, self._ctx2);
+					self.LayerEffect(self._layer3, self._effect3, self._ctx3);
 				}
 			}else{
-				self.LayerAction(self._layer3, self._ctx2);
+				self.LayerAction(self._layer3, self._ctx3);
 			}
 		}
 	};
