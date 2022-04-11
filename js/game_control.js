@@ -588,7 +588,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			_renderer.Update();
 			_background_renderer.Update();
 
-			if(self._total_beat_count == self._total_hit_count){
+			if(self._total_beat_count == self._total_hit_count || self._game_data._draw_beat_list.length == 0){
 				if(self._finish_notified == false){
 					self._finish_notified = true;
 					self._is_complete = true;
