@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://beatmonster.net/</loc>
-		<lastmod>2022-04-13T12:15:09.742Z</lastmod>
+		<lastmod>2022-04-14T12:14:22.244Z</lastmod>
 		<priority>0.5</priority>
 	</url>
 	<url>
@@ -38,6 +38,11 @@
 	<url>
 		<loc>https://beatmonster.net/player.html?id=RgyA0P0Gix</loc>
 		<lastmod>2022-04-13T12:15:06.000Z</lastmod>
+		<priority>0.8</priority>
+	</url>
+	<url>
+		<loc>https://beatmonster.net/player.html?id=U8EU51s9Xu</loc>
+		<lastmod>2022-04-14T12:14:09.000Z</lastmod>
 		<priority>0.8</priority>
 	</url>
 	<url>
