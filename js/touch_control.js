@@ -57,62 +57,44 @@ function InputControl(layer_id, game_type, screen_width){
 
 		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
 			// console.log('e.key ' + e.key);
-			switch(e.key){
-				case '1'://숫자1
+			switch(e.keyCode){
+				case 49://숫자1
+				case 68://d
 					key_code = ARROW.LEFT;
 					break;
-				case 'd'://d
-					key_code = ARROW.LEFT;
-					break;
-				case '2'://숫자2
+				case 50://숫자2
+				case 70://f
 					key_code = ARROW.DOWN;
 					break;
-				case 'f'://f
-					key_code = ARROW.DOWN;
-					break;
-				case '3'://숫자3
+				case 51://숫자3
+				case 74://j
 					key_code = ARROW.UP;
 					break;
-				case 'j'://j
-					key_code = ARROW.UP;
-					break;
-				case '4'://숫자4
-					key_code = ARROW.RIGHT;
-					break;
-				case 'k'://k
+				case 52://숫자4
+				case 75://k
 					key_code = ARROW.RIGHT;
 					break;
 			}	
 		}else if(self._game_type == GAME_TYPE.PUMP){
-			switch(e.key){
-				case '1'://숫자1
+			switch(e.keyCode){
+				case 49://숫자1
+				case 71://g
 					key_code = ARROW.LEFT;
 					break;
-				case 'g'://g
-					key_code = ARROW.LEFT;
-					break;
-				case '2'://숫자2
+				case 50://숫자2
+				case 72://h
 					key_code = ARROW.DOWN;
 					break;
-				case 'h'://h
-					key_code = ARROW.DOWN;
-					break;
-				case '3'://숫자3
+				case 51://숫자3
+				case 74://j
 					key_code = ARROW.CENTER;
 					break;
-				case 'j'://j
-					key_code = ARROW.CENTER;
-					break;
-				case '4'://숫자4
+				case 52://숫자4
+				case 75://k
 					key_code = ARROW.UP;
 					break;
-				case 'k'://k
-					key_code = ARROW.UP;
-					break;
-				case '5'://숫자5
-					key_code = ARROW.RIGHT;
-					break;
-				case 'l'://l
+				case 52://숫자5
+				case 76://l
 					key_code = ARROW.RIGHT;
 					break;
 			}	
@@ -131,62 +113,44 @@ function InputControl(layer_id, game_type, screen_width){
 		self._key_down_array[e.key] = false;
 
 		if(self._game_type == GAME_TYPE.DDR || self._game_type == GAME_TYPE.PIANO_TILE){
-			switch(e.key){
-				case '1'://숫자1
+			switch(e.keyCode){
+				case 49://숫자1
+				case 68://d
 					key_code = ARROW.LEFT;
 					break;
-				case 'd'://d
-					key_code = ARROW.LEFT;
-					break;
-				case '2'://숫자2
+				case 50://숫자2
+				case 70://f
 					key_code = ARROW.DOWN;
 					break;
-				case 'f'://f
-					key_code = ARROW.DOWN;
-					break;
-				case '3'://숫자3
+				case 51://숫자3
+				case 74://j
 					key_code = ARROW.UP;
 					break;
-				case 'j'://j
-					key_code = ARROW.UP;
-					break;
-				case '4'://숫자4
-					key_code = ARROW.RIGHT;
-					break;
-				case 'k'://k
+				case 52://숫자4
+				case 75://k
 					key_code = ARROW.RIGHT;
 					break;
 			}	
 		}else if(self._game_type == GAME_TYPE.PUMP){
-			switch(e.key){
-				case '1'://숫자1
+			switch(e.keyCode){
+				case 49://숫자1
+				case 71://g
 					key_code = ARROW.LEFT;
 					break;
-				case 'g'://g
-					key_code = ARROW.LEFT;
-					break;
-				case '2'://숫자2
+				case 50://숫자2
+				case 72://h
 					key_code = ARROW.DOWN;
 					break;
-				case 'h'://h
-					key_code = ARROW.DOWN;
-					break;
-				case '3'://숫자3
+				case 51://숫자3
+				case 74://j
 					key_code = ARROW.CENTER;
 					break;
-				case 'j'://j
-					key_code = ARROW.CENTER;
-					break;
-				case '4'://숫자4
+				case 52://숫자4
+				case 75://k
 					key_code = ARROW.UP;
 					break;
-				case 'k'://k
-					key_code = ARROW.UP;
-					break;
-				case '5'://숫자5
-					key_code = ARROW.RIGHT;
-					break;
-				case 'l'://l
+				case 52://숫자5
+				case 76://l
 					key_code = ARROW.RIGHT;
 					break;
 			}	
