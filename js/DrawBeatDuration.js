@@ -353,12 +353,12 @@ class DrawBeatDuration extends DrawObject{
 				if(this.#move_direction == MOVE_DIRECTION.UPWARD){
 					if(this.#hit_y < this.#base_line_px){
 						y = this.#base_line_px;
-						dur_height = this.#y_end - this.#base_line_px + this.#sh/2;
+						dur_height = this.#y_end - this.#base_line_px + this.#h/2;
 					}
 				}else if(this.#move_direction == MOVE_DIRECTION.DOWNWARD){
 					if(this.#hit_y > this.#base_line_px){
 						y = this.#base_line_px;
-						dur_height = this.#y_end - this.#base_line_px + this.#sh/2;
+						dur_height = this.#y_end - this.#base_line_px + this.#h/2;
 						// dur_height = dur_height * -1;
 					}
 				}
