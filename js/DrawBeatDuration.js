@@ -83,7 +83,7 @@ class DrawBeatDuration extends DrawObject{
 			this.#sh = img.h;
 			this.#duration_x = this._atlas._img_duration.x;
 			this.#duration_y = this._atlas._img_duration.y;
-			this.#duration_w = this._atlas._img_duration.w;
+			this.#duration_w = this._atlas._img_duration.w/2;
 			this.#duration_h = this._atlas._img_duration.h;
 		}
 

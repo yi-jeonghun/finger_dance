@@ -361,12 +361,12 @@ function PlayGameControl(){
 
 			// console.log('PARTICLE image path ');
 			// console.log('particle_list ' + JSON.stringify(particle_list));
-			for(var i=0 ; i<particle_list.length ; i++){
-				if(particle_list[i]){
-					particle_list[i].image_path = '.' + particle_list[i].image_path;
-					window._resource_loader.AddImage(particle_list[i].image_path);
-				}
-			}
+			// for(var i=0 ; i<particle_list.length ; i++){
+			// 	if(particle_list[i]){
+			// 		particle_list[i].image_path = '.' + particle_list[i].image_path;
+			// 		window._resource_loader.AddImage(particle_list[i].image_path);
+			// 	}
+			// }
 			if(game_data.beat_atlas_image_path){
 				// console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
 				game_data.beat_atlas_image_path = '.' + game_data.beat_atlas_image_path;

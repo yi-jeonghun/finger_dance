@@ -143,7 +143,7 @@ class ParticleImage extends DrawObject {
 		this.#y = y;
 		this.#alpha = 1;
 		this.#rotate_speed = this.#Random(-30, 30);
-		var width = this.#Random(20, 70);
+		var width = this.#Random(20, 50);
 		this.#w = this.#h = width;
 		this.#x -= this.#w/2;
 		this.#y -= this.#w/2;
