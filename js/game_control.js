@@ -634,51 +634,36 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		switch(hit.arrow){
 			case ARROW.LEFT:
 				if(self._particles_list[0] == undefined){
-					if(self._game_data._particle_list[0] != null){
-						var img_path = self._game_data._particle_list[0].image_path;
-						self._particles_list[0] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(7, self._particles_list[0]);
-					}
+					self._particles_list[0] = new Particles(window._renderer._ctx, hp.x, hp.y, self._atlas._img, self._atlas._img_l_particle);
+					window._renderer.AddDrawObject(7, self._particles_list[0]);
 				}
 				self._particles_list[0].Reset(hp.x, hp.y);
 				break;
 			case ARROW.DOWN:
 				if(self._particles_list[1] == undefined){
-					if(self._game_data._particle_list[1] != null){
-						var img_path = self._game_data._particle_list[1].image_path;
-						self._particles_list[1] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(7, self._particles_list[1]);
-					}
+					self._particles_list[1] = new Particles(window._renderer._ctx, hp.x, hp.y, self._atlas._img, self._atlas._img_d_particle);
+					window._renderer.AddDrawObject(7, self._particles_list[1]);
 				}
 				self._particles_list[1].Reset(hp.x, hp.y);
 				break;
 			case ARROW.UP:
 				if(self._particles_list[2] == undefined){
-					if(self._game_data._particle_list[2] != null){
-						var img_path = self._game_data._particle_list[2].image_path;
-						self._particles_list[2] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(7, self._particles_list[2]);
-					}
+					self._particles_list[2] = new Particles(window._renderer._ctx, hp.x, hp.y, self._atlas._img, self._atlas._img_u_particle);
+					window._renderer.AddDrawObject(7, self._particles_list[2]);
 				}
 				self._particles_list[2].Reset(hp.x, hp.y);
 				break;
 			case ARROW.RIGHT:
 				if(self._particles_list[3] == undefined){
-					if(self._game_data._particle_list[3] != null){
-						var img_path = self._game_data._particle_list[3].image_path;
-						self._particles_list[3] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(7, self._particles_list[3]);
-					}
+					self._particles_list[3] = new Particles(window._renderer._ctx, hp.x, hp.y, self._atlas._img, self._atlas._img_r_particle);
+					window._renderer.AddDrawObject(7, self._particles_list[3]);
 				}
 				self._particles_list[3].Reset(hp.x, hp.y);
 				break;
 			case ARROW.CENTER:
 				if(self._particles_list[4] == undefined){
-					if(self._game_data._particle_list[4] != null){
-						var img_path = self._game_data._particle_list[4].image_path;
-						self._particles_list[4] = new Particles(window._renderer._ctx, hp.x, hp.y, img_path);
-						window._renderer.AddDrawObject(7, self._particles_list[4]);
-					}
+					self._particles_list[4] = new Particles(window._renderer._ctx, hp.x, hp.y, self._atlas._img, self._atlas._img_c_particle);
+					window._renderer.AddDrawObject(7, self._particles_list[4]);
 				}
 				self._particles_list[4].Reset(hp.x, hp.y);
 				break;	

@@ -110,7 +110,6 @@ function GameData(is_show_beat_order, game_type){
 		self._beat_list_3 = data.beat_list_3;
 		self._wave_list_3 = data.wave_list_3;
 		self._background_list = data.background_list;
-		self._particle_list = data.particle_list;
 		self._beat_atlas_uid = data.beat_atlas_uid;
 		self._beat_atlas_image_path = data.beat_atlas_image_path;
 		self._font_info = data.font_info;
@@ -125,7 +124,6 @@ function GameData(is_show_beat_order, game_type){
 			wave_list_2: self._wave_list_2,
 			beat_list_3: self._beat_list_3,
 			wave_list_3: self._wave_list_3,
-			particle_list: self._particle_list,
 			background_list: self._background_list,
 			beat_atlas_uid: self._beat_atlas_uid,
 			beat_atlas_image_path: self._beat_atlas_image_path,

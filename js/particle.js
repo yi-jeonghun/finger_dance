@@ -3,10 +3,10 @@ class Particles {
 	#start_ms = Date.now();
 	#life_ms = 500;
 
-	constructor(context, x, y, image_path){
+	constructor(context, x, y, img_obj, coordination){
 		for(var i=0 ; i<15 ; i++){
 			// var particle = new Particle(context, x, y);
-			var particle = new ParticleImage(context, x, y, image_path);
+			var particle = new ParticleImage(context, x, y, img_obj, coordination);
 			this.#particle_list.push(particle);
 		}
 	}
@@ -126,11 +126,13 @@ class ParticleImage extends DrawObject {
 	#start_ms = Date.now();
 	#life_ms = 500;
 	#img;
+	#coordination = null;
 
-	constructor(context, x, y, img_path){
+	constructor(context, x, y, img_ogj, coordination){
 		super(context);
 
-		this.#img = window._resource_loader.GetImage(img_path);
+		this.#img = img_ogj;//window._resource_loader.GetImage(img_path);
+		this.#coordination = coordination;
 		// this.#img = new Image();
 		// this.#img.src = img_path;
 		this.Reset(x, y);
@@ -141,7 +143,7 @@ class ParticleImage extends DrawObject {
 		this.#y = y;
 		this.#alpha = 1;
 		this.#rotate_speed = this.#Random(-30, 30);
-		var width = this.#Random(10, 50);
+		var width = this.#Random(20, 70);
 		this.#w = this.#h = width;
 		this.#x -= this.#w/2;
 		this.#y -= this.#w/2;
@@ -177,7 +179,8 @@ class ParticleImage extends DrawObject {
 		this._ctx.globalAlpha = this.#alpha;
 
 		this._ctx.drawImage(this.#img,
-			0, 0, 50, 50,
+			//0, 0, 50, 50,
+			this.#coordination.x, this.#coordination.y, this.#coordination.w, this.#coordination.h,
 			this.#x, this.#y, this.#w, this.#h);
 	
 		this._ctx.restore();
