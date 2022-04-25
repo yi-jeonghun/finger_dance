@@ -343,6 +343,18 @@ function PlayGameControl(){
 		var background_list = JSON.parse(game_data.background_list);
 		var particle_list = JSON.parse(game_data.particle_list);
 
+		{//hide difficulty button
+			if(wave_n_beat_1.beat_list.length == 0){
+				$('#id_span_difficulty_easy').hide();
+			}
+			if(wave_n_beat_2.beat_list.length == 0){
+				$('#id_span_difficulty_normal').hide();
+			}
+			if(wave_n_beat_3.beat_list.length == 0){
+				$('#id_span_difficulty_hard').hide();
+			}
+		}
+
 		{//Update Image Path
 			for(var i=0 ; i<background_list.length ; i++){
 				if(background_list[i].layer1_image_path != ''){
