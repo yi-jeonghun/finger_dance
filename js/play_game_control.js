@@ -353,6 +353,11 @@ function PlayGameControl(){
 			if(wave_n_beat_3.beat_list.length == 0){
 				$('#id_span_difficulty_hard').hide();
 			}
+
+			if(wave_n_beat_1.beat_list.length == 0 && wave_n_beat_2.beat_list.length > 0){
+				$('#id_span_difficulty_normal').addClass('badge-primary');
+				window._game_control._game_data.SwitchDifficulty(DIFFICULTY.NORMAL);
+			}
 		}
 
 		{//Update Image Path
