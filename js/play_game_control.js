@@ -244,6 +244,7 @@ function PlayGameControl(){
 		console.log('score ' + score);
 
 		if(_game_control._is_playing){
+			self.ShowHidePlayStopButton(true, false);
 			self.SaveGameResult(difficulty, is_complete, progress_percent, score);
 			if(is_complete == true){
 			}else{
