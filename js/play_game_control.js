@@ -299,10 +299,10 @@ function PlayGameControl(){
 		// console.log('self._video_id ' + self._video_id);
 
 		$('title').html(`${game_data.title} - ${game_data.artist} | Beat Monster`);
-		$("meta[name='description']").prop('content', `Rythm Game for ${game_data.title} - ${game_data.artist}`);
-		$("meta[name='keywords']").prop('content', `${game_data.title}, ${game_data.artist}, Rhythm Game, Beat Game, Youtube, Music, Popsong, Popular song`);
+		$("meta[name='description']").prop('content', `Online Rythm Game for ${game_data.title} - ${game_data.artist}`);
+		$("meta[name='keywords']").prop('content', `${game_data.title}, ${game_data.artist}, Rhythm Game, Rhytm Game Online, Beat Game, Youtube, Music, Popsong, Popular song`);
 		$("meta[property='og:title']").prop('content', `${game_data.title} - ${game_data.artist} | Beat Monster`);
-		$("meta[property='og:description']").prop('content', `Rythm Game for ${game_data.title} - ${game_data.artist}`);
+		$("meta[property='og:description']").prop('content', `Online Rythm Game for ${game_data.title} - ${game_data.artist}`);
 		$("meta[property='og:image']").prop('content', `https://img.youtube.com/vi/${game_data.video_id}/0.jpg`);
 
 		$('#id_label_title').html(game_data.title);
