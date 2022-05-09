@@ -35,11 +35,6 @@ function GameData(is_show_beat_order, game_type){
 	}*/
 	this._background_list = [];
 
-	/*{
-		particle_uid list: '',
-		image_path: ''
-	}*/
-	this._particle_list = [];
 	this._beat_atlas_uid = '';
 	this._beat_atlas_image_path = '';
 
@@ -92,10 +87,6 @@ function GameData(is_show_beat_order, game_type){
 			self._speed = 250;
 		}
 
-		var beat_count = BEAT_TYPE_COUNT[self._game_type];
-		for(var i=0 ; i<beat_count ; i++){
-			self._particle_list[i] = null;
-		}
 		return this;
 	};
 
