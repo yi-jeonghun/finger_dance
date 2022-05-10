@@ -43,4 +43,8 @@ class DrawImage extends DrawObject {
 		}
 		return false;
 	};
+
+	Delete(){
+		this.#life_ms = 0;
+	};
 }

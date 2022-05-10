@@ -32,6 +32,8 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	this._draw_text_score = null;
 	this._is_show_beat_order = is_show_beat_order;
 	this._atlas = null;
+	this._heart_draw_image_list = [];
+	this._heart_remain_count = 3;
 
 	this.Init = function(){
 		console.log('GameControl Init');
@@ -417,6 +419,24 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		}
 		self._particles_list = [];
 
+		{
+			var heart_image = window._resource_loader.GetImage('/img/heart.png');
+			var heart_draw_image1 = new DrawImage(window._renderer._ctx, heart_image, 0, 0, 100, 100, 10, 660, 30, 30, -1);
+			var heart_draw_image2 = new DrawImage(window._renderer._ctx, heart_image, 0, 0, 100, 100, 40, 660, 30, 30, -1);
+			var heart_draw_image3 = new DrawImage(window._renderer._ctx, heart_image, 0, 0, 100, 100, 70, 660, 30, 30, -1);
+			heart_draw_image1.Update();
+			heart_draw_image2.Update();
+			heart_draw_image3.Update();
+			self._heart_draw_image_list = [];
+			self._heart_draw_image_list.push(heart_draw_image1);
+			self._heart_draw_image_list.push(heart_draw_image2);
+			self._heart_draw_image_list.push(heart_draw_image3);
+			window._renderer.AddDrawObject(4, heart_draw_image1);
+			window._renderer.AddDrawObject(4, heart_draw_image2);
+			window._renderer.AddDrawObject(4, heart_draw_image3);
+		}
+
+		self._heart_remain_count = 3;
 		self._cur_wave_idx = 0;
 		self._wave_sequence_idx = 0;
 		self.ShowBackground(0);
@@ -470,6 +490,17 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		// console.log('stop ' + self._is_playing);
 	};
 
+	this.ReduceHeart = function(){
+		console.log('self._heart_remain_count ' + self._heart_remain_count);
+		if(self._heart_remain_count > 0){
+			self._heart_remain_count--;
+			console.log('self._heart_remain_count ' + self._heart_remain_count);
+			self._heart_draw_image_list[self._heart_remain_count].Delete();
+			return true;
+		}
+		return false;
+	};
+
 	this._delta = 0;
 	this._tick = 0;
 	this._failed_gameobj_list = [];
@@ -507,22 +538,28 @@ function GameControl(width, height, is_show_beat_order, game_type){
 					if(self._is_excercise_mode == false){
 						//놓치면 게임 종료
 						if(draw_beat.IsHit() == false){
-							// console.log('isHit ');
-							{
-								draw_beat.SetIsFailCause();
-								draw_beat.SetPassed(false);
+							if(self.ReduceHeart() == true){
+								draw_beat.Delete();
 							}
-							self._finish_notified = true;
-							self._failed_gameobj_list = [];
-							self._failed_gameobj_list = self._game_data._draw_beat_list;
+							
+							if(self._heart_remain_count <= 0){
+								// console.log('isHit ');
+								{
+									draw_beat.SetIsFailCause();
+									draw_beat.SetPassed(false);
+								}
+								self._finish_notified = true;
+								self._failed_gameobj_list = [];
+								self._failed_gameobj_list = self._game_data._draw_beat_list;
 
-							//실패의 원인을 표시하기 위해
-							//passed가 아닌 것으로 한다.
-							if(self._cb_on_game_finished){
-								var difficulty = self._game_data._difficulty;
-								self._cb_on_game_finished(difficulty, self._is_complete, self._progress_percent, self._score);
+								//실패의 원인을 표시하기 위해
+								//passed가 아닌 것으로 한다.
+								if(self._cb_on_game_finished){
+									var difficulty = self._game_data._difficulty;
+									self._cb_on_game_finished(difficulty, self._is_complete, self._progress_percent, self._score);
+								}
+								break;
 							}
-							break;
 						}
 					}
 				}
@@ -560,14 +597,18 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				if(self._is_excercise_mode == false){
 					//실패하는 경우 게임 종료하기.
 					if(hit.hit_result.hit == false){
-						self._finish_notified = true;
-						self._failed_gameobj_list = [];
-						self._failed_gameobj_list = self._game_data._draw_beat_list;
-						if(self._cb_on_game_finished){
-							var difficulty = self._game_data._difficulty;
-							self._cb_on_game_finished(difficulty, self._is_complete, self._progress_percent, self._score);
+						self.ReduceHeart();
+
+						if(self._heart_remain_count <= 0){
+							self._finish_notified = true;
+							self._failed_gameobj_list = [];
+							self._failed_gameobj_list = self._game_data._draw_beat_list;
+							if(self._cb_on_game_finished){
+								var difficulty = self._game_data._difficulty;
+								self._cb_on_game_finished(difficulty, self._is_complete, self._progress_percent, self._score);
+							}
+							console.log('FAILED GAME ' );	
 						}
-						console.log('FAILED GAME ' );
 					}
 				}
 

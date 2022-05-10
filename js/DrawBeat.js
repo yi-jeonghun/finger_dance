@@ -23,6 +23,7 @@ class DrawBeat extends DrawObject{
 	#is_fail_cause = false;
 	#order;
 	#draw_text = null;
+	#force_delete = false;
 
 	constructor(context, atlas, arrow_or_num, beat_info, speed_pps, base_line, move_direction, order){
 		super(context);
@@ -285,6 +286,11 @@ class DrawBeat extends DrawObject{
 		if(this.#is_hit){
 			return true;			
 		}
+
+		if(this.#force_delete){
+			return true;
+		}
+
 		return false;
 	}
 
@@ -314,6 +320,10 @@ class DrawBeat extends DrawObject{
 	}
 
 	IsVisible(){
+		if(this.#force_delete){
+			return false;
+		}
+
 		if(this.#move_direction == MOVE_DIRECTION.UPWARD){
 			if(this.#hit_y < (this.#base_line_px - 60)){
 				return false;
@@ -329,5 +339,9 @@ class DrawBeat extends DrawObject{
 		// }
 		
 		return true;
+	}
+
+	Delete(){
+		this.#force_delete = true;
 	}
 }

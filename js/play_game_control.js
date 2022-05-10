@@ -391,6 +391,8 @@ function PlayGameControl(){
 				window._resource_loader.AddImage(game_data.beat_atlas_image_path);
 				// console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
 			}
+
+			window._resource_loader.AddImage('/img/heart.png');
 		}
 
 		var converted_data = {
