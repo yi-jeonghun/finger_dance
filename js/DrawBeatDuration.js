@@ -33,6 +33,7 @@ class DrawBeatDuration extends DrawObject{
 	#duration_height = 0;
 	#prev_dur_hit_ms = 0;
 	#move_started = false;
+	#force_delete = false;
 	_duration_time = 0;
 	self;
 
@@ -389,6 +390,11 @@ class DrawBeatDuration extends DrawObject{
 		if(this.#is_duration_finished){
 			return true;
 		}
+
+		if(this.#force_delete){
+			return true;
+		}
+
 		return false;
 	}
 
@@ -421,10 +427,18 @@ class DrawBeatDuration extends DrawObject{
 			return false;
 		}
 
+		if(this.#force_delete){
+			return false;
+		}
+
 		if(this.#is_duration_finished){
 			return false;
 		}
 		return true;
+	}
+
+	Delete(){
+		this.#force_delete = true;
 	}
 
 	#loop_id = null;
