@@ -420,7 +420,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 		self._particles_list = [];
 
 		{
-			var heart_image = window._resource_loader.GetImage('/img/heart.png');
+			var heart_image = window._resource_loader.GetImage('./img/heart.png');
 			var heart_draw_image1 = new DrawImage(window._renderer._ctx, heart_image, 0, 0, 100, 100, 10, 660, 30, 30, -1);
 			var heart_draw_image2 = new DrawImage(window._renderer._ctx, heart_image, 0, 0, 100, 100, 40, 660, 30, 30, -1);
 			var heart_draw_image3 = new DrawImage(window._renderer._ctx, heart_image, 0, 0, 100, 100, 70, 660, 30, 30, -1);

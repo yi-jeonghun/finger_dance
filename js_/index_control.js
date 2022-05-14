@@ -99,6 +99,7 @@ function IndexControl(){
 									</div>
 									<div class="col-4 text-right">
 										<div style="padding-top:1px">${img}</div>
+										<div style="font-size:0.8em">${game.bpm} BPM</div>
 									</div>
 								</div>
 							</div>

@@ -342,7 +342,11 @@ function PlayGameControl(){
 		var wave_n_beat_2 = JSON.parse(game_data.wave_n_beat_2);
 		var wave_n_beat_3 = JSON.parse(game_data.wave_n_beat_3);
 		var background_list = JSON.parse(game_data.background_list);
-		var particle_list = JSON.parse(game_data.particle_list);
+		console.log('background_list ' + background_list);
+		// var particle_list = JSON.parse(game_data.particle_list);
+		// console.log('particle_list ' + particle_list);
+
+		$('#id_text_bpm').html(game_data.bpm + " BPM");
 
 		{//hide difficulty button
 			if(wave_n_beat_1.beat_list.length == 0){
@@ -377,22 +381,12 @@ function PlayGameControl(){
 				}
 			}
 
-			// console.log('PARTICLE image path ');
-			// console.log('particle_list ' + JSON.stringify(particle_list));
-			// for(var i=0 ; i<particle_list.length ; i++){
-			// 	if(particle_list[i]){
-			// 		particle_list[i].image_path = '.' + particle_list[i].image_path;
-			// 		window._resource_loader.AddImage(particle_list[i].image_path);
-			// 	}
-			// }
 			if(game_data.beat_atlas_image_path){
-				// console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
 				game_data.beat_atlas_image_path = '.' + game_data.beat_atlas_image_path;
 				window._resource_loader.AddImage(game_data.beat_atlas_image_path);
-				// console.log('game_data.beat_atlas_image_path ' + game_data.beat_atlas_image_path);
 			}
 
-			window._resource_loader.AddImage('/img/heart.png');
+			window._resource_loader.AddImage('./img/heart.png');
 		}
 
 		var converted_data = {
@@ -403,7 +397,7 @@ function PlayGameControl(){
 			beat_list_3: wave_n_beat_3.beat_list,
 			wave_list_3: wave_n_beat_3.wave_list,
 			background_list: background_list,
-			particle_list: particle_list,
+			// particle_list: particle_list,
 			beat_atlas_uid: game_data.beat_atlas_uid,
 			beat_atlas_image_path: game_data.beat_atlas_image_path,
 			font_info: {
