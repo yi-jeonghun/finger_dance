@@ -4,9 +4,22 @@ function ResourceLoader(){
 	this._is_youtube_loaded = false;
 	this._total_count = 1; //Youtube video를 위해 기본 1개로 함.
 	this._cb_on_loaded = null;
+	this._is_visualizer_loaded = false;
 
 	this.SetCallback = function(cb){
 		self._cb_on_loaded = cb;
+	};
+
+	this.AddVisualizer = function(game_id){
+		console.log('AddVisualizer game_id ' + game_id);
+		self._total_count++;
+		window._visualizer.SetCallBack(self.OnVisualizerLoaded);
+		window._visualizer.LoadData(game_id);
+	};
+
+	this.OnVisualizerLoaded = function(result){
+		self._is_visualizer_loaded = true;
+		self.CheckLoadingFinished();
 	};
 
 	this.AddImage = function(image_path){
@@ -60,6 +73,10 @@ function ResourceLoader(){
 		var loaded_count = 0;
 
 		if(self._is_youtube_loaded){
+			loaded_count++;
+		}
+
+		if(self._is_visualizer_loaded){
 			loaded_count++;
 		}
 

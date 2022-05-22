@@ -25,6 +25,7 @@ function PlayGameControl(){
 			self._is_mobile_device = false;
 		}
 		// console.log('self._is_mobile_device ' + self._is_mobile_device);
+		window._visualizer = new Visualizer().Init('id_canvas_visualizer');
 
 		self.InitLayout();
 		self.InitComponentHandle();
@@ -49,6 +50,8 @@ function PlayGameControl(){
 			// self.GetRanking();
 		}
 
+		window._resource_loader.AddVisualizer(self._game_id);
+
 		window.addEventListener('resize', function(){
 			console.log('resize');
 			self.InitLayout();
@@ -67,6 +70,10 @@ function PlayGameControl(){
 			self.ChangeLayout(LAYOUT.INFO);
 		}else{
 			var width = window.innerWidth;
+			var height = window.innerHeight;
+			console.log('window width ' + width);
+			console.log('window height ' + height);
+
 			var canvas_width = 400;
 			self._ddr_player_height = 700;
 			var w1 = (width - canvas_width)/2;//canvas가 들어가고 남는 부분을 2분할
@@ -97,6 +104,14 @@ function PlayGameControl(){
 			$('#rank_layer').css('width', w1);
 			$('#rank_layer').css('height', window.innerHeight);
 
+			var visualizer_height = height - self._ddr_player_height;
+			$('#id_div_visualizer').css('left', '0');
+			$('#id_div_visualizer').css('top', '700');
+			$('#id_div_visualizer').css('width', '100%');
+			$('#id_div_visualizer').css('height', visualizer_height);
+			console.log('visualizer canvas height ' + visualizer_height);
+
+			window._visualizer.SetLayout();
 			self.ChangeLayout(LAYOUT.INFO);
 		}
 	};
@@ -295,6 +310,7 @@ function PlayGameControl(){
 		window._yt_player = new YoutubePlayer().Init();
 		window._game_control = new GameControl(self._game_width, self._game_height, is_show_beat_order, game_data.game_type).Init();
 		// window._game_control._is_excercise_mode = true;
+		window._game_control.AddVisualizer(window._visualizer);
 
 		self._video_id = game_data.video_id;
 		// console.log('self._video_id ' + self._video_id);

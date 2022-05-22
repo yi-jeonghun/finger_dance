@@ -34,6 +34,7 @@ function GameControl(width, height, is_show_beat_order, game_type){
 	this._atlas = null;
 	this._heart_draw_image_list = [];
 	this._heart_remain_count = 3;
+	this._visualizer_list = [];
 
 	this.Init = function(){
 		console.log('GameControl Init');
@@ -45,6 +46,10 @@ function GameControl(width, height, is_show_beat_order, game_type){
 
 		self.Update();
 		return this;
+	};
+
+	this.AddVisualizer = function(visualizer){
+		self._visualizer_list.push(visualizer);
 	};
 
 	this.SetVideoID = function(video_id){
@@ -89,6 +94,9 @@ function GameControl(width, height, is_show_beat_order, game_type){
 			self._is_complete = false;
 			self._total_hit_count = 0;
 			self._total_beat_count = self._game_data._draw_beat_list.length;
+			for(var i=0 ; i<self._visualizer_list.length ; i++){
+				self._visualizer_list[i].Play();
+			}
 		}else{
 			// console.log('self._cb_on_youtube_stopped ' + self._cb_on_youtube_stopped);
 			if(self._cb_on_youtube_stopped){
@@ -96,13 +104,19 @@ function GameControl(width, height, is_show_beat_order, game_type){
 				self._cb_on_youtube_stopped();
 			}
 			self._is_playing = false;
+			for(var i=0 ; i<self._visualizer_list.length ; i++){
+				self._visualizer_list[i].Stop();
+			}
 		}
 	};
 
 	this.YT_OnFlowEvent = function(ms){
 		ms = parseInt(ms * 1000);
 		self._timelapse_youtube = ms;
-	};
+		for(var i=0 ; i<self._visualizer_list.length ; i++){
+			self._visualizer_list[i].AdjustTime(ms);
+		}
+};
 
 	this._hit_queue = [
 		//{

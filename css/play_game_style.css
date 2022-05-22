@@ -221,4 +221,13 @@
 	#id_btn_rank_hide{
 		visibility: hidden;
 	}
+	#id_div_visualizer{
+		position: fixed;
+		z-index: 10;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		visibility: visible;
+		padding: 0px;
+	}
 }
