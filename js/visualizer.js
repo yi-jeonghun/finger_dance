@@ -134,6 +134,10 @@ function Visualizer(){
 			return;
 		}
 
+		if(self._data == null){
+			return;
+		}
+
 		self._time_flow += window._timer._delta;
 		self._youtube_time_flow += window._timer._delta;
 		// console.log('self._time_flow ' + self._time_flow);
